@@ -10,6 +10,8 @@ public interface PagoRepository extends JpaRepository<Pago, Integer> {
 
     boolean existsByCuotaId(Integer idCuota);
 
+    List<Pago> findByCuotaIdIn(java.util.Collection<Integer> idsCuotas);
+
     List<Pago> findByCuotaMatriculaAlumnoId(Integer idAlumno);
 
     List<Pago> findByFechaBetween(LocalDate desde, LocalDate hasta);
