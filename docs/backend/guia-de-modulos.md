@@ -197,15 +197,14 @@ Los módulos de una misma ola se pueden desarrollar en paralelo:
 - **Preguntas abiertas:** Restricción atómica de concurrencia al validar cupo.
 
 ### 5.12 Módulo: Cuotas y Aranceles (`cuotas`)
-- **Estado actual:** Parcial | **Rama sugerida:** `feature/back-cuotas` | **Ola:** 5
+- **Estado actual:** Hecho | **Rama sugerida:** `feature/back-cuotas` | **Ola:** 5
 - **Entidades y tablas:** `Cuota` (`cuota`), `EstadoCuotaEnum`, `TipoCuotaEnum`
 - **Dependencias:** `matriculas`
-- **Campos calculados:** `idAlumno`, `alumnoNombre`
+- **Campos calculados:** `idAlumno`, `alumnoNombre`, `concepto`, `mes`, `anio`, `fechaPago`, `estado` (VENCIDA dinámica)
 - **Reglas de negocio aplicables:** RF28-RF31, RN06, RN07, RN18 (12 cuotas mensuales + 3 seguros, vencimiento)
-- **Endpoints pendientes (2 de 2 pendientes; 0 listos):**
-  - `GET /api/cuotas` [ADMINISTRATIVO, ADMINISTRADOR, ALUMNO]
-  - `PATCH /api/cuotas/{id}/anular` [ADMINISTRADOR]
-- **Preguntas abiertas:** Tarea programada o cálculo dinámico para cuotas vencidas.
+- **Endpoints pendientes (0 de 2 pendientes; 2 listos):**
+  - *Todos los endpoints implementados.*
+- **Preguntas abiertas:** Tarea programada para persistir el estado VENCIDA (resuelta en `feature/back-cuotas-vencidas`).
 
 ### 5.13 Módulo: Matrículas Anuales (`matriculas`)
 - **Estado actual:** Hecho | **Rama sugerida:** `feature/back-matriculas` | **Ola:** 5

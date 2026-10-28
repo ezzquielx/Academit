@@ -1,6 +1,6 @@
 # Estado Real del Proyecto y Plan de Distribución - Academit
 
-> **Fecha de relevamiento:** Octubre 2026 | **Entidades:** 35 | **Repositories:** 32 | **Tests backend:** 77/77 OK.
+> **Fecha de relevamiento:** Octubre 2026 | **Entidades:** 35 | **Repositories:** 32 | **Tests backend:** 96/96 OK.
 
 ## 1. Estado por Módulo
 
@@ -16,7 +16,7 @@
 | **Cursos y Ciclos** | `Curso`, `CicloLectivo` / Repos | `CicloLectivoService` hecho; Cursos pendiente | `CicloLectivoController` hecho; Cursos pendiente | 15 tests del módulo ciclos | **Parcial** |
 | **Asignaciones** | `CursoMateria` / Repo | Pendiente | Pendiente | Pendiente | **Parcial** |
 | **Inscripciones** | `Inscripcion` / Repo | Pendiente | Pendiente | Pendiente | **Parcial** |
-| **Matrículas y Cuotas** | `Matricula`, `Cuota`, `EstadoCuota` | `MatriculaService` hecho; `CuotaService` pendiente | `MatriculaController` hecho; `CuotaController` pendiente | 35 tests de matrículas | **Parcial** |
+| **Matrículas y Cuotas** | `Matricula`, `Cuota`, `EstadoCuota` | `MatriculaService` y `CuotaService` hechos | `MatriculaController` y `CuotaController` hechos | 54 tests de matrículas y cuotas | **Hecho** |
 | **Pagos** | `Pago`, `MedioPago` / Repos | Pendiente | Pendiente | Pendiente | **Parcial** |
 | **Evaluaciones y Calificaciones** | `Evaluacion`, `Calificacion` / Repos | Pendiente | Pendiente | Pendiente | **Parcial** |
 | **Asistencia** | `Asistencia`, `EstadoAsistencia` | Pendiente | Pendiente | Pendiente | **Parcial** |
@@ -29,23 +29,23 @@
 ## 2. Endpoints del Contrato vs Implementados
 
 - **Total en contrato frontend:** 71 endpoints (68 de negocio + 3 de autenticación inicial).
-- **Implementados en backend:** 18 endpoints (16 del contrato + `GET /api/usuarios/{id}` y `GET /api/auth/me`). Cobertura: **22.5 %**.
-- **Pendientes de implementar:** 55 endpoints.
+- **Implementados en backend:** 20 endpoints (18 del contrato + `GET /api/usuarios/{id}` y `GET /api/auth/me`). Cobertura: **25.4 %**.
+- **Pendientes de implementar:** 53 endpoints.
 
-### Endpoints implementados (16 del contrato)
+### Endpoints implementados (18 del contrato)
 - `POST /api/auth/login`, `GET /api/auth/me`, `POST /api/auth/logout`, `POST /api/auth/cambiar-password`
 - `GET /api/usuarios`, `GET /api/usuarios/{id}`, `POST /api/usuarios`, `PUT /api/usuarios/{id}`, `DELETE /api/usuarios/{id}`
 - `GET /api/usuarios/me`, `PUT /api/usuarios/me`
 - `GET /api/ciclos-lectivos`, `POST /api/ciclos-lectivos`, `PUT /api/ciclos-lectivos/{id}`
 - `GET /api/matriculas`, `PUT /api/matriculas/{id}`, `PATCH /api/matriculas/{id}`, `POST /api/matriculas/{id}/cuotas`
+- `GET /api/cuotas`, `PATCH /api/cuotas/{id}/anular`
 
-### Endpoints faltantes (55) por módulo
+### Endpoints faltantes (53) por módulo
 - **alumnos (7):** `GET /api/alumnos`, `GET /api/alumnos/{id}`, `POST /api/alumnos`, `PUT /api/alumnos/{id}`, `DELETE /api/alumnos/{id}`, `GET /api/alumnos/{id}/situacion-academica`, `GET /api/alumnos/{id}/situacion-administrativa`
 - **asignaciones (3):** `GET /api/asignaciones`, `POST /api/asignaciones`, `DELETE /api/asignaciones/{id}`
 - **asistencias (2):** `GET /api/asistencias`, `POST /api/asistencias/lote`
 - **calificaciones (2):** `GET /api/calificaciones`, `POST /api/calificaciones`
 - **carreras (7):** `GET /api/carreras`, `GET /api/carreras/{id}`, `POST /api/carreras`, `PUT /api/carreras/{id}`, `DELETE /api/carreras/{id}`, `GET /api/carreras/{id}/planes`, `GET /api/carreras/{id}/cursos`
-- **cuotas (2):** `GET /api/cuotas`, `PATCH /api/cuotas/{id}/anular`
 - **cursos (3):** `GET /api/cursos`, `POST /api/cursos`, `PUT /api/cursos/{id}`
 - **declaraciones-juradas (2):** `GET /api/declaraciones-juradas`, `POST /api/declaraciones-juradas`
 - **docentes (4):** `GET /api/docentes`, `POST /api/docentes`, `PUT /api/docentes/{id}`, `DELETE /api/docentes/{id}`
@@ -64,7 +64,7 @@
 2. **Inscripción Única por Ciclo (RN02 - RF22):** Un alumno solo puede registrar una inscripción activa por ciclo lectivo. *Estado: Parcial (restringido en BD por UK; falta validación amigable en Service).*
 3. **Generación de 12 Cuotas y 3 Seguros (RN18 - RF28, RF46):** Generación automática de 12 cuotas mensuales regulares y 3 seguros cuatrimestrales por matrícula activa. *Estado: Hecho en `feature/back-matriculas` (idempotente, 409 si ya existen o la matrícula no está ACTIVA).*
 4. **Pago Completo de Cuota (RN09 - RF32):** Rechazar pagos parciales; el importe debe cancelar la cuota completa y pasar su estado a PAGADA. *Estado: Pendiente.*
-5. **Marcado de Cuotas Vencidas (RN07 - RF30):** Marcar cuotas impagas como VENCIDAS al superar la fecha límite. *Estado: Pendiente (requiere scheduled task o cálculo dinámico).*
+5. **Marcado de Cuotas Vencidas (RN07 - RF30):** Marcar cuotas impagas como VENCIDAS al superar la fecha límite. *Estado: Parcial (el response de cuotas ya expone VENCIDA de forma dinámica según la fecha; falta la tarea programada que persista el cambio en `feature/back-cuotas-vencidas`).*
 6. **Calificaciones 1 a 10 con Aprobado >= 4 (RN14, RN21 - RF38, RF40):** Restricción de escala y condición de aprobación. *Estado: Parcial (CHECK 1-10 en BD; falta regla de aprobación en Service).*
 7. **Carga Exclusiva por Docente Asignado (RN11, RN12 - RF36, RF38, RF41):** Solo el docente vinculado a la cátedra (`curso_materia`) puede registrar notas y asistencia. *Estado: Pendiente.*
 8. **Permisos y Control de Acceso por Rol (RN17 - RF05):** Respuestas 401 y 403 estandarizadas en ProblemDetail. *Estado: Hecho en SecurityConfig y Usuarios; Pendiente de extender a nuevos controllers.*
@@ -119,7 +119,7 @@ Registro de criterios que el análisis no define. Se implementaron como están d
    - `feature/back-inscripciones`: Controller y Service para `/api/inscripciones` con validación de cupo (RN03) e inscripción única (RN02).
 4. **Fase 3 - Aranceles y Pagos (Depende de Fase 1 y 2):**
    - `feature/back-matriculas` (hecha): `/api/matriculas`, generación de 12+3 cuotas (RN18) y `estadoPago` calculado (4b).
-   - `feature/back-cuotas` (en curso): `/api/cuotas`, listado enriquecido y anulación de cuotas.
+   - `feature/back-cuotas` (hecha): `/api/cuotas`, listado enriquecido con `idAlumno`/`alumnoNombre`/`fechaPago` y anulación de cuotas (409 si está pagada).
    - `feature/back-pagos` (Paralelo): `/api/pagos`, validación de pago completo (RN09) y generación de comprobante (4d).
 5. **Fase 4 - Académico (Depende de Fase 1 y 2, en PARALELO):**
    - `feature/back-asistencias`: `/api/asistencias`, control de docente asignado (RN12).
