@@ -4,7 +4,9 @@
 
 ## 1. Cómo Usar Este Documento
 
-Cada integrante toma un módulo según el orden de dependencias, crea su rama de trabajo y le pasa a su agente la siguiente instrucción:
+Cada integrante toma un módulo según el orden de dependencias y crea su rama de trabajo. **Cada módulo ya tiene un prompt completo en [docs/backend/prompts/](prompts/) (índice y tabla de olas en su [README](prompts/README.md)): alcanza con pegar el contenido del prompt del módulo en una sesión nueva y el agente hace el resto.** Los prompts dedicados se mantienen a mano y los CRUD se generan con `tools/prompts-modulos.py`.
+
+Si preferís armar el prompt a mano, la instrucción clásica sigue siendo:
 
 > *"Implementá el módulo `<NOMBRE>` siguiendo docs/backend/guia-de-modulos.md (secciones 2, 3 y la ficha del módulo). Rama `feature/back-<modulo>`. Sin push ni merge."*
 

@@ -51,8 +51,9 @@ JOIN materia r ON r.nombre = v.requerida
 WHERE p.nombre = 'Plan 2024';
 
 -- Ciclo lectivo, docentes y alumnos (RF06, RF10, RF20)
-INSERT INTO ciclo_lectivo (anio, fecha_inicio, fecha_fin)
-VALUES (2026, '2026-03-02', '2026-12-18');
+INSERT INTO ciclo_lectivo (anio, nombre, estado, fecha_inicio, fecha_fin)
+VALUES (2026, 'Ciclo Lectivo 2026', 'ACTIVO', '2026-03-02', '2026-12-18'),
+       (2027, 'Ciclo Lectivo 2027', 'PLANIFICADO', '2027-03-01', '2027-12-17');
 
 INSERT INTO docente (dni, apellido, nombre, telefono, email, titulo, id_estado_persona)
 SELECT v.dni, v.apellido, v.nombre, v.tel, v.email, v.titulo, e.id_estado_persona

@@ -22,6 +22,12 @@ public class CicloLectivo {
     @Column(name = "anio", nullable = false)
     private Integer anio;
 
+    @Column(name = "nombre", nullable = false, length = 60)
+    private String nombre;
+
+    @Column(name = "estado", nullable = false, length = 15)
+    private String estado;
+
     @Column(name = "fecha_inicio", nullable = false)
     private LocalDate fechaInicio;
 

@@ -39,6 +39,7 @@
 | Documento | Para qué sirve |
 | :--- | :--- |
 | [backend/guia-de-modulos.md](backend/guia-de-modulos.md) | Guía de módulos del backend: arquitectura en capas, entidades JPA, servicios, reglas de negocio, orden por olas y fichas técnicas por módulo. |
+| [backend/prompts/](backend/prompts/) | Prompts listos por módulo del backend (dedicados y generados con `tools/prompts-modulos.py`): contexto, rama, endpoints del contrato y reglas por módulo. |
 
 ### Referencias
 | Documento | Para qué sirve |

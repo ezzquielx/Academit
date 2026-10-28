@@ -13,7 +13,7 @@
 ## 2. Backend
 | [ ] | Tarea | Depende de | Dueño | Referencia |
 | :---: | :--- | :--- | :--- | :--- |
-| [ ] | Módulo Ciclos Lectivos (3 de 3 endpoints pendientes) | `auth`, `usuarios` | Alfredo | [Ficha](backend/guia-de-modulos.md#54-módulo-ciclos-lectivos-ciclos-lectivos) |
+| [x] | Módulo Ciclos Lectivos (3 de 3 endpoints pendientes) | `auth`, `usuarios` | Alfredo | [Ficha](backend/guia-de-modulos.md#54-módulo-ciclos-lectivos-ciclos-lectivos) |
 | [ ] | Módulo Carreras (7 de 7 endpoints pendientes) | `auth`, `usuarios` | Alfredo | [Ficha](backend/guia-de-modulos.md#53-módulo-carreras-carreras) |
 | [ ] | Módulo Planes de Estudio (2 de 2 endpoints pendientes) | `carreras` | Alfredo | [Ficha](backend/guia-de-modulos.md#56-módulo-planes-de-estudio-planes-estudio) |
 | [ ] | Módulo Materias (3 de 3 endpoints pendientes) | `planes-estudio` | Alfredo | [Ficha](backend/guia-de-modulos.md#55-módulo-materias-materias) |

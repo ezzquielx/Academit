@@ -172,10 +172,13 @@ CREATE TABLE usuario (
 CREATE TABLE ciclo_lectivo (
     id_ciclo     INTEGER GENERATED ALWAYS AS IDENTITY,
     anio         INTEGER NOT NULL,
+    nombre       VARCHAR(60) NOT NULL,
+    estado       VARCHAR(15) NOT NULL DEFAULT 'PLANIFICADO',
     fecha_inicio DATE    NOT NULL,
     fecha_fin    DATE    NOT NULL,
     CONSTRAINT pk_ciclo_lectivo PRIMARY KEY (id_ciclo),
     CONSTRAINT uk_ciclo_anio UNIQUE (anio),
+    CONSTRAINT ck_ciclo_estado CHECK (estado IN ('ACTIVO', 'CERRADO', 'PLANIFICADO')),
     CONSTRAINT ck_ciclo_fechas CHECK (fecha_fin > fecha_inicio)
 );
 
