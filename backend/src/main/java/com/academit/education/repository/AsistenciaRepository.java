@@ -10,6 +10,8 @@ public interface AsistenciaRepository extends JpaRepository<Asistencia, Integer>
 
     List<Asistencia> findByAlumnoIdAndCursoId(Integer idAlumno, Integer idCurso);
 
+    List<Asistencia> findByAlumnoId(Integer idAlumno);
+
     boolean existsByAlumnoIdAndCursoIdAndFecha(Integer idAlumno, Integer idCurso, LocalDate fecha);
 
     long countByAlumnoIdAndCursoIdAndEstadoNombre(Integer idAlumno, Integer idCurso, String estado);
