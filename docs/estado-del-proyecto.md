@@ -45,7 +45,6 @@
 - **cuotas (2):** `GET /api/cuotas`, `PATCH /api/cuotas/{id}/anular`
 - **cursos (3):** `GET /api/cursos`, `POST /api/cursos`, `PUT /api/cursos/{id}`
 - **declaraciones-juradas (2):** `GET /api/declaraciones-juradas`, `POST /api/declaraciones-juradas`
-- **docentes (4):** `GET /api/docentes`, `POST /api/docentes`, `PUT /api/docentes/{id}`, `DELETE /api/docentes/{id}`
 - **documentacion (2):** `GET /api/documentacion`, `PUT /api/documentacion/{id}`
 - **evaluaciones (3):** `GET /api/evaluaciones`, `POST /api/evaluaciones`, `POST /api/evaluaciones/{idEvaluacion}/calificaciones`
 - **inscripciones (3):** `GET /api/inscripciones`, `POST /api/inscripciones`, `DELETE /api/inscripciones/{id}`
