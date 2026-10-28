@@ -18,10 +18,14 @@
 | [ ] | Módulo Planes de Estudio (2 de 2 endpoints pendientes) | `carreras` | Alfredo | [Ficha](backend/guia-de-modulos.md#56-módulo-planes-de-estudio-planes-estudio) |
 | [ ] | Módulo Materias (3 de 3 endpoints pendientes) | `planes-estudio` | Alfredo | [Ficha](backend/guia-de-modulos.md#55-módulo-materias-materias) |
 | [ ] | Módulo Alumnos (7 de 7 endpoints pendientes) | `ciclos-lectivos`, `planes-estudio` | Santiago | [Ficha](backend/guia-de-modulos.md#57-módulo-alumnos-alumnos) |
+| [x] | Módulo Docentes (4 de 4 endpoints listos) | `auth`, `usuarios` | Santiago | [Ficha](backend/guia-de-modulos.md#58-módulo-docentes-docentes) |
+| [x] | Módulo Alumnos (7 de 7 endpoints listos) | `ciclos-lectivos`, `planes-estudio` | Santiago | [Ficha](backend/guia-de-modulos.md#57-módulo-alumnos-alumnos) |
 | [ ] | Módulo Docentes (4 de 4 endpoints pendientes) | `auth`, `usuarios` | Santiago | [Ficha](backend/guia-de-modulos.md#58-módulo-docentes-docentes) |
 | [ ] | Módulo Cursos (3 de 3 endpoints pendientes) | `ciclos-lectivos`, `carreras` | Alfredo | [Ficha](backend/guia-de-modulos.md#510-módulo-cursos-comisiones-cursos) |
 | [ ] | Módulo Asignaciones Docentes (3 de 3 endpoints pendientes) | `cursos`, `materias`, `docentes` | Santiago | [Ficha](backend/guia-de-modulos.md#59-módulo-asignaciones-docentes-asignaciones) |
 | [x] | Módulo Inscripciones a Cursos (3 de 3 endpoints listos) | `alumnos`, `cursos`, `ciclos-lectivos` | Santiago | [Ficha](backend/guia-de-modulos.md#511-módulo-inscripciones-a-cursos-inscripciones) |
+| [x] | Módulo Asignaciones Docentes (3 de 3 endpoints listos) | `cursos`, `materias`, `docentes` | Santiago | [Ficha](backend/guia-de-modulos.md#59-módulo-asignaciones-docentes-asignaciones) |
+| [ ] | Módulo Inscripciones a Cursos (3 de 3 endpoints pendientes) | `alumnos`, `cursos`, `ciclos-lectivos` | Santiago | [Ficha](backend/guia-de-modulos.md#511-módulo-inscripciones-a-cursos-inscripciones) |
 | [ ] | Módulo Matrículas Anuales (4 de 4 endpoints pendientes) | `alumnos`, `ciclos-lectivos` | Matias | [Ficha](backend/guia-de-modulos.md#513-módulo-matrículas-anuales-matriculas) |
 | [ ] | Módulo Cuotas y Aranceles (2 de 2 endpoints pendientes) | `matriculas` | Matias | [Ficha](backend/guia-de-modulos.md#512-módulo-cuotas-y-aranceles-cuotas) |
 | [ ] | Módulo Pagos y Comprobantes (2 de 2 endpoints pendientes) | `matriculas`, `cuotas`, `alumnos` | Matias | [Ficha](backend/guia-de-modulos.md#514-módulo-pagos-y-comprobantes-pagos) |
