@@ -1,6 +1,6 @@
 # Estado Real del Proyecto y Plan de Distribución - Academit
 
-> **Fecha de relevamiento:** Octubre 2026 | **Entidades:** 35 | **Repositories:** 32 | **Tests backend:** 46/46 OK.
+> **Fecha de relevamiento:** Octubre 2026 | **Entidades:** 35 | **Repositories:** 32 | **Tests backend:** 63/63 OK.
 
 ## 1. Estado por Módulo
 
@@ -8,13 +8,13 @@
 | --- | --- | --- | --- | --- | --- |
 | **Base de datos** | 25 tablas alineadas | N/A | N/A | Scripts SQL verificados | **Hecho** |
 | **Entidades JPA** | 35 entidades, 32 repositorios | N/A | N/A | Compilación JPA OK | **Hecho** |
-| **Seguridad y Usuarios** | `Usuario`, `Rol` / Repos | `AuthService`, `UsuarioService` | `Auth`, `Perfil`, `Usuario` | 46 tests unit/integ | **Hecho** |
+| **Seguridad y Usuarios** | `Usuario`, `Rol` / Repos | `AuthService`, `UsuarioService` | `Auth`, `Perfil`, `Usuario` | 63 tests unit/integ | **Hecho** |
 | **Alumnos** | `Alumno`, `EstadoPersona` / Repos | Pendiente | Pendiente | Pendiente | **Parcial** |
 | **Docentes** | `Docente` / `DocenteRepository` | Pendiente | Pendiente | Pendiente | **Parcial** |
 | **Carreras** | `Carrera` / `CarreraRepository` | Pendiente | Pendiente | Pendiente | **Parcial** |
 | **Materias y Planes** | `Materia`, `PlanEstudio`, `Correlativa` | Pendiente | Pendiente | Pendiente | **Parcial** |
 | **Cursos y Ciclos** | `Curso`, `CicloLectivo` / Repos | `CicloLectivoService` hecho; Cursos pendiente | `CicloLectivoController` hecho; Cursos pendiente | 15 tests del módulo ciclos | **Parcial** |
-| **Asignaciones** | `CursoMateria` / Repo | Pendiente | Pendiente | Pendiente | **Parcial** |
+| **Asignaciones** | `CursoMateria` / Repo | `AsignacionService` hecho | `AsignacionController` hecho | 17 tests del módulo asignaciones | **Hecho** |
 | **Inscripciones** | `Inscripcion` / Repo | Pendiente | Pendiente | Pendiente | **Parcial** |
 | **Matrículas y Cuotas** | `Matricula`, `Cuota`, `EstadoCuota` | Pendiente | Pendiente | Pendiente | **Parcial** |
 | **Pagos** | `Pago`, `MedioPago` / Repos | Pendiente | Pendiente | Pendiente | **Parcial** |
@@ -29,17 +29,16 @@
 ## 2. Endpoints del Contrato vs Implementados
 
 - **Total en contrato frontend:** 71 endpoints (68 de negocio + 3 de autenticación inicial).
-- **Implementados en backend:** 14 endpoints (12 del contrato + `GET /api/usuarios/{id}` y `GET /api/auth/me`). Cobertura: **16.9 %**.
-- **Pendientes de implementar:** 59 endpoints.
+- **Implementados en backend:** 18 endpoints (15 del contrato + `GET /api/usuarios/{id}` y `GET /api/auth/me`). Cobertura: **21.1 %**.
+- **Pendientes de implementar:** 56 endpoints.
 
-### Endpoints implementados (12)
+### Endpoints implementados (15)
 - `POST /api/auth/login`, `GET /api/auth/me`, `POST /api/auth/logout`, `POST /api/auth/cambiar-password`
 - `GET /api/usuarios`, `GET /api/usuarios/{id}`, `POST /api/usuarios`, `PUT /api/usuarios/{id}`, `DELETE /api/usuarios/{id}`
 - `GET /api/usuarios/me`, `PUT /api/usuarios/me`
 
-### Endpoints faltantes (59) por módulo
+### Endpoints faltantes (56) por módulo
 - **alumnos (7):** `GET /api/alumnos`, `GET /api/alumnos/{id}`, `POST /api/alumnos`, `PUT /api/alumnos/{id}`, `DELETE /api/alumnos/{id}`, `GET /api/alumnos/{id}/situacion-academica`, `GET /api/alumnos/{id}/situacion-administrativa`
-- **asignaciones (3):** `GET /api/asignaciones`, `POST /api/asignaciones`, `DELETE /api/asignaciones/{id}`
 - **asistencias (2):** `GET /api/asistencias`, `POST /api/asistencias/lote`
 - **calificaciones (2):** `GET /api/calificaciones`, `POST /api/calificaciones`
 - **carreras (7):** `GET /api/carreras`, `GET /api/carreras/{id}`, `POST /api/carreras`, `PUT /api/carreras/{id}`, `DELETE /api/carreras/{id}`, `GET /api/carreras/{id}/planes`, `GET /api/carreras/{id}/cursos`
