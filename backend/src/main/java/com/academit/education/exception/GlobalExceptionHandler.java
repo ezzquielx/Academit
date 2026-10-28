@@ -7,12 +7,15 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +59,31 @@ public class GlobalExceptionHandler {
                 errors
         );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(pd);
+    }
+
+    /** Errores de parseo o de tipo en la solicitud: siempre 400 (RFC 7807). */
+    @ExceptionHandler({HttpMessageNotReadableException.class,
+            MethodArgumentTypeMismatchException.class,
+            ServletRequestBindingException.class})
+    public ResponseEntity<ProblemDetail> handleBadRequest(Exception ex) {
+        ProblemDetail pd = buildProblemDetail(
+                HttpStatus.BAD_REQUEST,
+                "Solicitud inválida",
+                "La solicitud contiene datos inválidos o mal formateados",
+                List.of()
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(pd);
+    }
+
+    @ExceptionHandler(ConflictException.class)
+    public ResponseEntity<ProblemDetail> handleConflictException(ConflictException ex) {
+        ProblemDetail pd = buildProblemDetail(
+                HttpStatus.CONFLICT,
+                "Conflicto",
+                ex.getMessage(),
+                List.of()
+        );
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(pd);
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
@@ -115,10 +143,20 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ProblemDetail> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
+        String detalle = ex.getMostSpecificCause() != null ? ex.getMostSpecificCause().getMessage() : "";
         String msg = "Violación de restricción de integridad de datos";
-        if (ex.getMessage() != null && ex.getMessage().contains("duplicate key")) {
-            msg = "El registro ya existe o viola una restricción de unicidad";
+
+        // Restriccion unica violada (RN05, RN08): es un conflicto, no un error de formato.
+        if (detalle.contains("duplicate key") || detalle.contains("violates unique constraint")) {
+            ProblemDetail pd = buildProblemDetail(
+                    HttpStatus.CONFLICT,
+                    "Conflicto",
+                    "El registro ya existe o viola una restricción de unicidad",
+                    List.of()
+            );
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(pd);
         }
+
         ProblemDetail pd = buildProblemDetail(
                 HttpStatus.BAD_REQUEST,
                 "Violación de integridad",
