@@ -1,6 +1,7 @@
 # Estado Real del Proyecto y Plan de Distribución - Academit
 
 > **Fecha de relevamiento:** Octubre 2026 | **Entidades:** 35 | **Repositories:** 32 | **Tests backend:** 63/63 OK.
+> **Fecha de relevamiento:** Octubre 2026 | **Entidades:** 35 | **Repositories:** 32 | **Tests backend:** 69/69 OK.
 
 ## 1. Estado por Módulo
 
@@ -10,6 +11,8 @@
 | **Entidades JPA** | 35 entidades, 32 repositorios | N/A | N/A | Compilación JPA OK | **Hecho** |
 | **Seguridad y Usuarios** | `Usuario`, `Rol` / Repos | `AuthService`, `UsuarioService` | `Auth`, `Perfil`, `Usuario` | 63 tests unit/integ | **Hecho** |
 | **Alumnos** | `Alumno`, `EstadoPersona` / Repos | Pendiente | Pendiente | Pendiente | **Parcial** |
+| **Seguridad y Usuarios** | `Usuario`, `Rol` / Repos | `AuthService`, `UsuarioService` | `Auth`, `Perfil`, `Usuario` | 69 tests unit/integ | **Hecho** |
+| **Alumnos** | `Alumno`, `EstadoPersona` / Repos | `AlumnoService` hecho | `AlumnoController` hecho | 23 tests del módulo alumnos | **Hecho** |
 | **Docentes** | `Docente` / `DocenteRepository` | Pendiente | Pendiente | Pendiente | **Parcial** |
 | **Carreras** | `Carrera` / `CarreraRepository` | Pendiente | Pendiente | Pendiente | **Parcial** |
 | **Materias y Planes** | `Materia`, `PlanEstudio`, `Correlativa` | Pendiente | Pendiente | Pendiente | **Parcial** |
@@ -33,19 +36,24 @@
 - **Pendientes de implementar:** 56 endpoints.
 
 ### Endpoints implementados (15)
+- **Implementados en backend:** 21 endpoints (19 del contrato + `GET /api/usuarios/{id}` y `GET /api/auth/me`). Cobertura: **26.8 %**.
+- **Pendientes de implementar:** 52 endpoints.
+
+### Endpoints implementados (19)
 - `POST /api/auth/login`, `GET /api/auth/me`, `POST /api/auth/logout`, `POST /api/auth/cambiar-password`
 - `GET /api/usuarios`, `GET /api/usuarios/{id}`, `POST /api/usuarios`, `PUT /api/usuarios/{id}`, `DELETE /api/usuarios/{id}`
 - `GET /api/usuarios/me`, `PUT /api/usuarios/me`
 
 ### Endpoints faltantes (56) por módulo
 - **alumnos (7):** `GET /api/alumnos`, `GET /api/alumnos/{id}`, `POST /api/alumnos`, `PUT /api/alumnos/{id}`, `DELETE /api/alumnos/{id}`, `GET /api/alumnos/{id}/situacion-academica`, `GET /api/alumnos/{id}/situacion-administrativa`
+### Endpoints faltantes (52) por módulo
+- **asignaciones (3):** `GET /api/asignaciones`, `POST /api/asignaciones`, `DELETE /api/asignaciones/{id}`
 - **asistencias (2):** `GET /api/asistencias`, `POST /api/asistencias/lote`
 - **calificaciones (2):** `GET /api/calificaciones`, `POST /api/calificaciones`
 - **carreras (7):** `GET /api/carreras`, `GET /api/carreras/{id}`, `POST /api/carreras`, `PUT /api/carreras/{id}`, `DELETE /api/carreras/{id}`, `GET /api/carreras/{id}/planes`, `GET /api/carreras/{id}/cursos`
 - **cuotas (2):** `GET /api/cuotas`, `PATCH /api/cuotas/{id}/anular`
 - **cursos (3):** `GET /api/cursos`, `POST /api/cursos`, `PUT /api/cursos/{id}`
 - **declaraciones-juradas (2):** `GET /api/declaraciones-juradas`, `POST /api/declaraciones-juradas`
-- **docentes (4):** `GET /api/docentes`, `POST /api/docentes`, `PUT /api/docentes/{id}`, `DELETE /api/docentes/{id}`
 - **documentacion (2):** `GET /api/documentacion`, `PUT /api/documentacion/{id}`
 - **evaluaciones (3):** `GET /api/evaluaciones`, `POST /api/evaluaciones`, `POST /api/evaluaciones/{idEvaluacion}/calificaciones`
 - **inscripciones (3):** `GET /api/inscripciones`, `POST /api/inscripciones`, `DELETE /api/inscripciones/{id}`
