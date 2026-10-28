@@ -1,6 +1,6 @@
 # Estado Real del Proyecto y Plan de Distribución - Academit
 
-> **Fecha de relevamiento:** Octubre 2026 | **Entidades:** 35 | **Repositories:** 32 | **Tests backend:** 148/148 OK.
+> **Fecha de relevamiento:** Octubre 2026 | **Entidades:** 35 | **Repositories:** 32 | **Tests backend:** 176/176 OK.
 
 ## 1. Estado por Módulo
 
@@ -22,17 +22,17 @@
 | **Asistencia** | `Asistencia`, `EstadoAsistencia` | Pendiente | Pendiente | Pendiente | **Parcial** |
 | **Mesas de Examen** | `MesaExamen`, `InscripcionMesa` | Pendiente | Pendiente | Pendiente | **Parcial** |
 | **Declaración Jurada** | `DeclaracionJurada`, `DeclaracionMateria` | Pendiente | Pendiente | Pendiente | **Parcial** |
-| **Solicitudes** | `Solicitud`, `TipoSolicitud` | Pendiente | Pendiente | Pendiente | **Parcial** |
+| **Solicitudes** | `Solicitud`, `TipoSolicitud` | `SolicitudService` hecho | `SolicitudController` hecho | 28 tests de solicitudes | **Hecho** |
 | **Documentación** | `Documentacion`, `TipoDocumento` | `DocumentacionService` hecho | `DocumentacionController` hecho | 21 tests de documentación | **Hecho** |
 | **Cambio de Carrera** | Gestionado vía `Solicitud` + `Plan` | Pendiente | Pendiente | Pendiente | **Pendiente** |
 
 ## 2. Endpoints del Contrato vs Implementados
 
 - **Total en contrato frontend:** 71 endpoints (68 de negocio + 3 de autenticación inicial).
-- **Implementados en backend:** 24 endpoints (22 del contrato + `GET /api/usuarios/{id}` y `GET /api/auth/me`). Cobertura: **31.0 %**.
-- **Pendientes de implementar:** 49 endpoints.
+- **Implementados en backend:** 27 endpoints (25 del contrato + `GET /api/usuarios/{id}` y `GET /api/auth/me`). Cobertura: **35.2 %**.
+- **Pendientes de implementar:** 47 endpoints.
 
-### Endpoints implementados (22 del contrato)
+### Endpoints implementados (25 del contrato)
 - `POST /api/auth/login`, `GET /api/auth/me`, `POST /api/auth/logout`, `POST /api/auth/cambiar-password`
 - `GET /api/usuarios`, `GET /api/usuarios/{id}`, `POST /api/usuarios`, `PUT /api/usuarios/{id}`, `DELETE /api/usuarios/{id}`
 - `GET /api/usuarios/me`, `PUT /api/usuarios/me`
@@ -41,8 +41,9 @@
 - `GET /api/cuotas`, `PATCH /api/cuotas/{id}/anular`
 - `GET /api/pagos`, `POST /api/pagos`
 - `GET /api/documentacion`, `PUT /api/documentacion/{id}`
+- `GET /api/solicitudes`, `POST /api/solicitudes`, `PATCH /api/solicitudes/{id}`
 
-### Endpoints faltantes (49) por módulo
+### Endpoints faltantes (47) por módulo
 - **alumnos (7):** `GET /api/alumnos`, `GET /api/alumnos/{id}`, `POST /api/alumnos`, `PUT /api/alumnos/{id}`, `DELETE /api/alumnos/{id}`, `GET /api/alumnos/{id}/situacion-academica`, `GET /api/alumnos/{id}/situacion-administrativa`
 - **asignaciones (3):** `GET /api/asignaciones`, `POST /api/asignaciones`, `DELETE /api/asignaciones/{id}`
 - **asistencias (2):** `GET /api/asistencias`, `POST /api/asistencias/lote`
@@ -56,7 +57,6 @@
 - **materias (3):** `GET /api/materias`, `POST /api/materias`, `PUT /api/materias/{id}`
 - **mesas-examen (5):** `GET /api/mesas-examen`, `POST /api/mesas-examen/{id}/inscripciones`, `DELETE /api/mesas-examen/{id}/inscripciones/{idInscripcion}`, `POST /api/mesas-examen`, `PUT /api/mesas-examen/{id}`
 - **planes-estudio (2):** `GET /api/planes-estudio`, `GET /api/planes-estudio/{id}/materias`
-- **solicitudes (3):** `GET /api/solicitudes`, `POST /api/solicitudes`, `PATCH /api/solicitudes/{id}`
 
 ## 3. Reglas de Negocio en Backend y su Estado
 
@@ -100,6 +100,8 @@ Registro de criterios que el análisis no define. Se implementaron como están d
 - **Pagos - estado del pago:** la tabla `pago` no tiene columna `estado`; todo pago registrado queda `ACREDITADO` en el response (`PENDIENTE`/`RECHAZADO` quedan reservados para un flujo futuro).
 - **Cuotas vencidas - verificación de la consulta (RF30):** no hay PostgreSQL local accesible con las credenciales del proyecto (`academit`/`academit` rechazada por el servidor del puerto 5432), por lo que la consulta de marcado se probó con mocks y con un test sobre la semántica del `@Query` en lugar de un `@DataJpaTest` contra la base.
 - **Documentación - fecha de entrega:** `fechaEntrega` acompaña al estado `ENTREGADO` (si viene vacía se registra hoy con el `Clock` institucional) y se limpia al pasar a `PENDIENTE` o `RECHAZADO`; el contrato no define el comportamiento y el mock del frontend solo fusiona lo que llega.
+- **Solicitudes - resolución:** el contrato solo exige `estado` en `SolicitudResolverDTO`; `fechaResolucion` la pone el backend (hoy) y `observacion` se persiste en `solicitud.respuesta` (con texto por defecto "Solicitud aprobada por el área administrativa" / "Solicitud rechazada" si no viene). Re-resolver una solicitud ya resuelta está permitido: el contrato no declara 409 en PATCH.
+- **Solicitudes - efecto de un CAMBIO_CARRERA aprobado:** el análisis no define si al aprobar la solicitud se mueve `alumno.id_plan`; queda como decisión abierta y por ahora solo cambia el estado de la solicitud.
 
 ### Estado de Desajustes de Base de Datos (`docs/estado/desajustes-db.md`)
 
@@ -132,7 +134,7 @@ Registro de criterios que el análisis no define. Se implementaron como están d
    - `feature/back-declaraciones-juradas`: `/api/declaraciones-juradas` con verificación de correlativas.
 6. **Fase 5 - Trámites y Mantenimiento (PARALELO):**
    - `feature/back-documentacion` (hecha): `/api/documentacion` (consulta y PUT del legajo).
-   - `feature/back-solicitudes`: `/api/solicitudes`.
+   - `feature/back-solicitudes` (hecha): `/api/solicitudes` (consulta, alta de alumno y resolución administrativa).
    - `feature/back-cuotas-vencidas` (hecha): tarea programada para marcado de cuotas vencidas (RN07, RF30).
 
 ## 6. Checklist de Integración Frontend vs Backend
