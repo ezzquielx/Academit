@@ -8,4 +8,6 @@ import java.util.List;
 public interface EvaluacionRepository extends JpaRepository<Evaluacion, Integer> {
 
     List<Evaluacion> findByCursoMateriaId(Integer idCursoMateria);
+
+    boolean existsByCursoMateriaId(Integer idCursoMateria);
 }
