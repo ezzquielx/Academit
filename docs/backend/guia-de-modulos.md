@@ -208,17 +208,14 @@ Los módulos de una misma ola se pueden desarrollar en paralelo:
 - **Preguntas abiertas:** Tarea programada o cálculo dinámico para cuotas vencidas.
 
 ### 5.13 Módulo: Matrículas Anuales (`matriculas`)
-- **Estado actual:** Parcial | **Rama sugerida:** `feature/back-matriculas` | **Ola:** 5
+- **Estado actual:** Hecho | **Rama sugerida:** `feature/back-matriculas` | **Ola:** 5
 - **Entidades y tablas:** `Matricula` (`matricula`), `EstadoMatriculaEnum`
 - **Dependencias:** `alumnos`, `ciclos-lectivos`
 - **Campos calculados:** `alumnoNombre`, `carreraNombre`, `cicloLectivoNombre`, `estadoPago`
 - **Reglas de negocio aplicables:** RF25-RF27, RN05, RN18 (1 por alumno/ciclo, estadoPago calculado, anulación de cuotas pendientes)
-- **Endpoints pendientes (4 de 4 pendientes; 0 listos):**
-  - `GET /api/matriculas` [ADMINISTRADOR, ADMINISTRATIVO]
-  - `PUT /api/matriculas/{id}` [ADMINISTRATIVO, ADMINISTRADOR]
-  - `PATCH /api/matriculas/{id}` [ALUMNO, ADMINISTRATIVO, ADMINISTRADOR]
-  - `POST /api/matriculas/{id}/cuotas` [ADMINISTRATIVO, ADMINISTRADOR]
-- **Preguntas abiertas:** Regeneración de cuotas si la matrícula se reactiva.
+- **Endpoints pendientes (0 de 4 pendientes; 4 listos):**
+  - *Todos los endpoints implementados.*
+- **Preguntas abiertas:** Regeneración de cuotas si la matrícula se reactiva; importes y vencimientos de las cuotas generadas (ver decisiones abiertas en `docs/estado-del-proyecto.md`).
 
 ### 5.14 Módulo: Pagos y Comprobantes (`pagos`)
 - **Estado actual:** Parcial | **Rama sugerida:** `feature/back-pagos` | **Ola:** 6
