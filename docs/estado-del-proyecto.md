@@ -1,6 +1,6 @@
 # Estado Real del Proyecto y Plan de Distribución - Academit
 
-> **Fecha de relevamiento:** Octubre 2026 | **Entidades:** 35 | **Repositories:** 32 | **Tests backend:** 120/120 OK.
+> **Fecha de relevamiento:** Octubre 2026 | **Entidades:** 35 | **Repositories:** 32 | **Tests backend:** 127/127 OK.
 
 ## 1. Estado por Módulo
 
@@ -64,10 +64,10 @@
 2. **Inscripción Única por Ciclo (RN02 - RF22):** Un alumno solo puede registrar una inscripción activa por ciclo lectivo. *Estado: Parcial (restringido en BD por UK; falta validación amigable en Service).*
 3. **Generación de 12 Cuotas y 3 Seguros (RN18 - RF28, RF46):** Generación automática de 12 cuotas mensuales regulares y 3 seguros cuatrimestrales por matrícula activa. *Estado: Hecho en `feature/back-matriculas` (idempotente, 409 si ya existen o la matrícula no está ACTIVA).*
 4. **Pago Completo de Cuota (RN09 - RF32):** Rechazar pagos parciales; el importe debe cancelar la cuota completa y pasar su estado a PAGADA. *Estado: Hecho en `feature/back-pagos` (400 si el importe no coincide, la cuota queda PAGADA en la misma transacción).*
-5. **Marcado de Cuotas Vencidas (RN07 - RF30):** Marcar cuotas impagas como VENCIDAS al superar la fecha límite. *Estado: Parcial (el response de cuotas ya expone VENCIDA de forma dinámica según la fecha; falta la tarea programada que persista el cambio en `feature/back-cuotas-vencidas`).*
+5. **Marcado de Cuotas Vencidas (RN07 - RF30):** Marcar cuotas impagas como VENCIDAS al superar la fecha límite. *Estado: Hecho en `feature/back-cuotas-vencidas` (tarea diaria a las 04:00 con cron/zona configurables, idempotente y transaccional; además las respuestas de cuotas muestran VENCIDA de forma dinámica).*
 6. **Calificaciones 1 a 10 con Aprobado >= 4 (RN14, RN21 - RF38, RF40):** Restricción de escala y condición de aprobación. *Estado: Parcial (CHECK 1-10 en BD; falta regla de aprobación en Service).*
 7. **Carga Exclusiva por Docente Asignado (RN11, RN12 - RF36, RF38, RF41):** Solo el docente vinculado a la cátedra (`curso_materia`) puede registrar notas y asistencia. *Estado: Pendiente.*
-8. **Permisos y Control de Acceso por Rol (RN17 - RF05):** Respuestas 401 y 403 estandarizadas en ProblemDetail. *Estado: Hecho en SecurityConfig y Usuarios; Pendiente de extender a nuevos controllers.*
+8. **Permisos y Control de Acceso por Rol (RN17 - RF05):** Respuestas 401 y 403 estandarizadas en ProblemDetail. *Estado: Hecho en SecurityConfig y Usuarios, y extendido a matrículas, cuotas y pagos; sigue pendiente en los controllers restantes.*
 
 ## 4. Decisiones Tomadas por el Grupo
 
@@ -98,6 +98,7 @@ Registro de criterios que el análisis no define. Se implementaron como están d
 - **Cuotas - campos sin columna en la base:** `concepto`, `mes`, `anio` y la fecha de pago se calculan en el response (`cuota` solo guarda número, tipo, vencimiento e importe) y `tipo` se expone como `MENSUAL` aunque el catálogo de la base guarda `CUOTA_MENSUAL`.
 - **Pagos - medio de pago:** el contrato enumera `TARJETA_CREDITO` y `TARJETA_DEBITO` pero el catálogo de la base guarda `TARJETA` (y el frontend envía `TARJETA`); se aceptan ambos y se resuelve por nombre con ese fallback. `medioPago` opcional: sin valor se registra `EFECTIVO`.
 - **Pagos - estado del pago:** la tabla `pago` no tiene columna `estado`; todo pago registrado queda `ACREDITADO` en el response (`PENDIENTE`/`RECHAZADO` quedan reservados para un flujo futuro).
+- **Cuotas vencidas - verificación de la consulta (RF30):** no hay PostgreSQL local accesible con las credenciales del proyecto (`academit`/`academit` rechazada por el servidor del puerto 5432), por lo que la consulta de marcado se probó con mocks y con un test sobre la semántica del `@Query` en lugar de un `@DataJpaTest` contra la base.
 
 ### Estado de Desajustes de Base de Datos (`docs/estado/desajustes-db.md`)
 
@@ -130,7 +131,7 @@ Registro de criterios que el análisis no define. Se implementaron como están d
    - `feature/back-declaraciones-juradas`: `/api/declaraciones-juradas` con verificación de correlativas.
 6. **Fase 5 - Trámites y Mantenimiento (PARALELO):**
    - `feature/back-solicitudes-documentacion`: `/api/solicitudes` y `/api/documentacion`.
-   - `feature/back-cuotas-vencidas`: tarea programada para marcado de cuotas vencidas (RN07, RF30).
+   - `feature/back-cuotas-vencidas` (hecha): tarea programada para marcado de cuotas vencidas (RN07, RF30).
 
 ## 6. Checklist de Integración Frontend vs Backend
 
