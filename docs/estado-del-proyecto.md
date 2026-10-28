@@ -1,6 +1,6 @@
 # Estado Real del Proyecto y Plan de Distribución - Academit
 
-> **Fecha de relevamiento:** Octubre 2026 | **Entidades:** 35 | **Repositories:** 32 | **Tests backend:** 127/127 OK.
+> **Fecha de relevamiento:** Octubre 2026 | **Entidades:** 35 | **Repositories:** 32 | **Tests backend:** 148/148 OK.
 
 ## 1. Estado por Módulo
 
@@ -23,16 +23,16 @@
 | **Mesas de Examen** | `MesaExamen`, `InscripcionMesa` | Pendiente | Pendiente | Pendiente | **Parcial** |
 | **Declaración Jurada** | `DeclaracionJurada`, `DeclaracionMateria` | Pendiente | Pendiente | Pendiente | **Parcial** |
 | **Solicitudes** | `Solicitud`, `TipoSolicitud` | Pendiente | Pendiente | Pendiente | **Parcial** |
-| **Documentación** | `Documentacion`, `TipoDocumento` | Pendiente | Pendiente | Pendiente | **Parcial** |
+| **Documentación** | `Documentacion`, `TipoDocumento` | `DocumentacionService` hecho | `DocumentacionController` hecho | 21 tests de documentación | **Hecho** |
 | **Cambio de Carrera** | Gestionado vía `Solicitud` + `Plan` | Pendiente | Pendiente | Pendiente | **Pendiente** |
 
 ## 2. Endpoints del Contrato vs Implementados
 
 - **Total en contrato frontend:** 71 endpoints (68 de negocio + 3 de autenticación inicial).
-- **Implementados en backend:** 22 endpoints (20 del contrato + `GET /api/usuarios/{id}` y `GET /api/auth/me`). Cobertura: **28.2 %**.
-- **Pendientes de implementar:** 51 endpoints.
+- **Implementados en backend:** 24 endpoints (22 del contrato + `GET /api/usuarios/{id}` y `GET /api/auth/me`). Cobertura: **31.0 %**.
+- **Pendientes de implementar:** 49 endpoints.
 
-### Endpoints implementados (20 del contrato)
+### Endpoints implementados (22 del contrato)
 - `POST /api/auth/login`, `GET /api/auth/me`, `POST /api/auth/logout`, `POST /api/auth/cambiar-password`
 - `GET /api/usuarios`, `GET /api/usuarios/{id}`, `POST /api/usuarios`, `PUT /api/usuarios/{id}`, `DELETE /api/usuarios/{id}`
 - `GET /api/usuarios/me`, `PUT /api/usuarios/me`
@@ -40,8 +40,9 @@
 - `GET /api/matriculas`, `PUT /api/matriculas/{id}`, `PATCH /api/matriculas/{id}`, `POST /api/matriculas/{id}/cuotas`
 - `GET /api/cuotas`, `PATCH /api/cuotas/{id}/anular`
 - `GET /api/pagos`, `POST /api/pagos`
+- `GET /api/documentacion`, `PUT /api/documentacion/{id}`
 
-### Endpoints faltantes (51) por módulo
+### Endpoints faltantes (49) por módulo
 - **alumnos (7):** `GET /api/alumnos`, `GET /api/alumnos/{id}`, `POST /api/alumnos`, `PUT /api/alumnos/{id}`, `DELETE /api/alumnos/{id}`, `GET /api/alumnos/{id}/situacion-academica`, `GET /api/alumnos/{id}/situacion-administrativa`
 - **asignaciones (3):** `GET /api/asignaciones`, `POST /api/asignaciones`, `DELETE /api/asignaciones/{id}`
 - **asistencias (2):** `GET /api/asistencias`, `POST /api/asistencias/lote`
@@ -50,7 +51,6 @@
 - **cursos (3):** `GET /api/cursos`, `POST /api/cursos`, `PUT /api/cursos/{id}`
 - **declaraciones-juradas (2):** `GET /api/declaraciones-juradas`, `POST /api/declaraciones-juradas`
 - **docentes (4):** `GET /api/docentes`, `POST /api/docentes`, `PUT /api/docentes/{id}`, `DELETE /api/docentes/{id}`
-- **documentacion (2):** `GET /api/documentacion`, `PUT /api/documentacion/{id}`
 - **evaluaciones (3):** `GET /api/evaluaciones`, `POST /api/evaluaciones`, `POST /api/evaluaciones/{idEvaluacion}/calificaciones`
 - **inscripciones (3):** `GET /api/inscripciones`, `POST /api/inscripciones`, `DELETE /api/inscripciones/{id}`
 - **materias (3):** `GET /api/materias`, `POST /api/materias`, `PUT /api/materias/{id}`
@@ -99,6 +99,7 @@ Registro de criterios que el análisis no define. Se implementaron como están d
 - **Pagos - medio de pago:** el contrato enumera `TARJETA_CREDITO` y `TARJETA_DEBITO` pero el catálogo de la base guarda `TARJETA` (y el frontend envía `TARJETA`); se aceptan ambos y se resuelve por nombre con ese fallback. `medioPago` opcional: sin valor se registra `EFECTIVO`.
 - **Pagos - estado del pago:** la tabla `pago` no tiene columna `estado`; todo pago registrado queda `ACREDITADO` en el response (`PENDIENTE`/`RECHAZADO` quedan reservados para un flujo futuro).
 - **Cuotas vencidas - verificación de la consulta (RF30):** no hay PostgreSQL local accesible con las credenciales del proyecto (`academit`/`academit` rechazada por el servidor del puerto 5432), por lo que la consulta de marcado se probó con mocks y con un test sobre la semántica del `@Query` en lugar de un `@DataJpaTest` contra la base.
+- **Documentación - fecha de entrega:** `fechaEntrega` acompaña al estado `ENTREGADO` (si viene vacía se registra hoy con el `Clock` institucional) y se limpia al pasar a `PENDIENTE` o `RECHAZADO`; el contrato no define el comportamiento y el mock del frontend solo fusiona lo que llega.
 
 ### Estado de Desajustes de Base de Datos (`docs/estado/desajustes-db.md`)
 
@@ -130,7 +131,8 @@ Registro de criterios que el análisis no define. Se implementaron como están d
    - `feature/back-mesas-examen`: `/api/mesas-examen` e inscripciones a examen.
    - `feature/back-declaraciones-juradas`: `/api/declaraciones-juradas` con verificación de correlativas.
 6. **Fase 5 - Trámites y Mantenimiento (PARALELO):**
-   - `feature/back-solicitudes-documentacion`: `/api/solicitudes` y `/api/documentacion`.
+   - `feature/back-documentacion` (hecha): `/api/documentacion` (consulta y PUT del legajo).
+   - `feature/back-solicitudes`: `/api/solicitudes`.
    - `feature/back-cuotas-vencidas` (hecha): tarea programada para marcado de cuotas vencidas (RN07, RF30).
 
 ## 6. Checklist de Integración Frontend vs Backend

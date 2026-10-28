@@ -30,7 +30,7 @@
 | [ ] | Módulo Asistencias (2 de 2 endpoints pendientes) | `cursos`, `materias`, `alumnos` | Mateo | [Ficha](backend/guia-de-modulos.md#515-módulo-asistencias-asistencias) |
 | [ ] | Módulo Mesas de Examen (5 de 5 endpoints pendientes) | `materias`, `ciclos-lectivos`, `docentes` | Mateo | [Ficha](backend/guia-de-modulos.md#518-módulo-mesas-de-examen-mesas-examen) |
 | [ ] | Módulo Declaraciones Juradas (2 de 2 endpoints pendientes) | `alumnos`, `ciclos-lectivos`, `materias` | Mateo | [Ficha](backend/guia-de-modulos.md#519-módulo-declaraciones-juradas-declaraciones-juradas) |
-| [ ] | Módulo Documentación y Legajos (2 de 2 endpoints pendientes) | `alumnos` | Matias | [Ficha](backend/guia-de-modulos.md#520-módulo-documentación-y-legajos-documentacion) |
+| [x] | Módulo Documentación y Legajos (2 de 2 endpoints) | `alumnos` | Matias | [Ficha](backend/guia-de-modulos.md#520-módulo-documentación-y-legajos-documentacion) |
 | [ ] | Módulo Solicitudes y Trámites (3 de 3 endpoints pendientes) | `alumnos`, `usuarios` | Matias | [Ficha](backend/guia-de-modulos.md#521-módulo-solicitudes-y-trámites-solicitudes) |
 | [x] | Tarea programada para marcar cuotas impagas como vencidas | `matriculas`, `cuotas` | Matias | RN07, RF30 |
 | [ ] | Verificar permisos por rol (`x-roles`) y tests Mockito/WebMvc en cada controller | Módulos respectivos | Todos (en su módulo) | [guia-de-modulos.md](backend/guia-de-modulos.md#3-plantilla-de-un-módulo-pasos-de-desarrollo) |
