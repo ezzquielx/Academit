@@ -24,7 +24,7 @@
 | [ ] | Módulo Inscripciones a Cursos (3 de 3 endpoints pendientes) | `alumnos`, `cursos`, `ciclos-lectivos` | Santiago | [Ficha](backend/guia-de-modulos.md#511-módulo-inscripciones-a-cursos-inscripciones) |
 | [x] | Módulo Matrículas Anuales (4 de 4 endpoints) | `alumnos`, `ciclos-lectivos` | Matias | [Ficha](backend/guia-de-modulos.md#513-módulo-matrículas-anuales-matriculas) |
 | [x] | Módulo Cuotas y Aranceles (2 de 2 endpoints) | `matriculas` | Matias | [Ficha](backend/guia-de-modulos.md#512-módulo-cuotas-y-aranceles-cuotas) |
-| [ ] | Módulo Pagos y Comprobantes (2 de 2 endpoints pendientes) | `matriculas`, `cuotas`, `alumnos` | Matias | [Ficha](backend/guia-de-modulos.md#514-módulo-pagos-y-comprobantes-pagos) |
+| [x] | Módulo Pagos y Comprobantes (2 de 2 endpoints) | `matriculas`, `cuotas`, `alumnos` | Matias | [Ficha](backend/guia-de-modulos.md#514-módulo-pagos-y-comprobantes-pagos) |
 | [ ] | Módulo Evaluaciones (3 de 3 endpoints pendientes) | `cursos`, `materias`, `docentes` | Mateo | [Ficha](backend/guia-de-modulos.md#517-módulo-evaluaciones-evaluaciones) |
 | [ ] | Módulo Calificaciones (2 de 2 endpoints pendientes) | `evaluaciones`, `alumnos`, `docentes` | Mateo | [Ficha](backend/guia-de-modulos.md#516-módulo-calificaciones-calificaciones) |
 | [ ] | Módulo Asistencias (2 de 2 endpoints pendientes) | `cursos`, `materias`, `alumnos` | Mateo | [Ficha](backend/guia-de-modulos.md#515-módulo-asistencias-asistencias) |
