@@ -13,6 +13,9 @@ public interface AlumnoRepository extends JpaRepository<Alumno, Integer> {
 
     boolean existsByEmail(String email);
 
+    /** Baja de carrera: tiene alumnos activos con planes de esa carrera. */
+    boolean existsByPlanCarreraIdAndEstadoNombre(Integer idCarrera, String nombreEstado);
+
     boolean existsByDniAndIdNot(String dni, Integer id);
 
     boolean existsByEmailAndIdNot(String email, Integer id);
