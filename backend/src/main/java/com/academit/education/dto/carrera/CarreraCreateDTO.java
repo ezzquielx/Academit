@@ -3,6 +3,7 @@ package com.academit.education.dto.carrera;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,6 +28,7 @@ public class CarreraCreateDTO {
     private String tituloOtorgado;
 
     @NotNull(message = "La duración en años es obligatoria")
+    @Positive(message = "La duración de la carrera debe ser mayor que 0 años")
     @Max(value = 10, message = "La duración no puede superar los 10 años")
     private Integer duracionAnios;
 

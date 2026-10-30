@@ -1,6 +1,7 @@
 package com.academit.education.dto.carrera;
 
 import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,6 +23,7 @@ public class CarreraUpdateDTO {
     @Size(max = 150, message = "El título otorgado debe tener hasta 150 caracteres")
     private String tituloOtorgado;
 
+    @Positive(message = "La duración de la carrera debe ser mayor que 0 años")
     @Max(value = 10, message = "La duración no puede superar los 10 años")
     private Integer duracionAnios;
 
