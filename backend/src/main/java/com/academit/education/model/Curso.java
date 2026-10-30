@@ -18,6 +18,9 @@ public class Curso {
     @Column(name = "id_curso")
     private Integer id;
 
+    @Column(name = "codigo", nullable = false, length = 40)
+    private String codigo;
+
     @Column(name = "nombre", nullable = false, length = 30)
     private String nombre;
 
@@ -27,6 +30,9 @@ public class Curso {
     @Column(name = "capacidad_maxima", nullable = false)
     private Integer capacidadMaxima;
 
+    @Column(name = "aula", length = 100)
+    private String aula;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_ciclo", nullable = false)
     private CicloLectivo ciclo;
@@ -34,4 +40,8 @@ public class Curso {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_carrera", nullable = false)
     private Carrera carrera;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "id_plan", nullable = false)
+    private PlanEstudio plan;
 }
