@@ -212,11 +212,16 @@ CREATE TABLE curso (
 );
 
 CREATE TABLE materia (
-    id_materia INTEGER GENERATED ALWAYS AS IDENTITY,
-    nombre     VARCHAR(80) NOT NULL,
-    activa     BOOLEAN     NOT NULL DEFAULT TRUE,
+    id_materia      INTEGER GENERATED ALWAYS AS IDENTITY,
+    codigo          VARCHAR(40) NOT NULL,
+    nombre          VARCHAR(80) NOT NULL,
+    regimen         VARCHAR(15) NOT NULL DEFAULT 'ANUAL',
+    horas_semanales INTEGER,
+    activa          BOOLEAN     NOT NULL DEFAULT TRUE,
     CONSTRAINT pk_materia PRIMARY KEY (id_materia),
-    CONSTRAINT uk_materia_nombre UNIQUE (nombre)
+    CONSTRAINT uk_materia_nombre UNIQUE (nombre),
+    CONSTRAINT ck_materia_regimen CHECK (regimen IN ('ANUAL', 'CUATRIMESTRAL')),
+    CONSTRAINT ck_materia_horas CHECK (horas_semanales IS NULL OR horas_semanales > 0)
 );
 
 CREATE TABLE plan_materia (

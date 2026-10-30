@@ -27,9 +27,13 @@ INSERT INTO plan_estudio (id_carrera, codigo, nombre, anio_aprobacion)
 SELECT c.id_carrera, 'PLAN-2024-TUP', 'Plan 2024', 2024 FROM carrera c
 WHERE c.nombre = 'Tecnicatura Universitaria en Programación';
 
-INSERT INTO materia (nombre) VALUES
-    ('Programación I'), ('Matemática'), ('Arquitectura de Computadoras'),
-    ('Programación II'), ('Bases de Datos'), ('Sistemas Operativos');
+INSERT INTO materia (codigo, nombre, regimen, horas_semanales) VALUES
+    ('PROG-I',  'Programación I',                'ANUAL',         5),
+    ('MAT-I',   'Matemática',                    'CUATRIMESTRAL', 4),
+    ('ARQ-I',   'Arquitectura de Computadoras',  'CUATRIMESTRAL', 4),
+    ('PROG-II', 'Programación II',               'ANUAL',         5),
+    ('BD-II',   'Bases de Datos',                'CUATRIMESTRAL', 4),
+    ('SO-III',  'Sistemas Operativos',           'CUATRIMESTRAL', 4);
 
 INSERT INTO plan_materia (id_plan, id_materia, anio_plan)
 SELECT p.id_plan, m.id_materia, v.anio
@@ -39,6 +43,16 @@ JOIN (VALUES ('Programación I', 1), ('Matemática', 1), ('Arquitectura de Compu
      ) AS v(nombre, anio) ON TRUE
 JOIN materia m ON m.nombre = v.nombre
 WHERE p.nombre = 'Plan 2024';
+
+-- Correlatividades de ejemplo (RN24)
+INSERT INTO correlativa (id_plan, id_materia, id_materia_requerida)
+SELECT p.id_plan, m.id_materia, r.id_materia
+FROM (VALUES ('Programación II', 'Programación I'),
+             ('Bases de Datos', 'Programación I')
+     ) AS v(materia, requerida)
+JOIN materia m ON m.nombre = v.materia
+JOIN materia r ON r.nombre = v.requerida
+JOIN plan_estudio p ON p.nombre = 'Plan 2024';
 
 INSERT INTO correlativa (id_plan, id_materia, id_materia_requerida)
 SELECT p.id_plan, m.id_materia, r.id_materia
