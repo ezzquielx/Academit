@@ -188,7 +188,7 @@ public class MateriaServiceImpl implements MateriaService {
                 throw new BusinessRuleException(
                         "Una materia no puede ser correlativa de sí misma (RN24)");
             }
-            if (!planMateriaRepository.existsByIdPlanAndIdMateria(idPlan, requerida)) {
+            if (!planMateriaRepository.existsByIdIdPlanAndIdIdMateria(idPlan, requerida)) {
                 throw new BusinessRuleException(
                         "La materia correlativa " + requerida
                                 + " no pertenece al plan de estudios (RN24)");

@@ -15,5 +15,5 @@ public interface PlanMateriaRepository extends JpaRepository<PlanMateria, PlanMa
     /** GET /api/materias?idCarrera=...: filtra por la carrera del plan. */
     List<PlanMateria> findByPlanCarreraId(Integer idCarrera);
 
-    boolean existsByIdPlanAndIdMateria(Integer idPlan, Integer idMateria);
+    boolean existsByIdIdPlanAndIdIdMateria(Integer idPlan, Integer idMateria);
 }
