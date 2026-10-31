@@ -16,6 +16,16 @@ public interface CursoRepository extends JpaRepository<Curso, Integer> {
 
     List<Curso> findByCarreraId(Integer idCarrera);
 
+    /** RN23/uk: nombre único por (nombre, ciclo, carrera). */
+    boolean existsByNombreAndCicloIdAndCarreraId(String nombre, Integer idCiclo, Integer idCarrera);
+
+    boolean existsByNombreAndCicloIdAndCarreraIdAndIdNot(
+            String nombre, Integer idCiclo, Integer idCarrera, Integer id);
+
+    boolean existsByCodigoAndIdNot(String codigo, Integer id);
+
+    boolean existsByCodigo(String codigo);
+
     /** RN/baja de carrera: tiene cursos en ciclos ACTIVOS. */
     boolean existsByCarreraIdAndCicloEstado(Integer idCarrera, String estadoCiclo);
 
