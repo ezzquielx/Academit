@@ -21,7 +21,7 @@
 | [x] | Módulo Docentes (4 de 4 endpoints listos) | `auth`, `usuarios` | Santiago | [Ficha](backend/guia-de-modulos.md#58-módulo-docentes-docentes) |
 | [x] | Módulo Alumnos (7 de 7 endpoints listos) | `ciclos-lectivos`, `planes-estudio` | Santiago | [Ficha](backend/guia-de-modulos.md#57-módulo-alumnos-alumnos) |
 | [ ] | Módulo Docentes (4 de 4 endpoints pendientes) | `auth`, `usuarios` | Santiago | [Ficha](backend/guia-de-modulos.md#58-módulo-docentes-docentes) |
-| [ ] | Módulo Cursos (3 de 3 endpoints pendientes) | `ciclos-lectivos`, `carreras` | Alfredo | [Ficha](backend/guia-de-modulos.md#510-módulo-cursos-comisiones-cursos) |
+| [x] | Módulo Cursos (3 de 3 endpoints implementados; en PR) | `ciclos-lectivos`, `carreras` | Alfredo | [Ficha](backend/guia-de-modulos.md#510-módulo-cursos-comisiones-cursos) |
 | [ ] | Módulo Asignaciones Docentes (3 de 3 endpoints pendientes) | `cursos`, `materias`, `docentes` | Santiago | [Ficha](backend/guia-de-modulos.md#59-módulo-asignaciones-docentes-asignaciones) |
 | [x] | Módulo Inscripciones a Cursos (3 de 3 endpoints listos) | `alumnos`, `cursos`, `ciclos-lectivos` | Santiago | [Ficha](backend/guia-de-modulos.md#511-módulo-inscripciones-a-cursos-inscripciones) |
 | [x] | Módulo Asignaciones Docentes (3 de 3 endpoints listos) | `cursos`, `materias`, `docentes` | Santiago | [Ficha](backend/guia-de-modulos.md#59-módulo-asignaciones-docentes-asignaciones) |
