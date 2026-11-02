@@ -13,10 +13,12 @@ import com.academit.education.repository.TipoEvaluacionRepository;
 import com.academit.education.security.CustomUserDetails;
 import com.academit.education.service.AsignacionDocenteService;
 import com.academit.education.service.EvaluacionService;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.Comparator;
 import java.util.List;
 
@@ -84,7 +86,21 @@ public class EvaluacionServiceImpl implements EvaluacionService {
                     "No existe una cátedra para el curso " + request.getIdCurso()
                             + " y la materia " + request.getIdMateria());
         }
-        CursoMateria catedra = elegirCatedra(catedras, userDetails);
+        Integer idDocente = asignacionDocenteService.idDocente(userDetails);
+        if (idDocente == null) {
+            throw new AccessDeniedException(
+                    "Solo un docente puede crear evaluaciones de su cátedra");
+        }
+        if (!asignacionDocenteService.estaAsignado(idDocente,
+                request.getIdCurso(), request.getIdMateria())) {
+            throw new AccessDeniedException(
+                    "Solo el docente asignado a la cátedra puede crear evaluaciones (RN11)");
+        }
+        CursoMateria catedra = catedras.stream()
+                .filter(cm -> cm.getDocente().getId().equals(idDocente))
+                .findFirst()
+                .orElseThrow(() -> new AccessDeniedException(
+                        "Solo el docente asignado a la cátedra puede crear evaluaciones (RN11)"));
 
         TipoEvaluacion tipoEval = tipoEvaluacionRepository.findByNombre(tipo)
                 .orElseThrow(() -> new ResourceNotFoundException("Tipo de evaluación desconocido: " + tipo));
@@ -99,14 +115,6 @@ public class EvaluacionServiceImpl implements EvaluacionService {
 
     // ------------------------------------------------------------------
 
-    private CursoMateria elegirCatedra(List<CursoMateria> catedras, CustomUserDetails userDetails) {
-        Integer idDocente = asignacionDocenteService.idDocente(userDetails);
-        return catedras.stream()
-                .filter(cm -> idDocente != null && cm.getDocente().getId().equals(idDocente))
-                .findFirst()
-                .orElse(catedras.get(0));
-    }
-
     private String validarTipo(String tipo) {
         String normalizado = tipo.trim().toUpperCase();
         if (!TIPOS_VALIDOS.contains(normalizado)) {
@@ -120,7 +128,7 @@ public class EvaluacionServiceImpl implements EvaluacionService {
     private LocalDate leerFecha(String fecha) {
         try {
             return LocalDate.parse(fecha.trim());
-        } catch (RuntimeException ex) {
+        } catch (DateTimeParseException ex) {
             throw new BusinessRuleException(
                     "Fecha inválida: se espera el formato YYYY-MM-DD");
         }
