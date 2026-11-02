@@ -19,12 +19,13 @@ INSERT INTO tipo_evaluacion (nombre) VALUES
 INSERT INTO estado_asistencia (nombre) VALUES ('PRESENTE'), ('AUSENTE'), ('TARDANZA'), ('JUSTIFICADO');
 
 -- Carrera, plan y materias (RF47)
-INSERT INTO carrera (nombre, duracion_anios)
-VALUES ('Tecnicatura Universitaria en Programación', 3);
+INSERT INTO carrera (codigo, nombre, titulo_otorgado, duracion_anios, resolucion)
+VALUES ('TUP', 'Tecnicatura Universitaria en Programación',
+        'Técnico Universitario en Programación', 3, 'Res. Ministerial N° 1420/22');
 
-INSERT INTO plan_estudio (id_carrera, nombre, anio_vigencia)
-SELECT id_carrera, 'Plan 2024', 2024 FROM carrera
-WHERE nombre = 'Tecnicatura Universitaria en Programación';
+INSERT INTO plan_estudio (id_carrera, codigo, nombre, anio_aprobacion)
+SELECT c.id_carrera, 'PLAN-2024-TUP', 'Plan 2024', 2024 FROM carrera c
+WHERE c.nombre = 'Tecnicatura Universitaria en Programación';
 
 INSERT INTO materia (nombre) VALUES
     ('Programación I'), ('Matemática'), ('Arquitectura de Computadoras'),
@@ -84,11 +85,15 @@ FROM (VALUES ('admin', 'ADMINISTRADOR', NULL, NULL),
 JOIN rol r ON r.nombre = v.rol;
 
 -- Cursos y docentes asignados (RF14, RF18, RF19)
-INSERT INTO curso (nombre, turno, capacidad_maxima, id_ciclo, id_carrera)
-SELECT v.nombre, v.turno, v.capacidad, ci.id_ciclo, ca.id_carrera
-FROM ciclo_lectivo ci, carrera ca,
-     (VALUES ('1° Año A', 'MANANA', 30), ('2° Año A', 'NOCHE', 25)) AS v(nombre, turno, capacidad)
-WHERE ci.anio = 2026 AND ca.nombre = 'Tecnicatura Universitaria en Programación';
+INSERT INTO curso (codigo, nombre, turno, capacidad_maxima, aula, id_ciclo, id_carrera, id_plan)
+SELECT v.codigo, v.nombre, v.turno, v.capacidad, v.aula, ci.id_ciclo, ca.id_carrera, p.id_plan
+FROM ciclo_lectivo ci, carrera ca, plan_estudio p,
+     (VALUES ('1A-PRO-TM', '1° Año A', 'MANANA', 30, 'Aula 101 (Pabellón A)'),
+             ('2A-PRO-TN', '2° Año A', 'NOCHE', 25, 'Aula 204 (Pabellón C)')
+     ) AS v(codigo, nombre, turno, capacidad, aula)
+WHERE ci.anio = 2026
+  AND ca.nombre = 'Tecnicatura Universitaria en Programación'
+  AND p.codigo = 'PLAN-2024-TUP';
 
 INSERT INTO curso_materia (id_curso, id_materia, id_docente, rol_docente)
 SELECT c.id_curso, m.id_materia, d.id_docente, v.rol

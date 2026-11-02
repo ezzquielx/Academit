@@ -69,14 +69,18 @@ class AlumnoServiceTest {
     void setUp() {
         carrera = new Carrera();
         carrera.setId(1);
+        carrera.setCodigo("TSDS");
         carrera.setNombre("Tecnicatura Superior en Desarrollo de Software");
+        carrera.setTituloOtorgado("Técnico Superior en Desarrollo de Software");
         carrera.setDuracionAnios(3);
-        carrera.setActiva(true);
+        carrera.setEstado("ACTIVA");
 
         plan = new PlanEstudio();
         plan.setId(1);
+        plan.setCodigo("PLAN-2024");
         plan.setNombre("Plan 2024");
-        plan.setAnioVigencia(2024);
+        plan.setAnioAprobacion(2024);
+        plan.setEstado("VIGENTE");
         plan.setCarrera(carrera);
 
         estadoActivo = new EstadoPersona();

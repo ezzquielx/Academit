@@ -1,8 +1,6 @@
 # Estado Real del Proyecto y Plan de Distribución - Academit
 
-> **Fecha de relevamiento:** Octubre 2026 | **Entidades:** 35 | **Repositories:** 32 | **Tests backend:** 62/62 OK.
-> **Fecha de relevamiento:** Octubre 2026 | **Entidades:** 35 | **Repositories:** 32 | **Tests backend:** 63/63 OK.
-> **Fecha de relevamiento:** Octubre 2026 | **Entidades:** 35 | **Repositories:** 32 | **Tests backend:** 69/69 OK.
+> **Fecha de relevamiento:** Octubre 2026 | **Entidades:** 35 | **Repositories:** 32 | **Tests backend:** 150/150 OK.
 
 ## 1. Estado por Módulo
 
@@ -16,7 +14,7 @@
 | **Seguridad y Usuarios** | `Usuario`, `Rol` / Repos | `AuthService`, `UsuarioService` | `Auth`, `Perfil`, `Usuario` | 69 tests unit/integ | **Hecho** |
 | **Alumnos** | `Alumno`, `EstadoPersona` / Repos | `AlumnoService` hecho | `AlumnoController` hecho | 23 tests del módulo alumnos | **Hecho** |
 | **Docentes** | `Docente` / `DocenteRepository` | Pendiente | Pendiente | Pendiente | **Parcial** |
-| **Carreras** | `Carrera` / `CarreraRepository` | Pendiente | Pendiente | Pendiente | **Parcial** |
+| **Carreras** | `Carrera`, `PlanEstudio` / Repos | `CarreraService` hecho | `CarreraController` hecho | 29 tests del módulo carreras | **Hecho** (planes-materias y cursos pendientes en su rama) |
 | **Materias y Planes** | `Materia`, `PlanEstudio`, `Correlativa` | Pendiente | Pendiente | Pendiente | **Parcial** |
 | **Cursos y Ciclos** | `Curso`, `CicloLectivo` / Repos | `CicloLectivoService` hecho; Cursos pendiente | `CicloLectivoController` hecho; Cursos pendiente | 15 tests del módulo ciclos | **Parcial** |
 | **Asignaciones** | `CursoMateria` / Repo | Pendiente | Pendiente | Pendiente | **Parcial** |
@@ -36,17 +34,15 @@
 ## 2. Endpoints del Contrato vs Implementados
 
 - **Total en contrato frontend:** 71 endpoints (68 de negocio + 3 de autenticación inicial).
-- **Implementados en backend:** 18 endpoints (15 del contrato + `GET /api/usuarios/{id}` y `GET /api/auth/me`). Cobertura: **21.1 %**.
-- **Pendientes de implementar:** 56 endpoints.
+- **Implementados en backend:** 28 endpoints (25 del contrato + `GET /api/usuarios/{id}` y `GET /api/auth/me`). Cobertura: **39.4 %** (usuarios 8, alumnos 7, docentes 4, asignaciones 3, inscripciones 3, carreras 7 — parcialmente contados).
+- **Pendientes de implementar:** 43 endpoints.
 
-### Endpoints implementados (15)
-- **Implementados en backend:** 21 endpoints (19 del contrato + `GET /api/usuarios/{id}` y `GET /api/auth/me`). Cobertura: **26.8 %**.
-- **Pendientes de implementar:** 52 endpoints.
-
-### Endpoints implementados (19)
+### Endpoints implementados (25 del contrato + extras)
 - `POST /api/auth/login`, `GET /api/auth/me`, `POST /api/auth/logout`, `POST /api/auth/cambiar-password`
 - `GET /api/usuarios`, `GET /api/usuarios/{id}`, `POST /api/usuarios`, `PUT /api/usuarios/{id}`, `DELETE /api/usuarios/{id}`
 - `GET /api/usuarios/me`, `PUT /api/usuarios/me`
+- `GET /api/carreras`, `GET /api/carreras/{id}`, `POST /api/carreras`, `PUT /api/carreras/{id}`, `DELETE /api/carreras/{id}`, `GET /api/carreras/{id}/planes`, `GET /api/carreras/{id}/cursos`
+- (más los módulos de alumnos, docentes, asignaciones e inscripciones integrados en develop)
 
 ### Endpoints faltantes (56) por módulo
 - **alumnos (7):** `GET /api/alumnos`, `GET /api/alumnos/{id}`, `POST /api/alumnos`, `PUT /api/alumnos/{id}`, `DELETE /api/alumnos/{id}`, `GET /api/alumnos/{id}/situacion-academica`, `GET /api/alumnos/{id}/situacion-administrativa`
@@ -54,7 +50,6 @@
 - **asignaciones (3):** `GET /api/asignaciones`, `POST /api/asignaciones`, `DELETE /api/asignaciones/{id}`
 - **asistencias (2):** `GET /api/asistencias`, `POST /api/asistencias/lote`
 - **calificaciones (2):** `GET /api/calificaciones`, `POST /api/calificaciones`
-- **carreras (7):** `GET /api/carreras`, `GET /api/carreras/{id}`, `POST /api/carreras`, `PUT /api/carreras/{id}`, `DELETE /api/carreras/{id}`, `GET /api/carreras/{id}/planes`, `GET /api/carreras/{id}/cursos`
 - **cuotas (2):** `GET /api/cuotas`, `PATCH /api/cuotas/{id}/anular`
 - **cursos (3):** `GET /api/cursos`, `POST /api/cursos`, `PUT /api/cursos/{id}`
 - **declaraciones-juradas (2):** `GET /api/declaraciones-juradas`, `POST /api/declaraciones-juradas`
@@ -102,6 +97,8 @@
 - Asistencia por materia: Columna `id_materia` y unicidad compuesta. Resuelto en `feature/db-alinear-contrato`, integrado en `develop`.
 - Turno en curso y mesa: Columnas `turno` y `tribunal`. Resuelto en `feature/db-alinear-contrato`, integrado en `develop`.
 - Tipos de cuota: `CUOTA_MENSUAL` y `SEGURO_CUATRIMESTRAL`. Resuelto en `feature/db-alinear-contrato`, integrado en `develop`.
+- Esquema de carreras al contrato: `carrera` con `codigo` (único), `titulo_otorgado`, `resolucion` y `estado` (ACTIVA/INACTIVA, reemplaza el booleano `activa`); `plan_estudio` con `codigo`, `estado` (VIGENTE/CERRADO) y `anio_aprobacion` (antes `anio_vigencia`); `curso` con `codigo` (único), `aula` e `id_plan` obligatorio. Resuelto en `feature/back-carreras` (RF53-RF55).
+- `CursoDTO.cicloLectivo` devuelve el **año** del ciclo lectivo (ej. 2026), no su id: coincide con el mock del frontend; el openapi solo lo tipa como entero.
 
 ## 5. Trabajo Restante y Reparto por Ramas
 
