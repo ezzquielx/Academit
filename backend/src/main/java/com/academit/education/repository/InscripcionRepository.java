@@ -25,4 +25,7 @@ public interface InscripcionRepository extends JpaRepository<Inscripcion, Intege
     List<Inscripcion> findByCursoId(Integer idCurso);
 
     List<Inscripcion> findByCursoIdIn(List<Integer> cursosIds);
+
+    /** Alumno inscripto (activo) en un curso, usado por notas y asistencia. */
+    boolean existsByAlumnoIdAndCursoIdAndActivaTrue(Integer idAlumno, Integer idCurso);
 }

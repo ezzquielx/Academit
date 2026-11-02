@@ -359,6 +359,7 @@ CREATE TABLE calificacion (
     id_evaluacion   INTEGER NOT NULL,
     id_alumno       INTEGER NOT NULL,
     nota            INTEGER NOT NULL,
+    observacion     VARCHAR(100),
     CONSTRAINT pk_calificacion PRIMARY KEY (id_calificacion),
     CONSTRAINT fk_calificacion_evaluacion FOREIGN KEY (id_evaluacion) REFERENCES evaluacion (id_evaluacion),
     CONSTRAINT fk_calificacion_alumno FOREIGN KEY (id_alumno) REFERENCES alumno (id_alumno),
