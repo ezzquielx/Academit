@@ -296,16 +296,14 @@ Los módulos de una misma ola se pueden desarrollar en paralelo:
 - **Preguntas abiertas:** Almacenamiento de adjuntos o solo estado de verificación en legajo; `fechaEntrega` se registra al marcar ENTREGADO y se limpia al salir de ese estado (ver decisiones abiertas en `docs/estado-del-proyecto.md`).
 
 ### 5.21 Módulo: Solicitudes y Trámites (`solicitudes`)
-- **Estado actual:** Parcial | **Rama sugerida:** `feature/back-solicitudes` | **Ola:** 8
+- **Estado actual:** Hecho | **Rama sugerida:** `feature/back-solicitudes` | **Ola:** 8
 - **Entidades y tablas:** `Solicitud` (`solicitud`), `TipoSolicitudEnum`
 - **Dependencias:** `alumnos`, `usuarios`
 - **Campos calculados:** `alumnoNombre`
-- **Reglas de negocio aplicables:** RF53-RF55, RN17 (resolución administrativa, motivos y estados PENDIENTE/APROBADA/RECHAZADA)
-- **Endpoints pendientes (3 de 3 pendientes; 0 listos):**
-  - `GET /api/solicitudes` [ADMINISTRATIVO, ADMINISTRADOR, ALUMNO]
-  - `POST /api/solicitudes` [ALUMNO]
-  - `PATCH /api/solicitudes/{id}` [ADMINISTRATIVO, ADMINISTRADOR]
-- **Preguntas abiertas:** Notificación o registro de resolución formal por administrativo.
+- **Reglas de negocio aplicables:** RF53-RF55, RN17 (resolución administrativa, motivos y estados PENDIENTE/EN_PROCESO/APROBADA/RECHAZADA)
+- **Endpoints pendientes (0 de 3 pendientes; 3 listos):**
+  - *Todos los endpoints implementados.*
+- **Preguntas abiertas:** efecto sobre el plan del alumno al aprobar un `CAMBIO_CARRERA` (ver decisiones abiertas en `docs/estado-del-proyecto.md`).
 
 ## 6. Lo que Falta y No es Código
 
