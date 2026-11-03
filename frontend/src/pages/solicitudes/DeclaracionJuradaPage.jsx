@@ -3,18 +3,20 @@ import { Alert, Card, Form, Row, Col, Button } from 'react-bootstrap'
 import PageHeader from '../../components/PageHeader'
 import DataTable from '../../components/DataTable'
 import StatusBadge from '../../components/StatusBadge'
+import { useAuth } from '../../context/AuthContext'
 import { useToast } from '../../context/ToastContext'
 import { getDeclaracionesJuradas, createDeclaracionJurada } from '../../api/declaracionesJuradas'
 import { getMaterias } from '../../api/materias'
 
 export const DeclaracionJuradaPage = () => {
+  const { user } = useAuth()
   const { showToast } = useToast()
   const [declaraciones, setDeclaraciones] = useState([])
   const [materias, setMaterias] = useState([])
   const [materiasSeleccionadas, setMateriasSeleccionadas] = useState([1, 2])
   const [observaciones, setObservaciones] = useState('')
   const [loading, setLoading] = useState(false)
-  const alumnoId = 1
+  const alumnoId = user?.idAlumno || 1
 
   const cargar = async () => {
     try {

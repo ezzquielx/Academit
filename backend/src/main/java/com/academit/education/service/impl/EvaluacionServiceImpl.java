@@ -21,12 +21,14 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
 public class EvaluacionServiceImpl implements EvaluacionService {
 
-    private static final List<String> TIPOS_VALIDOS = List.of("PARCIAL", "TRABAJO_PRACTICO");
+    private static final List<String> TIPOS_VALIDOS = List.of(
+            "PARCIAL", "PRIMER_PARCIAL", "SEGUNDO_PARCIAL", "TRABAJO_PRACTICO", "EXAMEN_FINAL", "RECUPERATORIO");
 
     private final EvaluacionRepository evaluacionRepository;
     private final CursoMateriaRepository cursoMateriaRepository;
@@ -62,12 +64,28 @@ public class EvaluacionServiceImpl implements EvaluacionService {
                 : evaluacionRepository.findAll();
 
         return evaluaciones.stream()
-                .filter(ev -> tipo == null || tipo.isBlank()
-                        || ev.getTipo().getNombre().equalsIgnoreCase(tipo.trim()))
+                .filter(ev -> matchesTipo(
+                        ev.getTipo() != null ? ev.getTipo().getNombre() : null,
+                        tipo))
                 .filter(ev -> idCurso == null || ev.getCursoMateria().getCurso().getId().equals(idCurso))
                 .sorted(Comparator.comparing(Evaluacion::getId))
                 .map(this::toDto)
                 .toList();
+    }
+
+    private boolean matchesTipo(String evalTipo, String tipoFiltro) {
+        if (tipoFiltro == null || tipoFiltro.isBlank()) {
+            return true;
+        }
+        if (evalTipo == null) {
+            return false;
+        }
+        String t = tipoFiltro.trim().toUpperCase();
+        String e = evalTipo.trim().toUpperCase();
+        if (e.equals(t)) {
+            return true;
+        }
+        return "PARCIAL".equals(t) && e.contains("PARCIAL");
     }
 
     @Override
@@ -103,6 +121,7 @@ public class EvaluacionServiceImpl implements EvaluacionService {
                         "Solo el docente asignado a la cátedra puede crear evaluaciones (RN11)"));
 
         TipoEvaluacion tipoEval = tipoEvaluacionRepository.findByNombre(tipo)
+                .or(() -> "PARCIAL".equals(tipo) ? tipoEvaluacionRepository.findByNombre("PRIMER_PARCIAL") : Optional.empty())
                 .orElseThrow(() -> new ResourceNotFoundException("Tipo de evaluación desconocido: " + tipo));
 
         Evaluacion evaluacion = new Evaluacion();

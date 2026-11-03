@@ -211,7 +211,7 @@ export const GestionPlanEstudiosPage = () => {
 
                           <div className="mt-2 pt-2 border-top border-secondary border-opacity-10 small">
                             <span className="text-muted">Correlativas: </span>
-                            {m.correlativas.length > 0 ? (
+                            {m.correlativas && m.correlativas.length > 0 ? (
                               m.correlativas.map((c, idx) => {
                                 const nombre = typeof c === 'number'
                                   ? (materiasPlan.find((x) => x.idMateria === c)?.nombre || `Materia #${c}`)

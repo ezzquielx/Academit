@@ -3,15 +3,17 @@ import { Card, Row, Col, ProgressBar } from 'react-bootstrap'
 import PageHeader from '../../components/PageHeader'
 import DataTable from '../../components/DataTable'
 import StatusBadge from '../../components/StatusBadge'
+import { useAuth } from '../../context/AuthContext'
 import { getAsistencias } from '../../api/asistencias'
 
 export const AsistenciasAlumnoPage = () => {
+  const { user } = useAuth()
   const [asistencias, setAsistencias] = useState([])
-  const alumnoId = 1 // Alumno de referencia: Lucía Benítez
+  const alumnoId = user?.idAlumno || 1 // Alumno de sesión o referencia
 
   useEffect(() => {
     getAsistencias({ idAlumno: alumnoId }).then(setAsistencias).catch(() => {})
-  }, [])
+  }, [alumnoId])
 
   const totalClases = asistencias.length
   const presentes = asistencias.filter((a) => a.estado === 'PRESENTE').length

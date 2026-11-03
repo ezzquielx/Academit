@@ -68,7 +68,7 @@ export const PlanEstudiosAlumnoPage = () => {
                           {/* Correlativas */}
                           <div className="mt-2 pt-2 border-top small" style={{ borderColor: 'var(--linea)' }}>
                             <span style={{ color: 'var(--suave)' }}>Correlativas requeridas: </span>
-                            {m.correlativas.length > 0 ? (
+                            {m.correlativas && m.correlativas.length > 0 ? (
                               m.correlativas.map((c, idx) => {
                                 const nombre = typeof c === 'number' ? (materias.find((mat) => mat.idMateria === c)?.nombre || `Materia #${c}`) : c
                                 return (

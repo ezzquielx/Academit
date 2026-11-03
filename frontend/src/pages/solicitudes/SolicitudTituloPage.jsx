@@ -3,15 +3,17 @@ import PageHeader from '../../components/PageHeader'
 import SolicitudForm from '../../components/SolicitudForm'
 import DataTable from '../../components/DataTable'
 import StatusBadge from '../../components/StatusBadge'
+import { useAuth } from '../../context/AuthContext'
 import { useToast } from '../../context/ToastContext'
 import { getSolicitudes, createSolicitud } from '../../api/solicitudes'
 import { ETIQUETAS_TIPO_SOLICITUD } from '../../config/etiquetas'
 
 export const SolicitudTituloPage = () => {
+  const { user } = useAuth()
   const { showToast } = useToast()
   const [solicitudes, setSolicitudes] = useState([])
   const [loading, setLoading] = useState(false)
-  const alumnoId = 1
+  const alumnoId = user?.idAlumno || 1
 
   const cargar = async () => {
     try {

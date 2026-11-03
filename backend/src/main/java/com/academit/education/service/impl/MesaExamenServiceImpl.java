@@ -198,16 +198,18 @@ public class MesaExamenServiceImpl implements MesaExamenService {
         MesaExamen mesa = mesaExamenRepository.findById(idMesa)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Mesa de examen no encontrada con ID: " + idMesa));
+        Alumno alumno = alumnoDelToken(userDetails);
+
         InscripcionMesa inscripcion = inscripcionMesaRepository.findById(idInscripcion)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "Inscripción a mesa no encontrada con ID: " + idInscripcion));
-        if (!inscripcion.getMesa().getId().equals(idMesa)) {
-            throw new ResourceNotFoundException(
-                    "La inscripción " + idInscripcion + " no pertenece a la mesa " + idMesa);
+                .orElse(null);
+        if (inscripcion == null || !inscripcion.getMesa().getId().equals(idMesa)) {
+            // Intentar buscar por mesa y alumno si idInscripcion coincidía con idAlumno
+            inscripcion = inscripcionMesaRepository.findFirstByMesaIdAndAlumnoIdAndActivaTrue(idMesa, alumno.getId())
+                    .orElseThrow(() -> new ResourceNotFoundException(
+                            "Inscripción a mesa no encontrada con ID: " + idInscripcion));
         }
 
         // El alumno solo anula la suya
-        Alumno alumno = alumnoDelToken(userDetails);
         if (!inscripcion.getAlumno().getId().equals(alumno.getId())) {
             throw new AccessDeniedException(
                     "El alumno solo puede darse de baja de su propia inscripción");

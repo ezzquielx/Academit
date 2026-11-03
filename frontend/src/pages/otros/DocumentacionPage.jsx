@@ -3,12 +3,14 @@ import { Alert, Badge } from 'react-bootstrap'
 import PageHeader from '../../components/PageHeader'
 import DataTable from '../../components/DataTable'
 import StatusBadge from '../../components/StatusBadge'
+import { useAuth } from '../../context/AuthContext'
 import { getDocumentacion } from '../../api/documentacion'
 import { ETIQUETAS_TIPO_DOCUMENTACION } from '../../config/etiquetas'
 
 export const DocumentacionPage = () => {
+  const { user } = useAuth()
   const [docs, setDocs] = useState([])
-  const alumnoId = 1
+  const alumnoId = user?.idAlumno || 1
 
   useEffect(() => {
     getDocumentacion(alumnoId).then(setDocs).catch(() => {})

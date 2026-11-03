@@ -3,15 +3,17 @@ import { Card, Row, Col, Badge } from 'react-bootstrap'
 import PageHeader from '../../components/PageHeader'
 import DataTable from '../../components/DataTable'
 import StatusBadge from '../../components/StatusBadge'
+import { useAuth } from '../../context/AuthContext'
 import { getCalificaciones } from '../../api/calificaciones'
 
 export const TrabajosPracticosPage = () => {
+  const { user } = useAuth()
   const [tps, setTps] = useState([])
-  const alumnoId = 1 // Alumno de referencia: Lucía Benítez
+  const alumnoId = user?.idAlumno || 1 // Alumno de sesión o referencia
 
   useEffect(() => {
     getCalificaciones({ idAlumno: alumnoId, tipo: 'TRABAJO_PRACTICO' }).then(setTps).catch(() => {})
-  }, [])
+  }, [alumnoId])
 
   const promedioTps = tps.length > 0
     ? (tps.reduce((acc, c) => acc + c.nota, 0) / tps.length).toFixed(1)

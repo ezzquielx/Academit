@@ -266,12 +266,14 @@ public class MateriaServiceImpl implements MateriaService {
         dto.setAnio(pm.getAnioPlan());
         dto.setRegimen(materia.getRegimen());
         dto.setHorasSemanales(materia.getHorasSemanales());
-        dto.setCorrelativas(correlativaRepository
-                .findByIdIdPlanAndIdIdMateria(
-                        pm.getPlan() != null ? pm.getId().getIdPlan() : null,
-                        materia.getId()).stream()
-                .map(c -> c.getId().getIdMateriaRequerida())
-                .collect(Collectors.toList()));
+        List<Integer> correlativasIds = List.of();
+        if (pm.getPlan() != null && pm.getId() != null && pm.getId().getIdPlan() != null) {
+            correlativasIds = correlativaRepository
+                    .findByIdIdPlanAndIdIdMateria(pm.getId().getIdPlan(), materia.getId()).stream()
+                    .map(c -> c.getId().getIdMateriaRequerida())
+                    .collect(Collectors.toList());
+        }
+        dto.setCorrelativas(correlativasIds);
         return dto;
     }
 }

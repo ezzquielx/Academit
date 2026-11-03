@@ -9,7 +9,8 @@ import { getSolicitudes } from '../../api/solicitudes'
 import { getAlumnos } from '../../api/alumnos'
 
 export const InicioPage = () => {
-  const { rol, nombre, usuario } = useAuth()
+  const { rol, nombre, usuario, user } = useAuth()
+  const alumnoId = user?.idAlumno || 1
   const [alumnoCuotas, setAlumnoCuotas] = useState([])
   const [alumnoMesas, setAlumnoMesas] = useState([])
   const [alumnoCalificaciones, setAlumnoCalificaciones] = useState([])
@@ -17,14 +18,14 @@ export const InicioPage = () => {
   const [alumnosCount, setAlumnosCount] = useState(0)
 
   useEffect(() => {
-    getCuotas(1).then((data) => setAlumnoCuotas(data || [])).catch(() => {})
+    getCuotas(alumnoId).then((data) => setAlumnoCuotas(data || [])).catch(() => {})
     getMesasExamen()
-      .then((data) => setAlumnoMesas((data || []).filter((m) => m.alumnosInscriptosIds?.includes(1))))
+      .then((data) => setAlumnoMesas((data || []).filter((m) => m.alumnosInscriptosIds?.includes(alumnoId))))
       .catch(() => {})
-    getCalificaciones({ idAlumno: 1 }).then((data) => setAlumnoCalificaciones(data || [])).catch(() => {})
+    getCalificaciones({ idAlumno: alumnoId }).then((data) => setAlumnoCalificaciones(data || [])).catch(() => {})
     getSolicitudes().then((data) => setSolicitudesCount((data || []).filter((s) => s.estado === 'PENDIENTE').length)).catch(() => {})
     getAlumnos().then((data) => setAlumnosCount((data || []).length)).catch(() => {})
-  }, [rol])
+  }, [rol, alumnoId])
 
   const getGreeting = () => {
     const h = new Date().getHours()

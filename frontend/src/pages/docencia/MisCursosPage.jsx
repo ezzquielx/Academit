@@ -3,13 +3,15 @@ import { Row, Col, Card, Button, Badge } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import PageHeader from '../../components/PageHeader'
 import DataTable from '../../components/DataTable'
+import { useAuth } from '../../context/AuthContext'
 import { getAsignaciones } from '../../api/asignaciones'
 import { getCursos } from '../../api/cursos'
 
 export const MisCursosPage = () => {
+  const { user } = useAuth()
   const [asignaciones, setAsignaciones] = useState([])
   const [cursos, setCursos] = useState([])
-  const docenteId = 1 // Carlos Gómez
+  const docenteId = user?.idDocente || 1
 
   useEffect(() => {
     getAsignaciones().then((asigs) => {

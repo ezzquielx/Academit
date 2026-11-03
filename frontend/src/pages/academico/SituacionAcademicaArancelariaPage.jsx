@@ -3,18 +3,20 @@ import { Card, Row, Col, Tab, Nav, Badge, ProgressBar } from 'react-bootstrap'
 import PageHeader from '../../components/PageHeader'
 import DataTable from '../../components/DataTable'
 import StatusBadge from '../../components/StatusBadge'
+import { useAuth } from '../../context/AuthContext'
 import { getCalificaciones } from '../../api/calificaciones'
 import { getCuotas } from '../../api/cuotas'
 import { getPagos } from '../../api/pagos'
 import { getMatriculas } from '../../api/matriculas'
 
 export const SituacionAcademicaArancelariaPage = () => {
+  const { user } = useAuth()
   const [activeTab, setActiveTab] = useState('arancelaria')
   const [calificaciones, setCalificaciones] = useState([])
   const [cuotas, setCuotas] = useState([])
   const [pagos, setPagos] = useState([])
   const [matricula, setMatricula] = useState(null)
-  const alumnoId = 1 // Alumno de referencia: Lucía Benítez
+  const alumnoId = user?.idAlumno || 1 // Alumno de sesión o referencia
 
   useEffect(() => {
     getCalificaciones({ idAlumno: alumnoId }).then(setCalificaciones).catch(() => {})
@@ -24,20 +26,20 @@ export const SituacionAcademicaArancelariaPage = () => {
       const encontrada = mats.find((m) => m.idAlumno === alumnoId)
       if (encontrada) setMatricula(encontrada)
     }).catch(() => {})
-  }, [])
+  }, [alumnoId])
 
   // Cálculos arancelarios
   const cuotasPagadas = cuotas.filter((c) => c.estado === 'PAGADA')
   const cuotasPendientes = cuotas.filter((c) => c.estado === 'PENDIENTE')
   const cuotasVencidas = cuotas.filter((c) => c.estado === 'VENCIDA')
 
-  const totalAbonado = pagos.reduce((sum, p) => sum + p.importe, 0)
-  const totalAdeudado = [...cuotasPendientes, ...cuotasVencidas].reduce((sum, c) => sum + c.importe, 0)
+  const totalAbonado = pagos.reduce((sum, p) => sum + (Number(p.importe) || 0), 0)
+  const totalAdeudado = [...cuotasPendientes, ...cuotasVencidas].reduce((sum, c) => sum + (Number(c.importe) || 0), 0)
 
   // Cálculos académicos
   const materiasAprobadas = calificaciones.filter((c) => c.nota >= 4)
   const promedioGeneral = calificaciones.length > 0
-    ? (calificaciones.reduce((sum, c) => sum + c.nota, 0) / calificaciones.length).toFixed(2)
+    ? (calificaciones.reduce((sum, c) => sum + (Number(c.nota) || 0), 0) / calificaciones.length).toFixed(2)
     : '0.00'
 
   const columnsArancelaria = [
@@ -55,7 +57,7 @@ export const SituacionAcademicaArancelariaPage = () => {
     {
       key: 'importe',
       label: 'Importe',
-      render: (row) => <span className="fw-semibold">${row.importe.toLocaleString('es-AR')}</span>,
+      render: (row) => <span className="fw-semibold">${row.importe != null ? Number(row.importe).toLocaleString('es-AR') : '0'}</span>,
     },
     { key: 'fechaVencimiento', label: 'Vencimiento' },
     {
@@ -135,7 +137,7 @@ export const SituacionAcademicaArancelariaPage = () => {
                   <Card.Body className="p-3">
                     <span className="text-muted small text-uppercase fw-semibold">Matrícula Anual 2026</span>
                     <h4 className="fw-bold mt-1 mb-1" style={{ color: 'var(--m-onSurface)' }}>
-                      ${matricula ? matricula.importe.toLocaleString('es-AR') : '35.000'}
+                      ${matricula?.importe != null ? Number(matricula.importe).toLocaleString('es-AR') : '35.000'}
                     </h4>
                     <div className="d-flex align-items-center gap-2 mt-2">
                       <StatusBadge status={matricula?.estado || 'ACTIVA'} />
@@ -150,7 +152,7 @@ export const SituacionAcademicaArancelariaPage = () => {
                   <Card.Body className="p-3">
                     <span className="text-muted small text-uppercase fw-semibold">Total Abonado</span>
                     <h4 className="fw-bold mt-1 mb-1 text-success">
-                      ${totalAbonado.toLocaleString('es-AR')}
+                      ${(totalAbonado || 0).toLocaleString('es-AR')}
                     </h4>
                     <small className="text-muted">{cuotasPagadas.length} cuotas/seguros pagados</small>
                   </Card.Body>
@@ -162,7 +164,7 @@ export const SituacionAcademicaArancelariaPage = () => {
                   <Card.Body className="p-3">
                     <span className="text-muted small text-uppercase fw-semibold">Importe Adeudado</span>
                     <h4 className="fw-bold mt-1 mb-1 text-danger">
-                      ${totalAdeudado.toLocaleString('es-AR')}
+                      ${(totalAdeudado || 0).toLocaleString('es-AR')}
                     </h4>
                     <small className="text-danger">
                       {cuotasVencidas.length} cuota(s) vencida(s)

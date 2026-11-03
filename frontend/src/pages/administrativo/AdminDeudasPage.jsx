@@ -17,8 +17,8 @@ export const AdminDeudasPage = () => {
         const cuotasAlu = cuotas.filter((c) => c.idAlumno === alu.idAlumno)
         const vencidas = cuotasAlu.filter((c) => c.estado === 'VENCIDA')
         const pendientes = cuotasAlu.filter((c) => c.estado === 'PENDIENTE')
-        const importeVencido = vencidas.reduce((s, c) => s + c.importe, 0)
-        const importeTotalDeuda = [...vencidas, ...pendientes].reduce((s, c) => s + c.importe, 0)
+        const importeVencido = vencidas.reduce((s, c) => s + (Number(c.importe) || 0), 0)
+        const importeTotalDeuda = [...vencidas, ...pendientes].reduce((s, c) => s + (Number(c.importe) || 0), 0)
 
         sumaGlobal += importeVencido
 
@@ -69,14 +69,14 @@ export const AdminDeudasPage = () => {
       label: 'Deuda Exigible (Vencida)',
       render: (row) => (
         <span className="fw-bold text-danger">
-          ${row.importeVencido.toLocaleString('es-AR')}
+          ${row.importeVencido != null ? Number(row.importeVencido).toLocaleString('es-AR') : '0'}
         </span>
       ),
     },
     {
       key: 'importeTotalDeuda',
       label: 'Compromiso Total',
-      render: (row) => <span>${row.importeTotalDeuda.toLocaleString('es-AR')}</span>,
+      render: (row) => <span>${row.importeTotalDeuda != null ? Number(row.importeTotalDeuda).toLocaleString('es-AR') : '0'}</span>,
     },
     {
       key: 'estadoMatricula',
@@ -110,7 +110,7 @@ export const AdminDeudasPage = () => {
             <Card.Body className="p-3">
               <span className="text-muted small text-uppercase fw-semibold">Total Deuda Exigible (Vencida)</span>
               <h3 className="fw-bold mt-1 mb-0 text-danger">
-                ${totalDeudaGlobal.toLocaleString('es-AR')}
+                ${(totalDeudaGlobal || 0).toLocaleString('es-AR')}
               </h3>
             </Card.Body>
           </Card>

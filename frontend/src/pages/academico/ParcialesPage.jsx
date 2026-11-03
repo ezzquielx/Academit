@@ -3,15 +3,17 @@ import { Card, Row, Col, Badge } from 'react-bootstrap'
 import PageHeader from '../../components/PageHeader'
 import DataTable from '../../components/DataTable'
 import StatusBadge from '../../components/StatusBadge'
+import { useAuth } from '../../context/AuthContext'
 import { getCalificaciones } from '../../api/calificaciones'
 
 export const ParcialesPage = () => {
+  const { user } = useAuth()
   const [calificaciones, setCalificaciones] = useState([])
-  const alumnoId = 1 // Alumno de referencia: Lucía Benítez
+  const alumnoId = user?.idAlumno || 1 // Alumno de sesión o referencia
 
   useEffect(() => {
     getCalificaciones({ idAlumno: alumnoId, tipo: 'PARCIAL' }).then(setCalificaciones).catch(() => {})
-  }, [])
+  }, [alumnoId])
 
   const promedioParciales = calificaciones.length > 0
     ? (calificaciones.reduce((acc, c) => acc + c.nota, 0) / calificaciones.length).toFixed(1)
