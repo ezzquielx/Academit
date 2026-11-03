@@ -90,24 +90,33 @@ CREATE TABLE estado_asistencia (
 -- ============================================================
 
 CREATE TABLE carrera (
-    id_carrera     INTEGER GENERATED ALWAYS AS IDENTITY,
-    nombre         VARCHAR(100) NOT NULL,
-    duracion_anios INTEGER      NOT NULL,
-    activa         BOOLEAN      NOT NULL DEFAULT TRUE,
+    id_carrera      INTEGER GENERATED ALWAYS AS IDENTITY,
+    codigo          VARCHAR(20)  NOT NULL,
+    nombre          VARCHAR(100) NOT NULL,
+    titulo_otorgado VARCHAR(150) NOT NULL,
+    duracion_anios  INTEGER      NOT NULL,
+    resolucion      VARCHAR(100),
+    estado          VARCHAR(10)  NOT NULL DEFAULT 'ACTIVA',
     CONSTRAINT pk_carrera PRIMARY KEY (id_carrera),
     CONSTRAINT uk_carrera_nombre UNIQUE (nombre),
-    CONSTRAINT ck_carrera_duracion CHECK (duracion_anios > 0)
+    CONSTRAINT uk_carrera_codigo UNIQUE (codigo),
+    CONSTRAINT ck_carrera_duracion CHECK (duracion_anios > 0),
+    CONSTRAINT ck_carrera_estado CHECK (estado IN ('ACTIVA', 'INACTIVA'))
 );
 
 CREATE TABLE plan_estudio (
-    id_plan       INTEGER GENERATED ALWAYS AS IDENTITY,
-    id_carrera    INTEGER      NOT NULL,
-    nombre        VARCHAR(100) NOT NULL,
-    anio_vigencia INTEGER      NOT NULL,
+    id_plan         INTEGER GENERATED ALWAYS AS IDENTITY,
+    id_carrera      INTEGER      NOT NULL,
+    codigo          VARCHAR(50)  NOT NULL,
+    nombre          VARCHAR(100) NOT NULL,
+    anio_aprobacion INTEGER      NOT NULL,
+    estado          VARCHAR(10)  NOT NULL DEFAULT 'VIGENTE',
     CONSTRAINT pk_plan_estudio PRIMARY KEY (id_plan),
     CONSTRAINT fk_plan_carrera FOREIGN KEY (id_carrera) REFERENCES carrera (id_carrera),
     CONSTRAINT uk_plan_carrera_nombre UNIQUE (id_carrera, nombre),
-    CONSTRAINT ck_plan_anio CHECK (anio_vigencia >= 1900)
+    CONSTRAINT uk_plan_codigo UNIQUE (codigo),
+    CONSTRAINT ck_plan_anio CHECK (anio_aprobacion >= 1900),
+    CONSTRAINT ck_plan_estado CHECK (estado IN ('VIGENTE', 'CERRADO'))
 );
 
 -- ============================================================
@@ -184,25 +193,35 @@ CREATE TABLE ciclo_lectivo (
 
 CREATE TABLE curso (
     id_curso         INTEGER GENERATED ALWAYS AS IDENTITY,
+    codigo           VARCHAR(40) NOT NULL,
     nombre           VARCHAR(30) NOT NULL,
     turno            VARCHAR(10) NOT NULL DEFAULT 'MANANA',
     capacidad_maxima INTEGER     NOT NULL,   -- RN03
+    aula             VARCHAR(100),
     id_ciclo         INTEGER     NOT NULL,
     id_carrera       INTEGER     NOT NULL,
+    id_plan          INTEGER     NOT NULL,
     CONSTRAINT pk_curso PRIMARY KEY (id_curso),
     CONSTRAINT fk_curso_ciclo FOREIGN KEY (id_ciclo) REFERENCES ciclo_lectivo (id_ciclo),
     CONSTRAINT fk_curso_carrera FOREIGN KEY (id_carrera) REFERENCES carrera (id_carrera),
+    CONSTRAINT fk_curso_plan FOREIGN KEY (id_plan) REFERENCES plan_estudio (id_plan),
     CONSTRAINT uk_curso_nombre UNIQUE (nombre, id_ciclo, id_carrera),
+    CONSTRAINT uk_curso_codigo UNIQUE (codigo),
     CONSTRAINT ck_curso_capacidad CHECK (capacidad_maxima > 0),
     CONSTRAINT ck_curso_turno CHECK (turno IN ('MANANA', 'TARDE', 'NOCHE'))
 );
 
 CREATE TABLE materia (
-    id_materia INTEGER GENERATED ALWAYS AS IDENTITY,
-    nombre     VARCHAR(80) NOT NULL,
-    activa     BOOLEAN     NOT NULL DEFAULT TRUE,
+    id_materia      INTEGER GENERATED ALWAYS AS IDENTITY,
+    codigo          VARCHAR(40) NOT NULL,
+    nombre          VARCHAR(80) NOT NULL,
+    regimen         VARCHAR(15) NOT NULL DEFAULT 'ANUAL',
+    horas_semanales INTEGER,
+    activa          BOOLEAN     NOT NULL DEFAULT TRUE,
     CONSTRAINT pk_materia PRIMARY KEY (id_materia),
-    CONSTRAINT uk_materia_nombre UNIQUE (nombre)
+    CONSTRAINT uk_materia_nombre UNIQUE (nombre),
+    CONSTRAINT ck_materia_regimen CHECK (regimen IN ('ANUAL', 'CUATRIMESTRAL')),
+    CONSTRAINT ck_materia_horas CHECK (horas_semanales IS NULL OR horas_semanales > 0)
 );
 
 CREATE TABLE plan_materia (
@@ -340,6 +359,7 @@ CREATE TABLE calificacion (
     id_evaluacion   INTEGER NOT NULL,
     id_alumno       INTEGER NOT NULL,
     nota            INTEGER NOT NULL,
+    observacion     VARCHAR(100),
     CONSTRAINT pk_calificacion PRIMARY KEY (id_calificacion),
     CONSTRAINT fk_calificacion_evaluacion FOREIGN KEY (id_evaluacion) REFERENCES evaluacion (id_evaluacion),
     CONSTRAINT fk_calificacion_alumno FOREIGN KEY (id_alumno) REFERENCES alumno (id_alumno),
@@ -369,16 +389,20 @@ CREATE TABLE asistencia (
 CREATE TABLE mesa_examen (
     id_mesa    INTEGER GENERATED ALWAYS AS IDENTITY,
     id_materia INTEGER NOT NULL,
-    id_docente INTEGER NOT NULL,
+    id_docente INTEGER,
     fecha      DATE    NOT NULL,
     cupo       INTEGER NOT NULL,
     tribunal   VARCHAR(150),
     turno      VARCHAR(10) DEFAULT 'MANANA',
+    hora       VARCHAR(8),
+    aula       VARCHAR(50),
+    estado     VARCHAR(20) DEFAULT 'ABIERTA',
     CONSTRAINT pk_mesa_examen PRIMARY KEY (id_mesa),
     CONSTRAINT fk_mesa_materia FOREIGN KEY (id_materia) REFERENCES materia (id_materia),
     CONSTRAINT fk_mesa_docente FOREIGN KEY (id_docente) REFERENCES docente (id_docente),
     CONSTRAINT ck_mesa_cupo CHECK (cupo > 0),
-    CONSTRAINT ck_mesa_turno CHECK (turno IS NULL OR turno IN ('MANANA', 'TARDE', 'NOCHE'))
+    CONSTRAINT ck_mesa_turno CHECK (turno IS NULL OR turno IN ('MANANA', 'TARDE', 'NOCHE')),
+    CONSTRAINT ck_mesa_estado CHECK (estado IN ('ABIERTA', 'CERRADA', 'FINALIZADA'))
 );
 
 CREATE TABLE inscripcion_mesa (

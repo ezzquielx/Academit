@@ -10,4 +10,14 @@ public interface CursoMateriaRepository extends JpaRepository<CursoMateria, Inte
     List<CursoMateria> findByCursoId(Integer idCurso);
 
     List<CursoMateria> findByDocenteId(Integer idDocente);
+
+    List<CursoMateria> findByCursoIdIn(List<Integer> idCursos);
+
+    List<CursoMateria> findByMateriaId(Integer idMateria);
+
+    List<CursoMateria> findByCursoIdAndMateriaId(Integer idCurso, Integer idMateria);
+
+    boolean existsByCursoIdAndMateriaId(Integer idCurso, Integer idMateria);
+
+    boolean existsByCursoIdAndMateriaIdAndDocenteId(Integer idCurso, Integer idMateria, Integer idDocente);
 }
