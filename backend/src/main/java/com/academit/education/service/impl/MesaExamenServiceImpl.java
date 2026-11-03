@@ -232,7 +232,8 @@ public class MesaExamenServiceImpl implements MesaExamenService {
             throw new AccessDeniedException(
                     "La inscripción a mesas es solo para alumnos");
         }
-        return usuario.getAlumno();
+        return alumnoRepository.findById(usuario.getAlumno().getId())
+                .orElse(usuario.getAlumno());
     }
 
     private String validarTurno(String turno) {
