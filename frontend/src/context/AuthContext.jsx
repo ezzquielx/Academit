@@ -63,11 +63,17 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
+  const sessionUser =
+    session?.usuario && typeof session.usuario === 'object' ? session.usuario : session
+
   const value = {
     user: session,
-    usuario: session?.usuario || null,
-    rol: session?.rol || null,
-    nombre: session?.nombre || null,
+    token: session?.token || null,
+    idUsuario: sessionUser?.idUsuario || null,
+    usuario: sessionUser?.username || (typeof session?.usuario === 'string' ? session.usuario : null),
+    rol: sessionUser?.rol || session?.rol || null,
+    nombre: sessionUser?.nombre || session?.nombre || null,
+    email: sessionUser?.email || session?.email || null,
     isAuthenticated: Boolean(session),
     login,
     logout,

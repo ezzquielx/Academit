@@ -47,15 +47,6 @@ WHERE p.nombre = 'Plan 2024';
 -- Correlatividades de ejemplo (RN24)
 INSERT INTO correlativa (id_plan, id_materia, id_materia_requerida)
 SELECT p.id_plan, m.id_materia, r.id_materia
-FROM (VALUES ('Programación II', 'Programación I'),
-             ('Bases de Datos', 'Programación I')
-     ) AS v(materia, requerida)
-JOIN materia m ON m.nombre = v.materia
-JOIN materia r ON r.nombre = v.requerida
-JOIN plan_estudio p ON p.nombre = 'Plan 2024';
-
-INSERT INTO correlativa (id_plan, id_materia, id_materia_requerida)
-SELECT p.id_plan, m.id_materia, r.id_materia
 FROM plan_estudio p
 JOIN (VALUES ('Programación II', 'Programación I'),
              ('Bases de Datos', 'Programación I'),
