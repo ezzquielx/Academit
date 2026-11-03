@@ -36,7 +36,7 @@
 | [x] | Módulo Declaraciones Juradas (2 de 2 endpoints listos) | `alumnos`, `ciclos-lectivos`, `materias` | Mateo (implementado por Alfredo en `feature/back-declaraciones-juradas`) | [Ficha](backend/guia-de-modulos.md#519-módulo-declaraciones-juradas-declaraciones-juradas) |
 | [ ] | Módulo Documentación y Legajos (2 de 2 endpoints pendientes) | `alumnos` | Matias | [Ficha](backend/guia-de-modulos.md#520-módulo-documentación-y-legajos-documentacion) |
 | [ ] | Módulo Solicitudes y Trámites (3 de 3 endpoints pendientes) | `alumnos`, `usuarios` | Matias | [Ficha](backend/guia-de-modulos.md#521-módulo-solicitudes-y-trámites-solicitudes) |
-| [ ] | Tarea programada para marcar cuotas impagas como vencidas | `matriculas`, `cuotas` | Matias | RN07, RF30 |
+| [x] | Tarea programada para marcar cuotas impagas como vencidas | `matriculas`, `cuotas` | Matias | RN07, RF30 |
 | [ ] | Verificar permisos por rol (`x-roles`) y tests Mockito/WebMvc en cada controller | Módulos respectivos | Todos (en su módulo) | [guia-de-modulos.md](backend/guia-de-modulos.md#3-plantilla-de-un-módulo-pasos-de-desarrollo) |
 
 ## 3. Integración con el Frontend
