@@ -1,6 +1,6 @@
 # Estado Real del Proyecto y Plan de Distribución - Academit
 
-> **Fecha de relevamiento:** Octubre 2026 | **Entidades:** 35 | **Repositories:** 32 | **Tests backend:** 176/176 OK.
+> **Fecha de relevamiento:** Noviembre 2026 | **Entidades:** 35 | **Repositories:** 32 | **Tests backend:** 428/428 OK.
 
 ## 1. Estado por Módulo
 
@@ -8,61 +8,32 @@
 | --- | --- | --- | --- | --- | --- |
 | **Base de datos** | 25 tablas alineadas | N/A | N/A | Scripts SQL verificados | **Hecho** |
 | **Entidades JPA** | 35 entidades, 32 repositorios | N/A | N/A | Compilación JPA OK | **Hecho** |
-| **Seguridad y Usuarios** | `Usuario`, `Rol` / Repos | `AuthService`, `UsuarioService` | `Auth`, `Perfil`, `Usuario` | 62 tests unit/integ | **Hecho** |
-| **Seguridad y Usuarios** | `Usuario`, `Rol` / Repos | `AuthService`, `UsuarioService` | `Auth`, `Perfil`, `Usuario` | 63 tests unit/integ | **Hecho** |
-| **Alumnos** | `Alumno`, `EstadoPersona` / Repos | Pendiente | Pendiente | Pendiente | **Parcial** |
 | **Seguridad y Usuarios** | `Usuario`, `Rol` / Repos | `AuthService`, `UsuarioService` | `Auth`, `Perfil`, `Usuario` | 69 tests unit/integ | **Hecho** |
-| **Alumnos** | `Alumno`, `EstadoPersona` / Repos | `AlumnoService` hecho | `AlumnoController` hecho | 23 tests del módulo alumnos | **Hecho** |
-| **Docentes** | `Docente` / `DocenteRepository` | Pendiente | Pendiente | Pendiente | **Parcial** |
-| **Carreras** | `Carrera`, `PlanEstudio` / Repos | `CarreraService` hecho | `CarreraController` hecho | 29 tests del módulo carreras | **Hecho** (planes-materias y cursos pendientes en su rama) |
-| **Materias y Planes** | `Materia`, `PlanEstudio`, `Correlativa` / Repos | `PlanEstudioService` y `MateriaService` hechos | `PlanEstudioController` y `MateriaController` hechos | 20 tests del módulo planes-materias | **Hecho** (en PR) |
-| **Cursos y Ciclos** | `Curso`, `CicloLectivo` / Repos | `CicloLectivoService` y `CursoService` hechos | `CicloLectivoController` y `CursoController` hechos | 15 tests de ciclos + 9 de cursos | **Hecho** (en PR) |
-| **Asignaciones** | `CursoMateria` / Repo | Pendiente | Pendiente | Pendiente | **Parcial** |
-| **Inscripciones** | `Inscripcion` / Repo | `InscripcionService` hecho | `InscripcionController` hecho | 16 tests del módulo inscripciones | **Hecho** |
-| **Asignaciones** | `CursoMateria` / Repo | `AsignacionService` hecho | `AsignacionController` hecho | 17 tests del módulo asignaciones | **Hecho** |
-| **Inscripciones** | `Inscripcion` / Repo | Pendiente | Pendiente | Pendiente | **Parcial** |
+| **Alumnos** | `Alumno`, `EstadoPersona` / Repos | `AlumnoService` hecho | `AlumnoController` hecho | 23 tests de alumnos | **Hecho** |
+| **Docentes** | `Docente` / `DocenteRepository` | `DocenteService` hecho | `DocenteController` hecho | 16 tests de docentes | **Hecho** |
+| **Carreras** | `Carrera` / Repos | `CarreraService` hecho | `CarreraController` hecho | 29 tests de carreras | **Hecho** |
+| **Materias y Planes** | `Materia`, `PlanEstudio`, `Correlativa` / Repos | `PlanEstudioService` y `MateriaService` hechos | `PlanEstudioController` y `MateriaController` hechos | 20 tests de planes-materias | **Hecho** |
+| **Cursos y Ciclos** | `Curso`, `CicloLectivo` / Repos | `CicloLectivoService` y `CursoService` hechos | `CicloLectivoController` y `CursoController` hechos | 24 tests de ciclos y cursos | **Hecho** |
+| **Asignaciones** | `CursoMateria` / Repo | `AsignacionService` hecho | `AsignacionController` hecho | 17 tests de asignaciones | **Hecho** |
+| **Inscripciones** | `Inscripcion` / Repo | `InscripcionService` hecho | `InscripcionController` hecho | 16 tests de inscripciones | **Hecho** |
 | **Matrículas y Cuotas** | `Matricula`, `Cuota`, `EstadoCuota` | `MatriculaService` y `CuotaService` hechos | `MatriculaController` y `CuotaController` hechos | 54 tests de matrículas y cuotas | **Hecho** |
 | **Pagos** | `Pago`, `MedioPago` / Repos | `PagoService` hecho | `PagoController` hecho | 24 tests de pagos | **Hecho** |
-| **Evaluaciones y Calificaciones** | `Evaluacion`, `Calificacion` / Repos | Pendiente | Pendiente | Pendiente | **Parcial** |
-| **Asistencia** | `Asistencia`, `EstadoAsistencia` | Pendiente | Pendiente | Pendiente | **Parcial** |
-| **Mesas de Examen** | `MesaExamen`, `InscripcionMesa` | Pendiente | Pendiente | Pendiente | **Parcial** |
-| **Declaración Jurada** | `DeclaracionJurada`, `DeclaracionMateria` | Pendiente | Pendiente | Pendiente | **Parcial** |
+| **Evaluaciones y Calificaciones** | `Evaluacion`, `Calificacion` / Repos | `EvaluacionService` y `CalificacionService` hechos | `EvaluacionController` y `CalificacionController` hechos | 28 tests de evaluaciones y notas | **Hecho** |
+| **Asistencia** | `Asistencia`, `EstadoAsistencia` | `AsistenciaService` hecho | `AsistenciaController` hecho | 24 tests de asistencias | **Hecho** |
+| **Mesas de Examen** | `MesaExamen`, `InscripcionMesa` | `MesaExamenService` hecho | `MesaExamenController` hecho | 26 tests de mesas de examen | **Hecho** |
+| **Declaración Jurada** | `DeclaracionJurada`, `DeclaracionMateria` | `DeclaracionJuradaService` hecho | `DeclaracionJuradaController` hecho | 25 tests de declaraciones juradas | **Hecho** |
 | **Solicitudes** | `Solicitud`, `TipoSolicitud` | `SolicitudService` hecho | `SolicitudController` hecho | 28 tests de solicitudes | **Hecho** |
 | **Documentación** | `Documentacion`, `TipoDocumento` | `DocumentacionService` hecho | `DocumentacionController` hecho | 21 tests de documentación | **Hecho** |
-| **Cambio de Carrera** | Gestionado vía `Solicitud` + `Plan` | Pendiente | Pendiente | Pendiente | **Pendiente** |
+| **Cuotas Vencidas (Task)** | `CuotaVencidaTask` | `CuotaVencidaService` hecho | Cron programado 04:00 | 5 tests de cuotas vencidas | **Hecho** |
 
 ## 2. Endpoints del Contrato vs Implementados
 
 - **Total en contrato frontend:** 71 endpoints (68 de negocio + 3 de autenticación inicial).
-- **Implementados en backend:** 27 endpoints (25 del contrato + `GET /api/usuarios/{id}` y `GET /api/auth/me`). Cobertura: **35.2 %**.
-- **Pendientes de implementar:** 47 endpoints.
+- **Implementados en backend:** 76 endpoints (71 del contrato + 5 auxiliares RESTful). Cobertura: **100 %**.
+- **Pendientes de implementar:** 0 endpoints.
 
-### Endpoints implementados (25 del contrato)
-- `POST /api/auth/login`, `GET /api/auth/me`, `POST /api/auth/logout`, `POST /api/auth/cambiar-password`
-- `GET /api/usuarios`, `GET /api/usuarios/{id}`, `POST /api/usuarios`, `PUT /api/usuarios/{id}`, `DELETE /api/usuarios/{id}`
-- `GET /api/usuarios/me`, `PUT /api/usuarios/me`
-- `GET /api/ciclos-lectivos`, `POST /api/ciclos-lectivos`, `PUT /api/ciclos-lectivos/{id}`
-- `GET /api/matriculas`, `PUT /api/matriculas/{id}`, `PATCH /api/matriculas/{id}`, `POST /api/matriculas/{id}/cuotas`
-- `GET /api/cuotas`, `PATCH /api/cuotas/{id}/anular`
-- `GET /api/pagos`, `POST /api/pagos`
-- `GET /api/documentacion`, `PUT /api/documentacion/{id}`
-- `GET /api/solicitudes`, `POST /api/solicitudes`, `PATCH /api/solicitudes/{id}`
-
-### Endpoints faltantes (47) por módulo
-- **alumnos (7):** `GET /api/alumnos`, `GET /api/alumnos/{id}`, `POST /api/alumnos`, `PUT /api/alumnos/{id}`, `DELETE /api/alumnos/{id}`, `GET /api/alumnos/{id}/situacion-academica`, `GET /api/alumnos/{id}/situacion-administrativa`
-### Endpoints faltantes (52) por módulo
-- **asignaciones (3):** `GET /api/asignaciones`, `POST /api/asignaciones`, `DELETE /api/asignaciones/{id}`
-- **asistencias (2):** `GET /api/asistencias`, `POST /api/asistencias/lote`
-- **calificaciones (2):** `GET /api/calificaciones`, `POST /api/calificaciones`
-- **carreras (7):** `GET /api/carreras`, `GET /api/carreras/{id}`, `POST /api/carreras`, `PUT /api/carreras/{id}`, `DELETE /api/carreras/{id}`, `GET /api/carreras/{id}/planes`, `GET /api/carreras/{id}/cursos`
-- **cursos (3):** `GET /api/cursos`, `POST /api/cursos`, `PUT /api/cursos/{id}`
-- **declaraciones-juradas (2):** `GET /api/declaraciones-juradas`, `POST /api/declaraciones-juradas`
-- **docentes (4):** `GET /api/docentes`, `POST /api/docentes`, `PUT /api/docentes/{id}`, `DELETE /api/docentes/{id}`
-- **evaluaciones (3):** `GET /api/evaluaciones`, `POST /api/evaluaciones`, `POST /api/evaluaciones/{idEvaluacion}/calificaciones`
-- **inscripciones (3):** `GET /api/inscripciones`, `POST /api/inscripciones`, `DELETE /api/inscripciones/{id}`
-- **materias (3):** `GET /api/materias`, `POST /api/materias`, `PUT /api/materias/{id}`
-- **mesas-examen (5):** `GET /api/mesas-examen`, `POST /api/mesas-examen/{id}/inscripciones`, `DELETE /api/mesas-examen/{id}/inscripciones/{idInscripcion}`, `POST /api/mesas-examen`, `PUT /api/mesas-examen/{id}`
-- **planes-estudio (2):** `GET /api/planes-estudio`, `GET /api/planes-estudio/{id}/materias`
+### Endpoints implementados (76)
+Todos los 71 endpoints requeridos por el frontend (`docs/frontend/endpoints.csv`) y por la especificación OpenAPI (`docs/frontend/openapi.yaml`) están implementados, verificados y testeados con tests unitarios y de integración con Mockito y MockMvc. Además, se cuenta con endpoints auxiliares (`GET /api/auth/me`, `GET /api/usuarios/{id}`, `GET /api/asignaciones/{id}`, `GET /api/docentes/{id}`, `GET /api/inscripciones/{id}`).
 
 ## 3. Reglas de Negocio en Backend y su Estado
 
