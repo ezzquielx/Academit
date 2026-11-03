@@ -14,13 +14,17 @@
 | [ ] | Tarea | Depende de | Dueño | Referencia |
 | :---: | :--- | :--- | :--- | :--- |
 | [x] | Módulo Ciclos Lectivos (3 de 3 endpoints pendientes) | `auth`, `usuarios` | Alfredo | [Ficha](backend/guia-de-modulos.md#54-módulo-ciclos-lectivos-ciclos-lectivos) |
-| [ ] | Módulo Carreras (7 de 7 endpoints pendientes) | `auth`, `usuarios` | Alfredo | [Ficha](backend/guia-de-modulos.md#53-módulo-carreras-carreras) |
-| [ ] | Módulo Planes de Estudio (2 de 2 endpoints pendientes) | `carreras` | Alfredo | [Ficha](backend/guia-de-modulos.md#56-módulo-planes-de-estudio-planes-estudio) |
+| [x] | Módulo Carreras (7 de 7 endpoints implementados; en PR) | `auth`, `usuarios` | Alfredo | [Ficha](backend/guia-de-modulos.md#53-módulo-carreras-carreras) |
+| [x] | Módulo Planes de Estudio (2 de 2 endpoints implementados; en PR) | `carreras` | Alfredo | [Ficha](backend/guia-de-modulos.md#56-módulo-planes-de-estudio-planes-estudio) |
 | [ ] | Módulo Materias (3 de 3 endpoints pendientes) | `planes-estudio` | Alfredo | [Ficha](backend/guia-de-modulos.md#55-módulo-materias-materias) |
 | [ ] | Módulo Alumnos (7 de 7 endpoints pendientes) | `ciclos-lectivos`, `planes-estudio` | Santiago | [Ficha](backend/guia-de-modulos.md#57-módulo-alumnos-alumnos) |
+| [x] | Módulo Docentes (4 de 4 endpoints listos) | `auth`, `usuarios` | Santiago | [Ficha](backend/guia-de-modulos.md#58-módulo-docentes-docentes) |
+| [x] | Módulo Alumnos (7 de 7 endpoints listos) | `ciclos-lectivos`, `planes-estudio` | Santiago | [Ficha](backend/guia-de-modulos.md#57-módulo-alumnos-alumnos) |
 | [ ] | Módulo Docentes (4 de 4 endpoints pendientes) | `auth`, `usuarios` | Santiago | [Ficha](backend/guia-de-modulos.md#58-módulo-docentes-docentes) |
-| [ ] | Módulo Cursos (3 de 3 endpoints pendientes) | `ciclos-lectivos`, `carreras` | Alfredo | [Ficha](backend/guia-de-modulos.md#510-módulo-cursos-comisiones-cursos) |
+| [x] | Módulo Cursos (3 de 3 endpoints implementados; en PR) | `ciclos-lectivos`, `carreras` | Alfredo | [Ficha](backend/guia-de-modulos.md#510-módulo-cursos-comisiones-cursos) |
 | [ ] | Módulo Asignaciones Docentes (3 de 3 endpoints pendientes) | `cursos`, `materias`, `docentes` | Santiago | [Ficha](backend/guia-de-modulos.md#59-módulo-asignaciones-docentes-asignaciones) |
+| [x] | Módulo Inscripciones a Cursos (3 de 3 endpoints listos) | `alumnos`, `cursos`, `ciclos-lectivos` | Santiago | [Ficha](backend/guia-de-modulos.md#511-módulo-inscripciones-a-cursos-inscripciones) |
+| [x] | Módulo Asignaciones Docentes (3 de 3 endpoints listos) | `cursos`, `materias`, `docentes` | Santiago | [Ficha](backend/guia-de-modulos.md#59-módulo-asignaciones-docentes-asignaciones) |
 | [ ] | Módulo Inscripciones a Cursos (3 de 3 endpoints pendientes) | `alumnos`, `cursos`, `ciclos-lectivos` | Santiago | [Ficha](backend/guia-de-modulos.md#511-módulo-inscripciones-a-cursos-inscripciones) |
 | [x] | Módulo Matrículas Anuales (4 de 4 endpoints) | `alumnos`, `ciclos-lectivos` | Matias | [Ficha](backend/guia-de-modulos.md#513-módulo-matrículas-anuales-matriculas) |
 | [x] | Módulo Cuotas y Aranceles (2 de 2 endpoints) | `matriculas` | Matias | [Ficha](backend/guia-de-modulos.md#512-módulo-cuotas-y-aranceles-cuotas) |

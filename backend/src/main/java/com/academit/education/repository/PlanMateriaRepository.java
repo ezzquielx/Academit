@@ -9,4 +9,11 @@ import java.util.List;
 public interface PlanMateriaRepository extends JpaRepository<PlanMateria, PlanMateriaId> {
 
     List<PlanMateria> findByPlanId(Integer idPlan);
+
+    List<PlanMateria> findByMateriaId(Integer idMateria);
+
+    /** GET /api/materias?idCarrera=...: filtra por la carrera del plan. */
+    List<PlanMateria> findByPlanCarreraId(Integer idCarrera);
+
+    boolean existsByIdIdPlanAndIdIdMateria(Integer idPlan, Integer idMateria);
 }

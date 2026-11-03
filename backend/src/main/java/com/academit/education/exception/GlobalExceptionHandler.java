@@ -103,9 +103,20 @@ public class GlobalExceptionHandler {
                 HttpStatus.BAD_REQUEST,
                 "Regla de negocio violada",
                 ex.getMessage(),
-                List.of()
+                ex.getErrors()
         );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(pd);
+    }
+
+    @ExceptionHandler(ConflictException.class)
+    public ResponseEntity<ProblemDetail> handleConflictException(ConflictException ex) {
+        ProblemDetail pd = buildProblemDetail(
+                HttpStatus.CONFLICT,
+                "Conflicto con el estado del recurso",
+                ex.getMessage(),
+                List.of()
+        );
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(pd);
     }
 
     @ExceptionHandler(BadCredentialsException.class)

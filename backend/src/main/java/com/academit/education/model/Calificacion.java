@@ -28,4 +28,8 @@ public class Calificacion {
 
     @Column(name = "nota", nullable = false)
     private Integer nota;
+
+    /** Observación del docente sobre la nota (contrato: CalificacionDTO.observacion). */
+    @Column(name = "observacion", nullable = true, length = 100)
+    private String observacion;
 }
