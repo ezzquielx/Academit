@@ -9,4 +9,7 @@ import java.util.List;
 public interface CorrelativaRepository extends JpaRepository<Correlativa, CorrelativaId> {
 
     List<Correlativa> findByIdIdPlanAndIdIdMateria(Integer idPlan, Integer idMateria);
+
+    /** Todas las correlatividades del plan (grafo para detectar ciclos RN24). */
+    List<Correlativa> findByIdIdPlan(Integer idPlan);
 }

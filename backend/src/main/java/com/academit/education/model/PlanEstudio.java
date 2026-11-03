@@ -22,9 +22,15 @@ public class PlanEstudio {
     @JoinColumn(name = "id_carrera", nullable = false)
     private Carrera carrera;
 
+    @Column(name = "codigo", nullable = false, length = 50)
+    private String codigo;
+
     @Column(name = "nombre", nullable = false, length = 100)
     private String nombre;
 
-    @Column(name = "anio_vigencia", nullable = false)
-    private Integer anioVigencia;
+    @Column(name = "anio_aprobacion", nullable = false)
+    private Integer anioAprobacion;
+
+    @Column(name = "estado", nullable = false, length = 10)
+    private String estado;
 }
