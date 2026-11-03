@@ -217,15 +217,14 @@ Los módulos de una misma ola se pueden desarrollar en paralelo:
 - **Preguntas abiertas:** Regeneración de cuotas si la matrícula se reactiva; importes y vencimientos de las cuotas generadas (ver decisiones abiertas en `docs/estado-del-proyecto.md`).
 
 ### 5.14 Módulo: Pagos y Comprobantes (`pagos`)
-- **Estado actual:** Parcial | **Rama sugerida:** `feature/back-pagos` | **Ola:** 6
+- **Estado actual:** Hecho | **Rama sugerida:** `feature/back-pagos` | **Ola:** 6
 - **Entidades y tablas:** `Pago` (`pago`), `MedioPagoEnum`
 - **Dependencias:** `matriculas`, `cuotas`, `alumnos`
-- **Campos calculados:** `alumnoNombre`, `cuotaConcepto`
+- **Campos calculados:** `idAlumno`, `alumnoNombre`, `concepto`, `estado` (ACREDITADO)
 - **Reglas de negocio aplicables:** RF32, RF33, RN08, RN09, RN10 (pago total obligatorio, comprobante AAAA-NNNNNN)
-- **Endpoints pendientes (2 de 2 pendientes; 0 listos):**
-  - `GET /api/pagos` [ADMINISTRATIVO, ADMINISTRADOR, ALUMNO]
-  - `POST /api/pagos` [ADMINISTRATIVO, ADMINISTRADOR]
-- **Preguntas abiertas:** Validación de medio de pago contra catálogo institucional.
+- **Endpoints pendientes (0 de 2 pendientes; 2 listos):**
+  - *Todos los endpoints implementados.*
+- **Preguntas abiertas:** medio de pago `TARJETA_CREDITO`/`TARJETA_DEBITO` resuelto a `TARJETA` del catálogo (ver decisiones abiertas en `docs/estado-del-proyecto.md`).
 
 ### 5.15 Módulo: Asistencias (`asistencias`)
 - **Estado actual:** Parcial | **Rama sugerida:** `feature/back-asistencias` | **Ola:** 7
