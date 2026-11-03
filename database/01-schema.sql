@@ -389,16 +389,20 @@ CREATE TABLE asistencia (
 CREATE TABLE mesa_examen (
     id_mesa    INTEGER GENERATED ALWAYS AS IDENTITY,
     id_materia INTEGER NOT NULL,
-    id_docente INTEGER NOT NULL,
+    id_docente INTEGER,
     fecha      DATE    NOT NULL,
     cupo       INTEGER NOT NULL,
     tribunal   VARCHAR(150),
     turno      VARCHAR(10) DEFAULT 'MANANA',
+    hora       VARCHAR(8),
+    aula       VARCHAR(50),
+    estado     VARCHAR(20) DEFAULT 'ABIERTA',
     CONSTRAINT pk_mesa_examen PRIMARY KEY (id_mesa),
     CONSTRAINT fk_mesa_materia FOREIGN KEY (id_materia) REFERENCES materia (id_materia),
     CONSTRAINT fk_mesa_docente FOREIGN KEY (id_docente) REFERENCES docente (id_docente),
     CONSTRAINT ck_mesa_cupo CHECK (cupo > 0),
-    CONSTRAINT ck_mesa_turno CHECK (turno IS NULL OR turno IN ('MANANA', 'TARDE', 'NOCHE'))
+    CONSTRAINT ck_mesa_turno CHECK (turno IS NULL OR turno IN ('MANANA', 'TARDE', 'NOCHE')),
+    CONSTRAINT ck_mesa_estado CHECK (estado IN ('ABIERTA', 'CERRADA', 'FINALIZADA'))
 );
 
 CREATE TABLE inscripcion_mesa (

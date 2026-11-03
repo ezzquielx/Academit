@@ -147,8 +147,10 @@ public class AsistenciaServiceImpl implements AsistenciaService {
         List<FieldErrorDTO> errores = new ArrayList<>();
 
         // Cachés de la base para el lote
-        Set<Integer> alumnosIds = request.getAsistencias().stream()
-                .map(AsistenciasLoteDTO.Item::getIdAlumno).collect(Collectors.toSet());
+        List<Integer> alumnosIds = request.getAsistencias().stream()
+                .map(AsistenciasLoteDTO.Item::getIdAlumno)
+                .distinct()
+                .toList();
         Map<Integer, Alumno> alumnos = alumnoRepository.findAllById(alumnosIds).stream()
                 .collect(Collectors.toMap(Alumno::getId, Function.identity()));
 
