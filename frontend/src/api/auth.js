@@ -61,6 +61,58 @@ export const logoutApi = async () => {
 }
 
 /**
+ * Registra a un nuevo alumno en el sistema.
+ * REST: POST /api/auth/registro
+ * @param {Object} data - Datos personales, carrera, plan, username y password
+ * @returns {Promise<Object>} Datos del alumno autenticado y token
+ */
+export const registroApi = async (data) => {
+  if (isMock) {
+    await new Promise((resolve) => setTimeout(resolve, 300))
+    const nuevoUsuario = {
+      idUsuario: 999,
+      username: data.username,
+      nombre: `${data.nombre} ${data.apellido}`,
+      rol: 'ALUMNO',
+      email: data.email,
+    }
+    return {
+      token: 'mock-token-jwt',
+      usuario: nuevoUsuario,
+    }
+  }
+
+  const response = await apiClient.post('/auth/registro', data)
+  return response.data
+}
+
+/**
+ * Obtiene las carreras disponibles para aspirantes y nuevos estudiantes (público).
+ * REST: GET /api/auth/carreras
+ * @returns {Promise<Array<Object>>}
+ */
+export const getOfertaCarrerasApi = async () => {
+  if (isMock) {
+    return [...mockDb.carreras]
+  }
+  const response = await apiClient.get('/auth/carreras')
+  return response.data
+}
+
+/**
+ * Obtiene los planes de estudio disponibles para aspirantes y nuevos estudiantes (público).
+ * REST: GET /api/auth/planes-estudio
+ * @returns {Promise<Array<Object>>}
+ */
+export const getOfertaPlanesApi = async () => {
+  if (isMock) {
+    return [...mockDb.planesEstudio]
+  }
+  const response = await apiClient.get('/auth/planes-estudio')
+  return response.data
+}
+
+/**
  * Modifica la contraseña del usuario en sesión.
  * REST: POST /api/auth/cambiar-password
  * @param {string} actual - Contraseña vigente

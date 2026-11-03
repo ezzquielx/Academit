@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom'
 import { MENU_GRUPOS } from './config/menu'
 import ProtectedRoute from './components/ProtectedRoute'
 import Login from './pages/Login'
+import Registro from './pages/Registro'
 import NotFound from './pages/NotFound'
 
 /**
@@ -15,8 +16,9 @@ export const AppRoutes = () => {
 
   return (
     <Routes>
-      {/* 1. Ruta pública de acceso */}
+      {/* 1. Rutas públicas de acceso y registro */}
       <Route path="/login" element={<Login />} />
+      <Route path="/registro" element={<Registro />} />
 
       {/* 2. Rutas generadas automáticamente desde MENU_GRUPOS */}
       {todasLasRutas.map((item) => {

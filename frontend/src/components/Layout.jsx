@@ -84,8 +84,8 @@ export const Layout = ({ children }) => {
     }
   }, [])
 
-  // Si no está autenticado o está en login, renderizar children directamente
-  if (!isAuthenticated || location.pathname === '/login') {
+  // Si no está autenticado o está en login/registro, renderizar children directamente
+  if (!isAuthenticated || location.pathname === '/login' || location.pathname === '/registro') {
     return <main>{children}</main>
   }
 

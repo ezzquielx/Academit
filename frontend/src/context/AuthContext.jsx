@@ -1,6 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useState } from 'react'
-import { loginApi, logoutApi } from '../api/auth'
+import { loginApi, logoutApi, registroApi } from '../api/auth'
 
 // 
 // AISLAMIENTO DE SESIÓN:
@@ -54,6 +54,13 @@ export const AuthProvider = ({ children }) => {
     return data
   }
 
+  const registro = async (registroData) => {
+    const data = await registroApi(registroData)
+    setSession(data)
+    saveStoredSession(data)
+    return data
+  }
+
   const logout = async () => {
     try {
       await logoutApi()
@@ -76,6 +83,7 @@ export const AuthProvider = ({ children }) => {
     email: sessionUser?.email || session?.email || null,
     isAuthenticated: Boolean(session),
     login,
+    registro,
     logout,
   }
 
