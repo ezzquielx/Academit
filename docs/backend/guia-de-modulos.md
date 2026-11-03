@@ -286,15 +286,14 @@ Los módulos de una misma ola se pueden desarrollar en paralelo:
 - **Preguntas abiertas:** Plazo límite de recepción de DDJJ en el ciclo.
 
 ### 5.20 Módulo: Documentación y Legajos (`documentacion`)
-- **Estado actual:** Parcial | **Rama sugerida:** `feature/back-documentacion` | **Ola:** 8
+- **Estado actual:** Hecho | **Rama sugerida:** `feature/back-documentacion` | **Ola:** 8
 - **Entidades y tablas:** `Documentacion` (`documentacion`), `TipoDocumentacionEnum`
 - **Dependencias:** `alumnos`
 - **Campos calculados:** `alumnoNombre`
-- **Reglas de negocio aplicables:** RF56-RF58, RN17 (verificación física/digital, estados PENDIENTE/ENTREGADO)
-- **Endpoints pendientes (2 de 2 pendientes; 0 listos):**
-  - `GET /api/documentacion` [ALUMNO, ADMINISTRATIVO, ADMINISTRADOR]
-  - `PUT /api/documentacion/{id}` [ADMINISTRATIVO, ADMINISTRADOR]
-- **Preguntas abiertas:** Almacenamiento de adjuntos o solo estado de verificación en legajo.
+- **Reglas de negocio aplicables:** RF56-RF58, RN17 (verificación física/digital, estados PENDIENTE/ENTREGADO/RECHAZADO)
+- **Endpoints pendientes (0 de 2 pendientes; 2 listos):**
+  - *Todos los endpoints implementados.*
+- **Preguntas abiertas:** Almacenamiento de adjuntos o solo estado de verificación en legajo; `fechaEntrega` se registra al marcar ENTREGADO y se limpia al salir de ese estado (ver decisiones abiertas en `docs/estado-del-proyecto.md`).
 
 ### 5.21 Módulo: Solicitudes y Trámites (`solicitudes`)
 - **Estado actual:** Parcial | **Rama sugerida:** `feature/back-solicitudes` | **Ola:** 8
