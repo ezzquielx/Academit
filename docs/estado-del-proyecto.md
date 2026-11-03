@@ -8,13 +8,18 @@
 | --- | --- | --- | --- | --- | --- |
 | **Base de datos** | 25 tablas alineadas | N/A | N/A | Scripts SQL verificados | **Hecho** |
 | **Entidades JPA** | 35 entidades, 32 repositorios | N/A | N/A | Compilación JPA OK | **Hecho** |
-| **Seguridad y Usuarios** | `Usuario`, `Rol` / Repos | `AuthService`, `UsuarioService` | `Auth`, `Perfil`, `Usuario` | 46 tests unit/integ | **Hecho** |
+| **Seguridad y Usuarios** | `Usuario`, `Rol` / Repos | `AuthService`, `UsuarioService` | `Auth`, `Perfil`, `Usuario` | 62 tests unit/integ | **Hecho** |
+| **Seguridad y Usuarios** | `Usuario`, `Rol` / Repos | `AuthService`, `UsuarioService` | `Auth`, `Perfil`, `Usuario` | 63 tests unit/integ | **Hecho** |
 | **Alumnos** | `Alumno`, `EstadoPersona` / Repos | Pendiente | Pendiente | Pendiente | **Parcial** |
+| **Seguridad y Usuarios** | `Usuario`, `Rol` / Repos | `AuthService`, `UsuarioService` | `Auth`, `Perfil`, `Usuario` | 69 tests unit/integ | **Hecho** |
+| **Alumnos** | `Alumno`, `EstadoPersona` / Repos | `AlumnoService` hecho | `AlumnoController` hecho | 23 tests del módulo alumnos | **Hecho** |
 | **Docentes** | `Docente` / `DocenteRepository` | Pendiente | Pendiente | Pendiente | **Parcial** |
-| **Carreras** | `Carrera` / `CarreraRepository` | Pendiente | Pendiente | Pendiente | **Parcial** |
-| **Materias y Planes** | `Materia`, `PlanEstudio`, `Correlativa` | Pendiente | Pendiente | Pendiente | **Parcial** |
-| **Cursos y Ciclos** | `Curso`, `CicloLectivo` / Repos | `CicloLectivoService` hecho; Cursos pendiente | `CicloLectivoController` hecho; Cursos pendiente | 15 tests del módulo ciclos | **Parcial** |
+| **Carreras** | `Carrera`, `PlanEstudio` / Repos | `CarreraService` hecho | `CarreraController` hecho | 29 tests del módulo carreras | **Hecho** (planes-materias y cursos pendientes en su rama) |
+| **Materias y Planes** | `Materia`, `PlanEstudio`, `Correlativa` / Repos | `PlanEstudioService` y `MateriaService` hechos | `PlanEstudioController` y `MateriaController` hechos | 20 tests del módulo planes-materias | **Hecho** (en PR) |
+| **Cursos y Ciclos** | `Curso`, `CicloLectivo` / Repos | `CicloLectivoService` y `CursoService` hechos | `CicloLectivoController` y `CursoController` hechos | 15 tests de ciclos + 9 de cursos | **Hecho** (en PR) |
 | **Asignaciones** | `CursoMateria` / Repo | Pendiente | Pendiente | Pendiente | **Parcial** |
+| **Inscripciones** | `Inscripcion` / Repo | `InscripcionService` hecho | `InscripcionController` hecho | 16 tests del módulo inscripciones | **Hecho** |
+| **Asignaciones** | `CursoMateria` / Repo | `AsignacionService` hecho | `AsignacionController` hecho | 17 tests del módulo asignaciones | **Hecho** |
 | **Inscripciones** | `Inscripcion` / Repo | Pendiente | Pendiente | Pendiente | **Parcial** |
 | **Matrículas y Cuotas** | `Matricula`, `Cuota`, `EstadoCuota` | `MatriculaService` hecho; `CuotaService` pendiente | `MatriculaController` hecho; `CuotaController` pendiente | 35 tests de matrículas | **Parcial** |
 | **Pagos** | `Pago`, `MedioPago` / Repos | Pendiente | Pendiente | Pendiente | **Parcial** |
@@ -41,20 +46,17 @@
 
 ### Endpoints faltantes (55) por módulo
 - **alumnos (7):** `GET /api/alumnos`, `GET /api/alumnos/{id}`, `POST /api/alumnos`, `PUT /api/alumnos/{id}`, `DELETE /api/alumnos/{id}`, `GET /api/alumnos/{id}/situacion-academica`, `GET /api/alumnos/{id}/situacion-administrativa`
+### Endpoints faltantes (52) por módulo
 - **asignaciones (3):** `GET /api/asignaciones`, `POST /api/asignaciones`, `DELETE /api/asignaciones/{id}`
 - **asistencias (2):** `GET /api/asistencias`, `POST /api/asistencias/lote`
 - **calificaciones (2):** `GET /api/calificaciones`, `POST /api/calificaciones`
-- **carreras (7):** `GET /api/carreras`, `GET /api/carreras/{id}`, `POST /api/carreras`, `PUT /api/carreras/{id}`, `DELETE /api/carreras/{id}`, `GET /api/carreras/{id}/planes`, `GET /api/carreras/{id}/cursos`
 - **cuotas (2):** `GET /api/cuotas`, `PATCH /api/cuotas/{id}/anular`
-- **cursos (3):** `GET /api/cursos`, `POST /api/cursos`, `PUT /api/cursos/{id}`
 - **declaraciones-juradas (2):** `GET /api/declaraciones-juradas`, `POST /api/declaraciones-juradas`
-- **docentes (4):** `GET /api/docentes`, `POST /api/docentes`, `PUT /api/docentes/{id}`, `DELETE /api/docentes/{id}`
 - **documentacion (2):** `GET /api/documentacion`, `PUT /api/documentacion/{id}`
 - **evaluaciones (3):** `GET /api/evaluaciones`, `POST /api/evaluaciones`, `POST /api/evaluaciones/{idEvaluacion}/calificaciones`
 - **inscripciones (3):** `GET /api/inscripciones`, `POST /api/inscripciones`, `DELETE /api/inscripciones/{id}`
 - **materias (3):** `GET /api/materias`, `POST /api/materias`, `PUT /api/materias/{id}`
 - **mesas-examen (5):** `GET /api/mesas-examen`, `POST /api/mesas-examen/{id}/inscripciones`, `DELETE /api/mesas-examen/{id}/inscripciones/{idInscripcion}`, `POST /api/mesas-examen`, `PUT /api/mesas-examen/{id}`
-- **pagos (2):** `GET /api/pagos`, `POST /api/pagos`
 - **planes-estudio (2):** `GET /api/planes-estudio`, `GET /api/planes-estudio/{id}/materias`
 - **solicitudes (3):** `GET /api/solicitudes`, `POST /api/solicitudes`, `PATCH /api/solicitudes/{id}`
 
@@ -104,6 +106,10 @@ Registro de criterios que el análisis no define. Se implementaron como están d
 - Asistencia por materia: Columna `id_materia` y unicidad compuesta. Resuelto en `feature/db-alinear-contrato`, integrado en `develop`.
 - Turno en curso y mesa: Columnas `turno` y `tribunal`. Resuelto en `feature/db-alinear-contrato`, integrado en `develop`.
 - Tipos de cuota: `CUOTA_MENSUAL` y `SEGURO_CUATRIMESTRAL`. Resuelto en `feature/db-alinear-contrato`, integrado en `develop`.
+- Esquema de carreras al contrato: `carrera` con `codigo` (único), `titulo_otorgado`, `resolucion` y `estado` (ACTIVA/INACTIVA, reemplaza el booleano `activa`); `plan_estudio` con `codigo`, `estado` (VIGENTE/CERRADO) y `anio_aprobacion` (antes `anio_vigencia`); `curso` con `codigo` (único), `aula` e `id_plan` obligatorio. Resuelto en `feature/back-carreras` (RF53-RF55).
+- `CursoDTO.cicloLectivo` y `CursoCreateDTO.cicloLectivo` usan el **año** del ciclo lectivo (ej. 2026), no su id: coincide con el mock del frontend; el openapi solo lo tipa como entero.
+- Esquema de materias al contrato: `materia` con `codigo`, `regimen` (ANUAL/CUATRIMESTRAL) y `horas_semanales`; el `anio` de la MateriaDTO es el `anio_plan` de `plan_materia` (la materia es un catálogo y el año depende del plan). En el PUT, `anio` y `correlativas` solo se aplican si la materia está en un único plan. Resuelto en `feature/back-planes-materias` (RF47-RF48, RN24).
+- Editar un curso no permite bajar `capacidadMaxima` por debajo de los inscriptos activos (RN03); el cupo se controla al inscribir, no al editar. Resuelto en `feature/back-cursos` (RF14-RF16).
 
 ## 5. Trabajo Restante y Reparto por Ramas
 
