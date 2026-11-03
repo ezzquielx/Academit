@@ -75,7 +75,7 @@ public class GlobalExceptionHandler {
                 HttpStatus.BAD_REQUEST,
                 "Regla de negocio violada",
                 ex.getMessage(),
-                List.of()
+                ex.getErrors()
         );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(pd);
     }
