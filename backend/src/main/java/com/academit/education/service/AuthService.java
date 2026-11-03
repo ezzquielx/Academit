@@ -11,7 +11,7 @@ public interface AuthService {
 
     LoginResponseDTO login(LoginRequestDTO request);
 
-    LoginResponseDTO registrarAlumno(RegistroAlumnoDTO request);
+    ApiResponseDTO registrarAlumno(RegistroAlumnoDTO request);
 
     AuthMeResponseDTO getMe(String username);
 

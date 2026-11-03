@@ -55,10 +55,7 @@ export const AuthProvider = ({ children }) => {
   }
 
   const registro = async (registroData) => {
-    const data = await registroApi(registroData)
-    setSession(data)
-    saveStoredSession(data)
-    return data
+    return await registroApi(registroData)
   }
 
   const logout = async () => {

@@ -125,7 +125,8 @@ class AuthServiceTest {
         when(usuarioRepository.findByUsername("admin")).thenReturn(Optional.of(usuario));
 
         LoginRequestDTO request = new LoginRequestDTO("admin", "Academit123");
-        assertThrows(UnauthorizedException.class, () -> authService.login(request));
+        UnauthorizedException ex = assertThrows(UnauthorizedException.class, () -> authService.login(request));
+        assertTrue(ex.getMessage().contains("Tendrá que esperar hasta que un administrador valide su cuenta"));
     }
 
     @Test
@@ -212,9 +213,9 @@ class AuthServiceTest {
         when(planEstudioRepository.findById(1)).thenReturn(Optional.of(plan));
 
         EstadoPersona estado = new EstadoPersona();
-        estado.setId(1);
-        estado.setNombre("ACTIVO");
-        when(estadoPersonaRepository.findByNombre("ACTIVO")).thenReturn(Optional.of(estado));
+        estado.setId(2);
+        estado.setNombre("INACTIVO");
+        when(estadoPersonaRepository.findByNombre("INACTIVO")).thenReturn(Optional.of(estado));
 
         Rol rol = new Rol();
         rol.setId(3);
@@ -222,7 +223,6 @@ class AuthServiceTest {
         when(rolRepository.findByNombre("ALUMNO")).thenReturn(Optional.of(rol));
 
         when(passwordEncoder.encode("Secret123")).thenReturn("$2b$10$encoded");
-        when(jwtUtil.generateToken("nuevalumno", "ALUMNO", 10)).thenReturn("jwt-token-123");
 
         Alumno savedAlumno = new Alumno();
         savedAlumno.setId(10);
@@ -236,16 +236,16 @@ class AuthServiceTest {
         savedUsuario.setUsername("nuevalumno");
         savedUsuario.setRol(rol);
         savedUsuario.setAlumno(savedAlumno);
+        savedUsuario.setActivo(false);
         when(usuarioRepository.save(any(Usuario.class))).thenReturn(savedUsuario);
 
-        LoginResponseDTO response = authService.registrarAlumno(dto);
+        ApiResponseDTO response = authService.registrarAlumno(dto);
 
         assertNotNull(response);
-        assertEquals("jwt-token-123", response.getToken());
-        assertEquals("nuevalumno", response.getUsuario().getUsername());
-        assertEquals("ALUMNO", response.getUsuario().getRol());
+        assertTrue(response.isSuccess());
+        assertTrue(response.getMessage().contains("Tendrá que esperar hasta que un administrador valide su cuenta"));
         verify(alumnoRepository).save(any(Alumno.class));
-        verify(usuarioRepository).save(any(Usuario.class));
+        verify(usuarioRepository).save(argThat(u -> !Boolean.TRUE.equals(u.getActivo())));
     }
 }
 

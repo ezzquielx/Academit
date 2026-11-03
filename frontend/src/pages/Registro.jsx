@@ -29,6 +29,8 @@ export const Registro = () => {
 
   const [errorMsg, setErrorMsg] = useState('')
   const [errorErrors, setErrorErrors] = useState([])
+  const [registroExitoso, setRegistroExitoso] = useState(false)
+  const [mensajeExito, setMensajeExito] = useState('')
 
   useEffect(() => {
     Promise.all([getOfertaCarrerasApi(), getOfertaPlanesApi()])
@@ -101,7 +103,7 @@ export const Registro = () => {
 
     setLoading(true)
     try {
-      await registro({
+      const resp = await registro({
         nombre: form.nombre.trim(),
         apellido: form.apellido.trim(),
         dni: form.dni.trim(),
@@ -114,7 +116,8 @@ export const Registro = () => {
         username: form.username.trim().toLowerCase(),
         password: form.password,
       })
-      navigate('/inicio', { replace: true })
+      setMensajeExito(resp?.message || 'Tendrá que esperar hasta que un administrador valide su cuenta.')
+      setRegistroExitoso(true)
     } catch (err) {
       setErrorMsg(err.message || 'Error al completar el registro')
       setErrorErrors(err.errors || [])
@@ -151,11 +154,87 @@ export const Registro = () => {
       </div>
 
       <div className="der gutter" style={{ maxWidth: '640px' }}>
-        <form onSubmit={handleSubmit} noValidate>
-          <h1>Inscripción y Registro de Estudiante</h1>
-          <p style={{ fontSize: '13.5px', color: 'var(--suave)', marginBottom: '16px' }}>
-            Completá tus datos personales y académicos para crear tu legajo y usuario.
-          </p>
+        {registroExitoso ? (
+          <div style={{ padding: '24px 8px', textAlign: 'center' }}>
+            <div
+              style={{
+                width: '72px',
+                height: '72px',
+                margin: '0 auto 20px',
+                borderRadius: '50%',
+                backgroundColor: 'rgba(217, 119, 6, 0.12)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#d97706',
+                fontSize: '36px',
+              }}
+            >
+              <i className="bi bi-clock-history"></i>
+            </div>
+
+            <h1 style={{ fontSize: '24px', fontWeight: 700, marginBottom: '12px' }}>
+              Registro Recibido
+            </h1>
+
+            <div
+              style={{
+                backgroundColor: '#fffbeb',
+                border: '1px solid #fde68a',
+                color: '#92400e',
+                padding: '16px 20px',
+                borderRadius: '8px',
+                fontSize: '15px',
+                fontWeight: 600,
+                marginBottom: '20px',
+                lineHeight: 1.5,
+              }}
+            >
+              <i className="bi bi-info-circle-fill me-2"></i>
+              {mensajeExito || 'Tendrá que esperar hasta que un administrador valide su cuenta.'}
+            </div>
+
+            <p style={{ fontSize: '14px', color: 'var(--suave)', marginBottom: '24px', lineHeight: 1.6 }}>
+              Tu solicitud de registro para{' '}
+              <strong>
+                {carreras.find((c) => c.idCarrera === Number(form.idCarrera))?.nombre || 'la carrera seleccionada'}
+              </strong>{' '}
+              ha sido enviada correctamente. Una vez que un administrador revise y active tu usuario en el sistema, vas a poder iniciar sesión con tus credenciales.
+            </p>
+
+            <div
+              style={{
+                textAlign: 'left',
+                backgroundColor: 'var(--papel, #f8f9fa)',
+                border: '1px solid var(--borde, #e9ecef)',
+                padding: '16px',
+                borderRadius: '8px',
+                marginBottom: '28px',
+                fontSize: '13.5px',
+                lineHeight: 1.8,
+              }}
+            >
+              <div><strong>Estudiante:</strong> {form.nombre} {form.apellido}</div>
+              <div><strong>DNI:</strong> {form.dni}</div>
+              <div><strong>Usuario asignado:</strong> @{form.username.toLowerCase()}</div>
+              <div><strong>Correo electrónico:</strong> {form.email}</div>
+            </div>
+
+            <button
+              type="button"
+              className="btn"
+              onClick={() => navigate('/login')}
+              style={{ width: '100%', padding: '12px', fontSize: '15px' }}
+            >
+              Volver al Inicio de Sesión
+            </button>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} noValidate>
+            <h1>Inscripción y Registro de Estudiante</h1>
+            <p style={{ fontSize: '13.5px', color: 'var(--suave)', marginBottom: '16px' }}>
+              Completá tus datos personales y académicos para crear tu legajo y usuario.
+            </p>
 
           {errorMsg && (
             <div
@@ -361,7 +440,7 @@ export const Registro = () => {
           </div>
 
           <button className="btn" type="submit" disabled={loading} style={{ width: '100%', padding: '12px', fontSize: '15px' }}>
-            {loading ? 'Creando cuenta…' : 'Crear Cuenta e Ingresar'}
+            {loading ? 'Enviando solicitud…' : 'Completar Registro'}
           </button>
 
           <div style={{ marginTop: '16px', textAlign: 'center' }}>
@@ -373,6 +452,7 @@ export const Registro = () => {
             </span>
           </div>
         </form>
+        )}
       </div>
     </section>
   )

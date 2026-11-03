@@ -58,7 +58,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     @Transactional
-    public LoginResponseDTO registrarAlumno(RegistroAlumnoDTO request) {
+    public ApiResponseDTO registrarAlumno(RegistroAlumnoDTO request) {
         String username = request.getUsername().trim().toLowerCase();
         if (usuarioRepository.existsByUsername(username)) {
             throw new BusinessRuleException("El nombre de usuario '" + username + "' ya se encuentra registrado");
@@ -77,11 +77,11 @@ public class AuthServiceImpl implements AuthService {
             throw new BusinessRuleException("El plan de estudios seleccionado no pertenece a la carrera indicada");
         }
 
-        EstadoPersona estadoActivo = estadoPersonaRepository.findByNombre("ACTIVO")
+        EstadoPersona estadoInactivo = estadoPersonaRepository.findByNombre("INACTIVO")
                 .orElseGet(() -> estadoPersonaRepository.findAll().stream()
-                        .filter(e -> "ACTIVO".equalsIgnoreCase(e.getNombre()))
+                        .filter(e -> "INACTIVO".equalsIgnoreCase(e.getNombre()))
                         .findFirst()
-                        .orElseThrow(() -> new ResourceNotFoundException("Estado de persona ACTIVO no encontrado")));
+                        .orElse(null));
 
         Rol rolAlumno = rolRepository.findByNombre("ALUMNO")
                 .orElseThrow(() -> new ResourceNotFoundException("Rol ALUMNO no encontrado"));
@@ -96,7 +96,7 @@ public class AuthServiceImpl implements AuthService {
         alumno.setFechaNacimiento(request.getFechaNacimiento());
         alumno.setFechaIngreso(LocalDate.now());
         alumno.setPlan(plan);
-        alumno.setEstado(estadoActivo);
+        alumno.setEstado(estadoInactivo);
         Alumno alumnoGuardado = alumnoRepository.save(alumno);
 
         Usuario usuario = new Usuario();
@@ -104,22 +104,10 @@ public class AuthServiceImpl implements AuthService {
         usuario.setPasswordHash(passwordEncoder.encode(request.getPassword()));
         usuario.setRol(rolAlumno);
         usuario.setAlumno(alumnoGuardado);
-        usuario.setActivo(true);
-        Usuario usuarioGuardado = usuarioRepository.save(usuario);
+        usuario.setActivo(false);
+        usuarioRepository.save(usuario);
 
-        String token = jwtUtil.generateToken(usuarioGuardado.getUsername(), "ALUMNO", usuarioGuardado.getId());
-
-        UsuarioSesionDTO usuarioDto = UsuarioSesionDTO.builder()
-                .idUsuario(usuarioGuardado.getId())
-                .username(usuarioGuardado.getUsername())
-                .nombre(alumnoGuardado.getNombre() + " " + alumnoGuardado.getApellido())
-                .rol("ALUMNO")
-                .build();
-
-        return LoginResponseDTO.builder()
-                .usuario(usuarioDto)
-                .token(token)
-                .build();
+        return ApiResponseDTO.ok("Registro completado con éxito. Tendrá que esperar hasta que un administrador valide su cuenta.");
     }
 
     @Override
@@ -139,7 +127,7 @@ public class AuthServiceImpl implements AuthService {
                 .orElseThrow(() -> new BadCredentialsException("Credenciales inválidas"));
 
         if (!Boolean.TRUE.equals(usuario.getActivo())) {
-            throw new UnauthorizedException("El usuario se encuentra inactivo");
+            throw new UnauthorizedException("Tendrá que esperar hasta que un administrador valide su cuenta.");
         }
 
         // Permite validación por BCrypt de la BD (ej. Academit123) o clave fija de pruebas (1234)

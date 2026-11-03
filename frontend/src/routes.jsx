@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import { MENU_GRUPOS } from './config/menu'
 import ProtectedRoute from './components/ProtectedRoute'
 import Login from './pages/Login'
@@ -19,6 +19,7 @@ export const AppRoutes = () => {
       {/* 1. Rutas públicas de acceso y registro */}
       <Route path="/login" element={<Login />} />
       <Route path="/registro" element={<Registro />} />
+      <Route path="/inicio" element={<Navigate to="/" replace />} />
 
       {/* 2. Rutas generadas automáticamente desde MENU_GRUPOS */}
       {todasLasRutas.map((item) => {
