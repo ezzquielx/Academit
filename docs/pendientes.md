@@ -32,7 +32,7 @@
 | [x] | Módulo Evaluaciones y Calificaciones (5 de 5 endpoints listos) | `cursos`, `materias`, `docentes` | Mateo (implementado por Alfredo en `feature/back-calificaciones`) | [Ficha](backend/guia-de-modulos.md#517-módulo-evaluaciones-evaluaciones) |
 | [ ] | Módulo Asistencias (2 de 2 endpoints pendientes) | `cursos`, `materias`, `alumnos` | Mateo | [Ficha](backend/guia-de-modulos.md#515-módulo-asistencias-asistencias) |
 | [x] | Módulo Mesas de Examen (5 de 5 endpoints listos) | `materias`, `ciclos-lectivos`, `docentes` | Mateo (implementado por Alfredo en `feature/back-mesas-examen`) | [Ficha](backend/guia-de-modulos.md#518-módulo-mesas-de-examen-mesas-examen) |
-| [ ] | Módulo Declaraciones Juradas (2 de 2 endpoints pendientes) | `alumnos`, `ciclos-lectivos`, `materias` | Mateo | [Ficha](backend/guia-de-modulos.md#519-módulo-declaraciones-juradas-declaraciones-juradas) |
+| [x] | Módulo Declaraciones Juradas (2 de 2 endpoints listos) | `alumnos`, `ciclos-lectivos`, `materias` | Mateo (implementado por Alfredo en `feature/back-declaraciones-juradas`) | [Ficha](backend/guia-de-modulos.md#519-módulo-declaraciones-juradas-declaraciones-juradas) |
 | [ ] | Módulo Documentación y Legajos (2 de 2 endpoints pendientes) | `alumnos` | Matias | [Ficha](backend/guia-de-modulos.md#520-módulo-documentación-y-legajos-documentacion) |
 | [ ] | Módulo Solicitudes y Trámites (3 de 3 endpoints pendientes) | `alumnos`, `usuarios` | Matias | [Ficha](backend/guia-de-modulos.md#521-módulo-solicitudes-y-trámites-solicitudes) |
 | [ ] | Tarea programada para marcar cuotas impagas como vencidas | `matriculas`, `cuotas` | Matias | RN07, RF30 |
