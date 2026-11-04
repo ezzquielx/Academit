@@ -342,6 +342,16 @@ dl.ficha dd {
   padding: 0;
 }
 
+.agenda-vacia,
+.agenda li.agenda-vacia {
+  display: block !important;
+  grid-column: 1 / -1 !important;
+  width: 100% !important;
+  border-top: 0 !important;
+  padding: 0 !important;
+  margin-top: 6px;
+}
+
 .agenda li {
   display: grid;
   grid-template-columns: 46px 1fr;
