@@ -50,6 +50,9 @@
 | [ ] | Probar pantallas de grupo Otros y Perfil con API real | `auth`, `usuarios`, `documentacion` | Alfredo | [menu.js](../frontend/src/config/menu.js) |
 | [ ] | Comparar schemas de `openapi.yaml` con payloads implementados | Endpoints backend | Todos (por módulo) | [openapi.yaml](frontend/openapi.yaml) |
 | [x] | Incorporar endpoints extra del backend al contrato (`/api/auth/me`, `/api/usuarios/me`) | Controllers implementados | | [contrato-api.md](frontend/contrato-api.md) |
+| [ ] | Exponer `idAlumno`/`idDocente` en `UsuarioSesionDTO` (login y `/api/auth/me`) o agregar `GET /api/alumnos/me`; sin eso el frontend no puede identificar al alumno logueado con `VITE_USE_MOCK=false` | `auth`, `alumnos` | | [UsuarioSesionDTO.java](../backend/src/main/java/com/academit/education/dto/auth/UsuarioSesionDTO.java) |
+| [ ] | Endpoint para aprobar/rechazar declaraciones juradas y descargar el PDF (hoy el botón de descarga queda deshabilitado) | `declaraciones-juradas` | | [DeclaracionJuradaPage.jsx](../frontend/src/pages/solicitudes/DeclaracionJuradaPage.jsx) |
+| [ ] | Revisar si `POST /api/auth/registro` crea datos precargados (matrícula, cuotas, curso) además del alumno; el frontend mock nace sin relaciones | `auth`, `alumnos`, `matriculas` | | [auth.js](../frontend/src/api/auth.js) |
 
 ## 4. Documentación de la Entrega
 | [ ] | Tarea | Depende de | Dueño | Referencia |

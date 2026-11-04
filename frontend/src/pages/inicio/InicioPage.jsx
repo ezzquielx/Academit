@@ -2,29 +2,78 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import StatusBadge from '../../components/StatusBadge'
+import EmptyState from '../../components/EmptyState'
 import { getCuotas } from '../../api/cuotas'
 import { getMesasExamen } from '../../api/mesasExamen'
 import { getCalificaciones } from '../../api/calificaciones'
 import { getSolicitudes } from '../../api/solicitudes'
-import { getAlumnos } from '../../api/alumnos'
+import { getAlumnos, getAlumnoById } from '../../api/alumnos'
+import { getAsignaciones } from '../../api/asignaciones'
+import { ETIQUETAS_VACIO } from '../../config/etiquetas'
 
 export const InicioPage = () => {
-  const { rol, nombre, usuario } = useAuth()
+  const { rol, nombre, usuario, idAlumno, idDocente } = useAuth()
+  const alumnoId = rol === 'ALUMNO' ? idAlumno : null
+  const [alumno, setAlumno] = useState(null)
   const [alumnoCuotas, setAlumnoCuotas] = useState([])
   const [alumnoMesas, setAlumnoMesas] = useState([])
   const [alumnoCalificaciones, setAlumnoCalificaciones] = useState([])
+  const [docenteAsignaciones, setDocenteAsignaciones] = useState([])
   const [solicitudesCount, setSolicitudesCount] = useState(0)
   const [alumnosCount, setAlumnosCount] = useState(0)
 
   useEffect(() => {
-    getCuotas(1).then((data) => setAlumnoCuotas(data || [])).catch(() => {})
-    getMesasExamen()
-      .then((data) => setAlumnoMesas((data || []).filter((m) => m.alumnosInscriptosIds?.includes(1))))
-      .catch(() => {})
-    getCalificaciones({ idAlumno: 1 }).then((data) => setAlumnoCalificaciones(data || [])).catch(() => {})
-    getSolicitudes().then((data) => setSolicitudesCount((data || []).filter((s) => s.estado === 'PENDIENTE').length)).catch(() => {})
     getAlumnos().then((data) => setAlumnosCount((data || []).length)).catch(() => {})
-  }, [rol])
+
+    getMesasExamen()
+      .then((data) => {
+        const todas = data || []
+        if (rol === 'ALUMNO') {
+          setAlumnoMesas(alumnoId ? todas.filter((m) => m.alumnosInscriptosIds?.includes(alumnoId)) : [])
+        } else if (rol === 'DOCENTE') {
+          const misMesas = todas.filter((m) => {
+            if (idDocente && (m.idDocente === idDocente || m.docenteId === idDocente)) return true
+            if (m.tribunal && (nombre || usuario)) {
+              const textoDocente = (nombre || usuario).toLowerCase().replace(/profesor(a)?\s+/i, '').trim()
+              const palabras = textoDocente.split(/\s+/).filter((p) => p.length > 2)
+              return palabras.some((p) => m.tribunal.toLowerCase().includes(p))
+            }
+            return false
+          })
+          setAlumnoMesas(misMesas)
+        } else {
+          setAlumnoMesas([])
+        }
+      })
+      .catch(() => {})
+
+    if (rol === 'DOCENTE') {
+      getAsignaciones()
+        .then((data) => {
+          const todas = data || []
+          const misAsigs = todas.filter((a) => {
+            if (idDocente && a.idDocente === idDocente) return true
+            if ((nombre || usuario) && a.docenteNombre) {
+              const textoDocente = (nombre || usuario).toLowerCase().replace(/profesor(a)?\s+/i, '').trim()
+              const palabras = textoDocente.split(/\s+/).filter((p) => p.length > 2)
+              return palabras.some((p) => a.docenteNombre.toLowerCase().includes(p))
+            }
+            return false
+          })
+          setDocenteAsignaciones(misAsigs)
+        })
+        .catch(() => {})
+    }
+
+    getSolicitudes(alumnoId ? { idAlumno: alumnoId } : {})
+      .then((data) => setSolicitudesCount((data || []).filter((s) => s.estado === 'PENDIENTE').length))
+      .catch(() => {})
+    // Sin idAlumno no se consulta nada del padrón: nunca mostrar datos de otro alumno.
+    if (!alumnoId) return
+    getAlumnoById(alumnoId).then(setAlumno).catch(() => {})
+    getCuotas(alumnoId).then((data) => setAlumnoCuotas(data || [])).catch(() => {})
+    getCalificaciones({ idAlumno: alumnoId }).then((data) => setAlumnoCalificaciones(data || [])).catch(() => {})
+  }, [rol, alumnoId, idDocente, nombre, usuario])
 
   const getGreeting = () => {
     const h = new Date().getHours()
@@ -61,16 +110,31 @@ export const InicioPage = () => {
 
   const cuotasVencidas = alumnoCuotas.filter((c) => c.estado === 'VENCIDA')
   const promedioNotas = alumnoCalificaciones.length > 0
-    ? (alumnoCalificaciones.reduce((acc, c) => acc + (c.nota || 0), 0) / alumnoCalificaciones.length).toFixed(2).replace('.', ',')
-    : '8,50'
+    ? (alumnoCalificaciones.reduce((acc, c) => acc + (Number(c.nota) || 0), 0) / alumnoCalificaciones.length)
+        .toFixed(2)
+        .replace('.', ',')
+    : null
 
-  // Materias de ejemplo para el alumno
-  const materiasAlumno = [
-    { materia: 'Análisis de Sistemas', docente: 'Paz, Marta', p1: 9, p2: 8, asis: 95, cond: 'Promociona', condTipo: 'e-ok' },
-    { materia: 'Base de Datos II', docente: 'Aguirre, Hernán', p1: 8, p2: null, asis: 88, cond: 'En curso', condTipo: 'e-pend' },
-    { materia: 'Programación III', docente: 'Roldán, Esteban', p1: 7, p2: 6, asis: 91, cond: 'Regular', condTipo: 'e-ok' },
-    { materia: 'Inglés Técnico', docente: 'Medina, Carla', p1: 3, p2: null, asis: 72, cond: 'En riesgo', condTipo: 'e-mal' },
-  ]
+  // Materias armadas con las calificaciones reales del alumno logueado.
+  const materiasAlumno = Object.values(
+    alumnoCalificaciones.reduce((acc, c) => {
+      const clave = c.idMateria ?? c.materiaNombre
+      if (!acc[clave]) {
+        acc[clave] = { clave, materia: c.materiaNombre || '—', notas: [], evaluaciones: 0 }
+      }
+      acc[clave].notas.push(Number(c.nota) || 0)
+      acc[clave].evaluaciones += 1
+      return acc
+    }, {})
+  ).map((m) => {
+    const promedio = m.notas.reduce((a, b) => a + b, 0) / m.notas.length
+    return {
+      ...m,
+      promedio: promedio.toFixed(1).replace('.', ','),
+      cond: promedio >= 7 ? 'Promociona' : promedio >= 4 ? 'Regular' : 'En riesgo',
+      condTipo: promedio >= 7 ? 'e-ok' : promedio >= 4 ? 'e-pend' : 'e-mal',
+    }
+  })
 
   return (
     <div>
@@ -83,19 +147,34 @@ export const InicioPage = () => {
           <section className="bloque">
             <h2>Tu situación</h2>
             <dl className="ficha">
-              <dt>Legajo</dt>
-              <dd className="num">{rol === 'ALUMNO' ? '2024-0318' : (rol === 'DOCENTE' ? 'DOC-104' : 'ADM-012')}</dd>
-              <dt>Carrera</dt>
-              <dd>Tecnicatura en Programación, plan 2022</dd>
-              <dt>Ciclo lectivo</dt>
-              <dd className="num">2026, segundo cuatrimestre</dd>
-              {rol === 'ALUMNO' && (
+              {rol === 'ALUMNO' ? (
                 <>
+                  <dt>Legajo</dt>
+                  <dd className="num">{alumno?.legajo || '—'}</dd>
+                  <dt>Carrera</dt>
+                  <dd>
+                    {alumno?.carrera || '—'}
+                    {alumno?.planNombre ? `, ${alumno.planNombre}` : ''}
+                  </dd>
+                  <dt>Comisión</dt>
+                  <dd>{alumno?.cursoNombre || ETIQUETAS_VACIO.SIN_COMISION}</dd>
+                  <dt>Matrícula</dt>
+                  <dd>
+                    <StatusBadge status={alumno?.estadoMatricula || 'PENDIENTE'} />
+                  </dd>
+                  <dt>Ciclo lectivo</dt>
+                  <dd className="num">{alumno?.cicloLectivo || '—'}</dd>
                   <dt>Promedio</dt>
-                  <dd className="num">{promedioNotas} sobre {alumnoCalificaciones.length || 4} notas cargadas</dd>
+                  <dd className="num">
+                    {promedioNotas
+                      ? `${promedioNotas} sobre ${alumnoCalificaciones.length} notas cargadas`
+                      : ETIQUETAS_VACIO.SIN_NOTAS}
+                  </dd>
                   <dt>Cuotas</dt>
                   <dd>
-                    {cuotasVencidas.length > 0 ? (
+                    {alumnoCuotas.length === 0 ? (
+                      <span className="estado e-pend">{ETIQUETAS_VACIO.SIN_CUOTAS}</span>
+                    ) : cuotasVencidas.length > 0 ? (
                       <>
                         <span className="estado e-mal">
                           {cuotasVencidas.length} {cuotasVencidas.length === 1 ? 'vencida' : 'vencidas'}
@@ -110,6 +189,15 @@ export const InicioPage = () => {
                     )}
                   </dd>
                 </>
+              ) : (
+                <>
+                  <dt>Usuario</dt>
+                  <dd className="num">{usuario || '—'}</dd>
+                  <dt>Rol</dt>
+                  <dd>{rol || '—'}</dd>
+                  <dt>Ciclo lectivo</dt>
+                  <dd className="num">2026, segundo cuatrimestre</dd>
+                </>
               )}
             </dl>
           </section>
@@ -118,76 +206,78 @@ export const InicioPage = () => {
           {rol === 'ALUMNO' && (
             <section className="bloque">
               <h2>Materias que cursás</h2>
-              <div className="tabla-caja">
-                <table>
-                  <caption>Nota mínima para aprobar: 4. Asistencia mínima para regularizar: 75 %.</caption>
-                  <thead>
-                    <tr>
-                      <th scope="col">Materia</th>
-                      <th scope="col">Docente</th>
-                      <th scope="col" className="d">Parcial 1</th>
-                      <th scope="col" className="d">Parcial 2</th>
-                      <th scope="col" className="d">Asistencia</th>
-                      <th scope="col">Condición</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {materiasAlumno.map((m) => (
-                      <tr key={m.materia}>
-                        <td className="titulo-ficha" data-l="Materia">{m.materia}</td>
-                        <td data-l="Docente">{m.docente}</td>
-                        <td className="d num" data-l="Parcial 1">{m.p1 !== null ? m.p1 : '–'}</td>
-                        <td className="d num" data-l="Parcial 2">{m.p2 !== null ? m.p2 : '–'}</td>
-                        <td className="d num" data-l="Asistencia">{m.asis} %</td>
-                        <td data-l="Condición">
-                          <span className={`estado ${m.condTipo}`}>{m.cond}</span>
-                        </td>
+              {materiasAlumno.length === 0 ? (
+                <EmptyState
+                  title={ETIQUETAS_VACIO.SIN_MATERIAS}
+                  description={ETIQUETAS_VACIO.SIN_MATERIAS_DETALLE}
+                />
+              ) : (
+                <div className="tabla-caja">
+                  <table>
+                    <caption>Nota mínima para aprobar: 4. Asistencia mínima para regularizar: 75 %.</caption>
+                    <thead>
+                      <tr>
+                        <th scope="col">Materia</th>
+                        <th scope="col" className="d">Evaluaciones</th>
+                        <th scope="col" className="d">Promedio</th>
+                        <th scope="col">Condición</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+                    </thead>
+                    <tbody>
+                      {materiasAlumno.map((m) => (
+                        <tr key={m.clave}>
+                          <td className="titulo-ficha" data-l="Materia">{m.materia}</td>
+                          <td className="d num" data-l="Evaluaciones">{m.evaluaciones}</td>
+                          <td className="d num" data-l="Promedio">{m.promedio}</td>
+                          <td data-l="Condición">
+                            <span className={`estado ${m.condTipo}`}>{m.cond}</span>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
             </section>
           )}
 
           {rol === 'DOCENTE' && (
             <section className="bloque">
               <h2>Mis comisiones activas</h2>
-              <div className="tabla-caja">
-                <table>
-                  <caption>Ciclo lectivo 2026 · Cursado del segundo cuatrimestre</caption>
-                  <thead>
-                    <tr>
-                      <th scope="col">Materia</th>
-                      <th scope="col">Comisión</th>
-                      <th scope="col" className="d">Alumnos</th>
-                      <th scope="col">Acción</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td className="titulo-ficha" data-l="Materia">Programación I</td>
-                      <td data-l="Comisión">1° Año - Turno Mañana (Aula 101)</td>
-                      <td className="d num" data-l="Alumnos">29</td>
-                      <td data-l="Acción">
-                        <Link to="/docencia/calificaciones" className="btn lig chico">
-                          Calificar
-                        </Link>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="titulo-ficha" data-l="Materia">Programación II</td>
-                      <td data-l="Comisión">2° Año - Turno Tarde (Lab 2)</td>
-                      <td className="d num" data-l="Alumnos">28</td>
-                      <td data-l="Acción">
-                        <Link to="/docencia/calificaciones" className="btn lig chico">
-                          Calificar
-                        </Link>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+              {docenteAsignaciones.length === 0 ? (
+                <EmptyState
+                  title={ETIQUETAS_VACIO.SIN_COMISIONES_DOCENTE}
+                  description={ETIQUETAS_VACIO.SIN_COMISIONES_DOCENTE_DETALLE}
+                />
+              ) : (
+                <div className="tabla-caja">
+                  <table>
+                    <caption>Ciclo lectivo 2026 · Cursado del segundo cuatrimestre</caption>
+                    <thead>
+                      <tr>
+                        <th scope="col">Materia</th>
+                        <th scope="col">Comisión</th>
+                        <th scope="col" className="d">Cargo</th>
+                        <th scope="col">Acción</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {docenteAsignaciones.map((asig) => (
+                        <tr key={asig.idAsignacion}>
+                          <td className="titulo-ficha" data-l="Materia">{asig.materiaNombre}</td>
+                          <td data-l="Comisión">{asig.cursoNombre}</td>
+                          <td className="d" data-l="Cargo">{asig.rolDocente || 'Titular'}</td>
+                          <td data-l="Acción">
+                            <Link to="/docencia/calificaciones" className="btn lig chico">
+                              Calificar
+                            </Link>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
             </section>
           )}
 
@@ -239,9 +329,9 @@ export const InicioPage = () => {
         <aside className="lat">
           <section>
             <h2>Agenda</h2>
-            <ul className="agenda">
-              {alumnoMesas.length > 0 ? (
-                alumnoMesas.slice(0, 4).map((m) => {
+            {alumnoMesas.length > 0 ? (
+              <ul className="agenda">
+                {alumnoMesas.slice(0, 4).map((m) => {
                   const d = new Date(m.fecha)
                   const diaNum = isNaN(d.getDate()) ? '28' : d.getDate()
                   const mesStr = isNaN(d.getMonth())
@@ -258,61 +348,25 @@ export const InicioPage = () => {
                         <div>{m.materiaNombre}</div>
                         <div className="cuando">{getCuando(m.fecha)}</div>
                         <div className="quien">
-                          Tribunal: {m.presidente || 'Roldán, Ibarra'} · {m.hora || '18:30'}
+                          Tribunal: {m.tribunal || m.presidente || 'Roldán, Ibarra'} · {m.hora || '18:30'}
                         </div>
                       </div>
                     </li>
                   )
-                })
-              ) : (
-                <>
-                  <li>
-                    <div className="dia">
-                      <b className="num">24</b>
-                      <small>oct</small>
-                    </div>
-                    <div>
-                      <div>Parcial 2 de Base de Datos II</div>
-                      <div className="cuando">en 4 días</div>
-                      <div className="quien">Aula 4, 19:00</div>
-                    </div>
-                  </li>
-                  <li>
-                    <div className="dia">
-                      <b className="num">28</b>
-                      <small>oct</small>
-                    </div>
-                    <div>
-                      <div>Mesa de examen: Programación II</div>
-                      <div className="cuando">en 8 días</div>
-                      <div className="quien">Tribunal Roldán, Ibarra · 18:30</div>
-                    </div>
-                  </li>
-                  <li>
-                    <div className="dia">
-                      <b className="num">4</b>
-                      <small>nov</small>
-                    </div>
-                    <div>
-                      <div>Mesa de examen: Base de Datos I</div>
-                      <div className="cuando">en 15 días</div>
-                      <div className="quien">Tribunal Aguirre, Paz · 18:30</div>
-                    </div>
-                  </li>
-                  <li>
-                    <div className="dia">
-                      <b className="num">20</b>
-                      <small>nov</small>
-                    </div>
-                    <div>
-                      <div>Cierre de inscripción a mesas</div>
-                      <div className="cuando">en 31 días</div>
-                      <div className="quien">Secretaría académica</div>
-                    </div>
-                  </li>
-                </>
-              )}
-            </ul>
+                })}
+              </ul>
+            ) : (
+              <div className="agenda-vacia">
+                <EmptyState
+                  title={ETIQUETAS_VACIO.SIN_MESAS}
+                  description={
+                    rol === 'DOCENTE'
+                      ? ETIQUETAS_VACIO.SIN_MESAS_DOCENTE_DETALLE
+                      : ETIQUETAS_VACIO.SIN_MESAS_DETALLE
+                  }
+                />
+              </div>
+            )}
           </section>
 
           <section>

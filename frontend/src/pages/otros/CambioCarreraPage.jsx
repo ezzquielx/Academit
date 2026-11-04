@@ -4,18 +4,21 @@ import PageHeader from '../../components/PageHeader'
 import SolicitudForm from '../../components/SolicitudForm'
 import DataTable from '../../components/DataTable'
 import StatusBadge from '../../components/StatusBadge'
+import { useAuth } from '../../context/AuthContext'
 import { useToast } from '../../context/ToastContext'
 import { getSolicitudes, createSolicitud } from '../../api/solicitudes'
 import { ETIQUETAS_TIPO_SOLICITUD } from '../../config/etiquetas'
 
 export const CambioCarreraPage = () => {
+  const { idAlumno } = useAuth()
   const { showToast } = useToast()
   const [solicitudes, setSolicitudes] = useState([])
   const [carreraDestino, setCarreraDestino] = useState('Tecnicatura Superior en Ciencia de Datos e IA')
   const [loading, setLoading] = useState(false)
-  const alumnoId = 1
+  const alumnoId = idAlumno
 
   const cargar = async () => {
+    if (!alumnoId) return
     try {
       const data = await getSolicitudes({ idAlumno: alumnoId, tipo: 'CAMBIO_CARRERA' })
       setSolicitudes(data)

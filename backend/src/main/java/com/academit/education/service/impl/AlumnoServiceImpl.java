@@ -26,6 +26,7 @@ import com.academit.education.repository.EstadoPersonaRepository;
 import com.academit.education.repository.InscripcionRepository;
 import com.academit.education.repository.MatriculaRepository;
 import com.academit.education.repository.PlanEstudioRepository;
+import com.academit.education.repository.UsuarioRepository;
 import com.academit.education.security.CustomUserDetails;
 import com.academit.education.service.AlumnoService;
 import org.springframework.security.access.AccessDeniedException;
@@ -50,6 +51,7 @@ public class AlumnoServiceImpl implements AlumnoService {
     private final CalificacionRepository calificacionRepository;
     private final AsistenciaRepository asistenciaRepository;
     private final CuotaRepository cuotaRepository;
+    private final UsuarioRepository usuarioRepository;
 
     public AlumnoServiceImpl(
             AlumnoRepository alumnoRepository,
@@ -59,7 +61,8 @@ public class AlumnoServiceImpl implements AlumnoService {
             MatriculaRepository matriculaRepository,
             CalificacionRepository calificacionRepository,
             AsistenciaRepository asistenciaRepository,
-            CuotaRepository cuotaRepository) {
+            CuotaRepository cuotaRepository,
+            UsuarioRepository usuarioRepository) {
         this.alumnoRepository = alumnoRepository;
         this.planEstudioRepository = planEstudioRepository;
         this.estadoPersonaRepository = estadoPersonaRepository;
@@ -68,6 +71,7 @@ public class AlumnoServiceImpl implements AlumnoService {
         this.calificacionRepository = calificacionRepository;
         this.asistenciaRepository = asistenciaRepository;
         this.cuotaRepository = cuotaRepository;
+        this.usuarioRepository = usuarioRepository;
     }
 
     @Override
@@ -156,6 +160,11 @@ public class AlumnoServiceImpl implements AlumnoService {
             EstadoPersona nuevoEstado = estadoPersonaRepository.findByNombre(request.getEstado())
                     .orElseThrow(() -> new ResourceNotFoundException("Estado no encontrado: " + request.getEstado()));
             alumno.setEstado(nuevoEstado);
+            boolean activo = "ACTIVO".equalsIgnoreCase(request.getEstado());
+            usuarioRepository.findByAlumnoId(alumno.getId()).ifPresent(u -> {
+                u.setActivo(activo);
+                usuarioRepository.save(u);
+            });
         }
 
         if (request.getNombre() != null && !request.getNombre().isBlank()) {
@@ -200,6 +209,10 @@ public class AlumnoServiceImpl implements AlumnoService {
 
         alumno.setEstado(estadoInactivo);
         alumnoRepository.save(alumno);
+        usuarioRepository.findByAlumnoId(alumno.getId()).ifPresent(u -> {
+            u.setActivo(false);
+            usuarioRepository.save(u);
+        });
     }
 
     @Override

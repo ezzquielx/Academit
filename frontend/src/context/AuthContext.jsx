@@ -1,6 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useState } from 'react'
-import { loginApi, logoutApi } from '../api/auth'
+import { loginApi, logoutApi, registroApi } from '../api/auth'
 
 // 
 // AISLAMIENTO DE SESIÓN:
@@ -54,6 +54,10 @@ export const AuthProvider = ({ children }) => {
     return data
   }
 
+  const registro = async (registroData) => {
+    return await registroApi(registroData)
+  }
+
   const logout = async () => {
     try {
       await logoutApi()
@@ -74,8 +78,12 @@ export const AuthProvider = ({ children }) => {
     rol: sessionUser?.rol || session?.rol || null,
     nombre: sessionUser?.nombre || session?.nombre || null,
     email: sessionUser?.email || session?.email || null,
+    // Vínculo con el padrón. Sin esto no se puede consultar "el alumno logueado".
+    idAlumno: sessionUser?.idAlumno ?? session?.idAlumno ?? null,
+    idDocente: sessionUser?.idDocente ?? session?.idDocente ?? null,
     isAuthenticated: Boolean(session),
     login,
+    registro,
     logout,
   }
 

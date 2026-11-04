@@ -24,7 +24,7 @@
   --error: #9C4940;
   --hover: #E7E1D3;
   --serif: Georgia, "Times New Roman", serif;
-  --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 
   /* Aliases para compatibilidad */
   --superficie: var(--papel);
@@ -292,6 +292,12 @@ button {
   background: #823C34 !important;
   border-color: #823C34 !important;
   color: var(--sobre-primario) !important;
+}
+
+/* Los grupos de botones (filtros, acciones) se parten en varias líneas
+   antes de salirse del contenedor. */
+.btn-group {
+  flex-wrap: wrap;
 }
 
 /* --- Formularios --- */
@@ -597,6 +603,15 @@ tr.det td {
   .btn.chico {
     min-height: 38px;
     width: auto;
+  }
+  /* Grupos de botones apilados a ancho completo en móvil */
+  .btn-group {
+    flex-direction: column;
+    width: 100%;
+  }
+  .btn-group > .btn {
+    width: 100%;
+    border-radius: 3px !important;
   }
 }
 

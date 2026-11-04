@@ -1,5 +1,5 @@
 import apiClient, { isMock } from './client'
-import { mockDb } from './mocks/data'
+import { mockDb, guardarAltasMock } from './mocks/data'
 import { createApiError } from './errors'
 
 /**
@@ -59,18 +59,21 @@ export const createAlumno = async (alumnoData) => {
       telefono: alumnoData.telefono || 'Sin teléfono',
       fechaNacimiento: alumnoData.fechaNacimiento || '2000-01-01',
       domicilio: alumnoData.domicilio || 'No especificado',
-      carrera: alumnoData.carrera || 'Tecnicatura Superior en Desarrollo de Software',
-      idCarrera: alumnoData.idCarrera || 1,
-      idPlan: alumnoData.idPlan || 1,
-      planNombre: alumnoData.planNombre || 'Plan de Estudios 2024',
-      idCurso: alumnoData.idCurso || 1,
-      cursoNombre: alumnoData.cursoNombre || '1° Año - Turno Mañana',
-      idMatricula: nuevoId,
-      estadoMatricula: 'ACTIVA',
-      cicloLectivo: 2026,
-      estado: 'ACTIVO',
+      carrera: alumnoData.carrera || '',
+      idCarrera: alumnoData.idCarrera ?? null,
+      idPlan: alumnoData.idPlan ?? null,
+      planNombre: alumnoData.planNombre || '',
+      // Un alta nace sin relaciones: sin curso ni matrícula asignados.
+      idCurso: alumnoData.idCurso ?? null,
+      cursoNombre: alumnoData.cursoNombre || null,
+      idMatricula: alumnoData.idMatricula ?? null,
+      estadoMatricula: alumnoData.estadoMatricula || 'PENDIENTE',
+      cicloLectivo: alumnoData.cicloLectivo || new Date().getFullYear(),
+      estado: alumnoData.estado || 'ACTIVO',
+      origen: 'registro',
     }
     mockDb.alumnos.unshift(nuevo)
+    guardarAltasMock()
     return { ...nuevo }
   }
 

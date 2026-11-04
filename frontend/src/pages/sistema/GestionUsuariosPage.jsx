@@ -51,9 +51,29 @@ export const GestionUsuariosPage = () => {
       nombre: u.nombre,
       email: u.email,
       rol: u.rol,
+      estado: u.estado || 'ACTIVO',
     })
     setErrors({})
     setShowModal(true)
+  }
+
+  const handleValidarUsuario = async (u) => {
+    setLoading(true)
+    try {
+      await updateUsuario(u.idUsuario, {
+        username: u.username,
+        nombre: u.nombre,
+        email: u.email,
+        rol: u.rol,
+        estado: 'ACTIVO',
+      })
+      showToast(`Cuenta de @${u.username} validada y activada exitosamente`, 'success')
+      cargar()
+    } catch (err) {
+      showToast(err.message || 'Error al validar usuario', 'danger')
+    } finally {
+      setLoading(false)
+    }
   }
 
   const handleSubmit = async (e) => {
@@ -141,6 +161,16 @@ export const GestionUsuariosPage = () => {
       align: 'right',
       render: (row) => (
         <div className="d-flex justify-content-end gap-1">
+          {row.estado === 'INACTIVO' && (
+            <Button
+              variant="outline-success"
+              size="sm"
+              title="Validar y activar cuenta"
+              onClick={() => handleValidarUsuario(row)}
+            >
+              <i className="bi bi-person-check me-1" /> Validar
+            </Button>
+          )}
           <Button variant="outline-primary" size="sm" onClick={() => handleOpenEditar(row)}>
             <i className="bi bi-pencil" />
           </Button>
@@ -239,6 +269,21 @@ export const GestionUsuariosPage = () => {
               </Form.Select>
             </Form.Group>
           </Col>
+          {editingUsuario && (
+            <Col md={6}>
+              <Form.Group controlId="usrEstado">
+                <Form.Label className="small fw-semibold">Estado de la Cuenta <span className="text-danger">*</span></Form.Label>
+                <Form.Select
+                  value={form.estado || 'ACTIVO'}
+                  onChange={(e) => setForm({ ...form, estado: e.target.value })}
+                  style={{ backgroundColor: 'var(--m-surfaceVariant)', color: 'var(--m-onSurface)' }}
+                >
+                  <option value="ACTIVO">ACTIVO (Habilitada)</option>
+                  <option value="INACTIVO">INACTIVO (Pendiente de validación o Baja)</option>
+                </Form.Select>
+              </Form.Group>
+            </Col>
+          )}
         </Row>
       </FormModal>
 

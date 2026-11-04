@@ -95,33 +95,40 @@ export const deleteUsuario = async (idUsuario) => {
 export const getMiPerfil = async () => {
   if (isMock) {
     await new Promise((resolve) => setTimeout(resolve, 150))
-    let currentUsername = 'alumno'
+    let currentUsername = null
     try {
       const raw = sessionStorage.getItem('instituto_sesion')
       if (raw) {
         const ses = JSON.parse(raw)
-        if (ses.usuario) currentUsername = ses.usuario
+        const u = ses.usuario
+        currentUsername = typeof u === 'string' ? u : u?.username || null
       }
     } catch {
       // Ignorar error de storage
     }
+    if (!currentUsername) {
+      throw createApiError(401, 'Sesión no iniciada', [
+        { campo: 'sesion', mensaje: 'No hay una sesión activa' },
+      ])
+    }
 
     const usuarioDb = mockDb.usuarios.find((u) => u.username === currentUsername)
-    const alumnoDb = mockDb.alumnos.find(
-      (a) => `${a.nombre} ${a.apellido}`.toLowerCase() === (usuarioDb?.nombre || '').toLowerCase()
-    )
+    // El perfil se resuelve por el vínculo de la sesión, nunca por datos de ejemplo.
+    const alumnoDb = usuarioDb?.idAlumno
+      ? mockDb.alumnos.find((a) => a.idAlumno === usuarioDb.idAlumno)
+      : null
 
     if (!mockDb.perfilActual || mockDb.perfilActual.username !== currentUsername) {
       mockDb.perfilActual = {
-        idUsuario: usuarioDb?.idUsuario || 4,
+        idUsuario: usuarioDb?.idUsuario ?? null,
         username: currentUsername,
-        nombre: usuarioDb?.nombre || (alumnoDb ? `${alumnoDb.nombre} ${alumnoDb.apellido}` : 'Lucía Benítez'),
-        email: usuarioDb?.email || (alumnoDb ? alumnoDb.email : `${currentUsername}@instituto.edu.ar`),
-        dni: alumnoDb?.dni || '42.111.222',
-        telefono: alumnoDb?.telefono || '11-4567-8901',
-        domicilio: alumnoDb?.domicilio || 'Av. Corrientes 1234, CABA',
-        fechaNacimiento: alumnoDb?.fechaNacimiento || '2001-04-18',
-        carrera: alumnoDb?.carrera || 'Tecnicatura Superior en Desarrollo de Software',
+        nombre: usuarioDb?.nombre || (alumnoDb ? `${alumnoDb.nombre} ${alumnoDb.apellido}` : ''),
+        email: usuarioDb?.email || alumnoDb?.email || '',
+        dni: alumnoDb?.dni || '',
+        telefono: alumnoDb?.telefono || '',
+        domicilio: alumnoDb?.domicilio || '',
+        fechaNacimiento: alumnoDb?.fechaNacimiento || '',
+        carrera: alumnoDb?.carrera || '',
         rol: usuarioDb?.rol || 'ALUMNO',
       }
     }

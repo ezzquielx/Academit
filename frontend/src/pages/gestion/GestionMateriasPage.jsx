@@ -116,7 +116,7 @@ export const GestionMateriasPage = () => {
       key: 'correlativas',
       label: 'Correlativas Exigidas',
       render: (row) =>
-        row.correlativas.length > 0 ? (
+        row.correlativas && row.correlativas.length > 0 ? (
           row.correlativas.map((c, idx) => (
             <Badge key={idx} bg="dark" className="me-1 border border-secondary">
               {getNombreCorrelativa(c)}
