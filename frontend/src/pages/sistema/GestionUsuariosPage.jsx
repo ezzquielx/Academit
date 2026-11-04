@@ -166,16 +166,29 @@ export const GestionUsuariosPage = () => {
               variant="outline-success"
               size="sm"
               title="Validar y activar cuenta"
+              aria-label="Validar y activar cuenta"
               onClick={() => handleValidarUsuario(row)}
             >
-              <i className="bi bi-person-check me-1" /> Validar
+              <i className="bi bi-person-check" />
             </Button>
           )}
-          <Button variant="outline-primary" size="sm" onClick={() => handleOpenEditar(row)}>
+          <Button
+            variant="outline-primary"
+            size="sm"
+            onClick={() => handleOpenEditar(row)}
+            title="Editar usuario"
+            aria-label="Editar usuario"
+          >
             <i className="bi bi-pencil" />
           </Button>
           {row.estado !== 'INACTIVO' && (
-            <Button variant="outline-danger" size="sm" onClick={() => setUserToDelete(row)}>
+            <Button
+              variant="outline-danger"
+              size="sm"
+              onClick={() => setUserToDelete(row)}
+              title="Desactivar usuario"
+              aria-label="Desactivar usuario"
+            >
               <i className="bi bi-person-x" />
             </Button>
           )}

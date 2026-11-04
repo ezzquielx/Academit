@@ -108,8 +108,10 @@ export const MesasExamenPage = () => {
               size="sm"
               disabled={loading || !alumnoId}
               onClick={() => setMesaToBaja(row)}
+              title="Darse de baja de la mesa"
+              aria-label="Darse de baja de la mesa"
             >
-              <i className="bi bi-x-circle me-1" /> Darse de baja
+              <i className="bi bi-x-circle" />
             </Button>
           )
         }
@@ -121,9 +123,10 @@ export const MesasExamenPage = () => {
             size="sm"
             disabled={loading || !cupoDisponible || !alumnoId}
             onClick={() => handleInscribirse(row)}
+            title={cupoDisponible ? 'Inscribirme a la mesa' : 'Sin cupo disponible'}
+            aria-label={cupoDisponible ? 'Inscribirme a la mesa' : 'Sin cupo disponible'}
           >
-            <i className="bi bi-check2-circle me-1" />
-            {cupoDisponible ? 'Inscribirme' : 'Sin cupo'}
+            <i className="bi bi-check2-circle" />
           </Button>
         )
       },

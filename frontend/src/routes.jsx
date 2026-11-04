@@ -30,7 +30,7 @@ export const AppRoutes = () => {
             key={item.path}
             path={item.path}
             element={
-              <ProtectedRoute allowedRoles={item.roles}>
+              <ProtectedRoute allowedRoles={item.roles} item={item}>
                 <Component />
               </ProtectedRoute>
             }

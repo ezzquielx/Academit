@@ -131,8 +131,14 @@ export const GestionMateriasPage = () => {
       label: 'Acciones',
       align: 'right',
       render: (row) => (
-        <Button variant="outline-primary" size="sm" onClick={() => handleOpenEditar(row)}>
-          <i className="bi bi-pencil" /> Editar
+        <Button
+          variant="outline-primary"
+          size="sm"
+          onClick={() => handleOpenEditar(row)}
+          title="Editar materia"
+          aria-label="Editar materia"
+        >
+          <i className="bi bi-pencil" />
         </Button>
       ),
     },

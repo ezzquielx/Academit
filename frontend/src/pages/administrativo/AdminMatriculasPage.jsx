@@ -101,13 +101,20 @@ export const AdminMatriculasPage = () => {
               size="sm"
               disabled={loading || row.estado === 'CANCELADA'}
               onClick={() => handleGenerarCuotas(row)}
-              title={row.estado === 'CANCELADA' ? 'No se pueden generar cuotas para matrícula cancelada' : 'Generar 12 cuotas y 3 seguros'}
+              title={row.estado === 'CANCELADA' ? 'No se pueden generar cuotas para matrícula cancelada' : 'Generar cuotas'}
+              aria-label="Generar cuotas"
             >
-              <i className="bi bi-calendar-plus me-1" /> Generar cuotas
+              <i className="bi bi-calendar-plus" />
             </Button>
           )}
-          <Button variant="outline-primary" size="sm" onClick={() => handleOpenCambiar(row)}>
-            <i className="bi bi-arrow-left-right me-1" /> Cambiar Estado
+          <Button
+            variant="outline-primary"
+            size="sm"
+            onClick={() => handleOpenCambiar(row)}
+            title="Cambiar estado"
+            aria-label="Cambiar estado"
+          >
+            <i className="bi bi-arrow-left-right" />
           </Button>
         </div>
       ),
