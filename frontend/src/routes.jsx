@@ -20,6 +20,7 @@ export const AppRoutes = () => {
       <Route path="/login" element={<Login />} />
       <Route path="/registro" element={<Registro />} />
       <Route path="/inicio" element={<Navigate to="/" replace />} />
+      <Route path="/usuarios" element={<Navigate to="/sistema/usuarios" replace />} />
 
       {/* 2. Rutas generadas automáticamente desde MENU_GRUPOS */}
       {todasLasRutas.map((item) => {
