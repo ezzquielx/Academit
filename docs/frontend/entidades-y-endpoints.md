@@ -10,8 +10,8 @@
 ## Resumen Ejecutivo
 
 - **Total de Entidades Identificadas:** 22
-- **Total de Endpoints en el Contrato:** 71
-- **Endpoints Implementados en API (`real`):** 71 (100.0%)
+- **Total de Endpoints en el Contrato:** 74
+- **Endpoints Implementados en API (`real`):** 74 (100.0%)
 - **Endpoints Inferidos / Convención REST (`inferido`):** 0 (0.0%)
 - **Endpoints Faltantes / Brechas (`falta`):** 0 (0.0%)
 
@@ -617,6 +617,9 @@ Tabla exhaustiva con la totalidad de los contratos de comunicación consumidos o
 | `POST` | `/api/auth/login` | Inicia sesión con usuario y contraseña. | ALUMNO, DOCENTE, ADMINISTRATIVO, ADMINISTRADOR | Login.jsx | `loginApi` | 200, 400, 401, 404 | **real** |
 | `POST` | `/api/auth/logout` | Cierra la sesión activa en el sistema. | ALUMNO, DOCENTE, ADMINISTRATIVO, ADMINISTRADOR | Topbar.jsx | `logoutApi` | 200, 401 | **real** |
 | `POST` | `/api/auth/cambiar-password` | Modifica la contraseña del usuario en sesión. | ALUMNO, DOCENTE, ADMINISTRATIVO, ADMINISTRADOR | CambiarPasswordPage.jsx | `cambiarPasswordApi` | 200, 400, 401 | **real** |
+| `POST` | `/api/auth/registro` | Registra a un nuevo alumno en el sistema. | ALUMNO, DOCENTE, ADMINISTRATIVO, ADMINISTRADOR | Registro.jsx | `registroApi` | 201, 400, 409 | **real** |
+| `GET` | `/api/auth/carreras` | Obtiene las carreras disponibles para aspirantes y nuevos estudiantes (público). | ALUMNO, DOCENTE, ADMINISTRATIVO, ADMINISTRADOR | Registro.jsx | `getOfertaCarrerasApi` | 200 | **real** |
+| `GET` | `/api/auth/planes-estudio` | Obtiene los planes de estudio disponibles para aspirantes y nuevos estudiantes (público). | ALUMNO, DOCENTE, ADMINISTRATIVO, ADMINISTRADOR | Registro.jsx | `getOfertaPlanesApi` | 200 | **real** |
 | `GET` | `/api/usuarios` | Obtiene el listado de cuentas de usuario y roles del sistema. | ADMINISTRADOR | GestionUsuariosPage.jsx | `getUsuarios` | 200, 401, 403 | **real** |
 | `POST` | `/api/usuarios` | Registra un nuevo usuario con credenciales y asignación de rol. | ADMINISTRADOR | GestionUsuariosPage.jsx | `createUsuario` | 201, 400, 401, 403, 409 | **real** |
 | `PUT` | `/api/usuarios/{id}` | Actualiza los datos de perfil o rol de un usuario existente. | ADMINISTRADOR | GestionUsuariosPage.jsx | `updateUsuario` | 200, 400, 401, 403, 404 | **real** |

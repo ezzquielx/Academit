@@ -64,6 +64,9 @@ PUT,/api/documentacion/{id},Actualiza el estado de entrega o verificación de un
 POST,/api/auth/login,Inicia sesión con usuario y contraseña.,"ALUMNO, DOCENTE, ADMINISTRATIVO, ADMINISTRADOR",Login.jsx,loginApi,real
 POST,/api/auth/logout,Cierra la sesión activa en el sistema.,"ALUMNO, DOCENTE, ADMINISTRATIVO, ADMINISTRADOR",Topbar.jsx,logoutApi,real
 POST,/api/auth/cambiar-password,Modifica la contraseña del usuario en sesión.,"ALUMNO, DOCENTE, ADMINISTRATIVO, ADMINISTRADOR",CambiarPasswordPage.jsx,cambiarPasswordApi,real
+POST,/api/auth/registro,Registra a un nuevo alumno en el sistema.,"ALUMNO, DOCENTE, ADMINISTRATIVO, ADMINISTRADOR",Registro.jsx,registroApi,real
+GET,/api/auth/carreras,Obtiene las carreras disponibles para aspirantes y nuevos estudiantes (público).,"ALUMNO, DOCENTE, ADMINISTRATIVO, ADMINISTRADOR",Registro.jsx,getOfertaCarrerasApi,real
+GET,/api/auth/planes-estudio,Obtiene los planes de estudio disponibles para aspirantes y nuevos estudiantes (público).,"ALUMNO, DOCENTE, ADMINISTRATIVO, ADMINISTRADOR",Registro.jsx,getOfertaPlanesApi,real
 GET,/api/usuarios,Obtiene el listado de cuentas de usuario y roles del sistema.,ADMINISTRADOR,GestionUsuariosPage.jsx,getUsuarios,real
 POST,/api/usuarios,Registra un nuevo usuario con credenciales y asignación de rol.,ADMINISTRADOR,GestionUsuariosPage.jsx,createUsuario,real
 PUT,/api/usuarios/{id},Actualiza los datos de perfil o rol de un usuario existente.,ADMINISTRADOR,GestionUsuariosPage.jsx,updateUsuario,real

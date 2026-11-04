@@ -1113,6 +1113,54 @@ const ENDPOINTS_META = [
     tag: 'Auth'
   },
   {
+    fn: 'registroApi',
+    method: 'POST',
+    url: '/api/auth/registro',
+    desc: 'Registra a un nuevo alumno en el sistema.',
+    roles: ['ALUMNO', 'DOCENTE', 'ADMINISTRATIVO', 'ADMINISTRADOR'],
+    pantallas: 'Registro.jsx',
+    queryParams: [],
+    pathParams: [],
+    requestBody: 'RegistroAlumnoDTO',
+    responseSchema: 'SuccessResponseDTO',
+    successStatus: '201',
+    codigos: '201, 400, 409',
+    estado: 'real',
+    tag: 'Auth'
+  },
+  {
+    fn: 'getOfertaCarrerasApi',
+    method: 'GET',
+    url: '/api/auth/carreras',
+    desc: 'Obtiene las carreras disponibles para aspirantes y nuevos estudiantes (público).',
+    roles: ['ALUMNO', 'DOCENTE', 'ADMINISTRATIVO', 'ADMINISTRADOR'],
+    pantallas: 'Registro.jsx',
+    queryParams: [],
+    pathParams: [],
+    requestBody: null,
+    responseSchema: 'Array<CarreraDTO>',
+    successStatus: '200',
+    codigos: '200',
+    estado: 'real',
+    tag: 'Auth'
+  },
+  {
+    fn: 'getOfertaPlanesApi',
+    method: 'GET',
+    url: '/api/auth/planes-estudio',
+    desc: 'Obtiene los planes de estudio disponibles para aspirantes y nuevos estudiantes (público).',
+    roles: ['ALUMNO', 'DOCENTE', 'ADMINISTRATIVO', 'ADMINISTRADOR'],
+    pantallas: 'Registro.jsx',
+    queryParams: [],
+    pathParams: [],
+    requestBody: null,
+    responseSchema: 'Array<PlanEstudioDTO>',
+    successStatus: '200',
+    codigos: '200',
+    estado: 'real',
+    tag: 'Auth'
+  },
+  {
     fn: 'getUsuarios',
     method: 'GET',
     url: '/api/usuarios',
@@ -1920,7 +1968,7 @@ function generarOpenAPIYaml() {
         lines.push(`        - ${r}`);
       }
 
-      if (ep.fn === 'loginApi') {
+      if (ep.fn === 'loginApi' || ep.fn === 'registroApi' || ep.fn === 'getOfertaCarrerasApi' || ep.fn === 'getOfertaPlanesApi') {
         lines.push(`      security: []`);
       }
 
@@ -2824,15 +2872,40 @@ function generarOpenAPIYaml() {
       }
     },
     {
-      name: 'LoginResponseDTO',
-      required: ['idUsuario', 'usuario', 'nombre', 'rol', 'email'],
+      name: 'UsuarioSesionDTO',
+      required: ['idUsuario', 'username', 'nombre', 'rol'],
       properties: {
         idUsuario: { type: 'integer' },
-        usuario: { type: 'string' },
+        username: { type: 'string' },
         nombre: { type: 'string' },
         rol: { type: 'string', enum: ['ADMINISTRADOR', 'ADMINISTRATIVO', 'DOCENTE', 'ALUMNO'] },
-        email: { type: 'string' },
+        idAlumno: { type: 'integer' },
+        idDocente: { type: 'integer' }
+      }
+    },
+    {
+      name: 'LoginResponseDTO',
+      required: ['usuario', 'token'],
+      properties: {
+        usuario: { $ref: '#/components/schemas/UsuarioSesionDTO' },
         token: { type: 'string' }
+      }
+    },
+    {
+      name: 'RegistroAlumnoDTO',
+      required: ['nombre', 'apellido', 'dni', 'email', 'fechaNacimiento', 'idCarrera', 'idPlan', 'username', 'password'],
+      properties: {
+        nombre: { type: 'string' },
+        apellido: { type: 'string' },
+        dni: { type: 'string' },
+        email: { type: 'string' },
+        telefono: { type: 'string' },
+        domicilio: { type: 'string' },
+        fechaNacimiento: { type: 'string', format: 'date' },
+        idCarrera: { type: 'integer' },
+        idPlan: { type: 'integer' },
+        username: { type: 'string' },
+        password: { type: 'string' }
       }
     },
     {
