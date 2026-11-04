@@ -34,6 +34,9 @@
 | [x] | Módulo Solicitudes y Trámites (3 de 3 endpoints listos) | `alumnos`, `usuarios` | Matias | [Ficha](backend/guia-de-modulos.md#521-módulo-solicitudes-y-trámites-solicitudes) |
 | [x] | Tarea programada para marcar cuotas impagas como vencidas | `matriculas`, `cuotas` | Matias | RN07, RF30 |
 | [x] | Verificar permisos por rol (`x-roles`) y tests Mockito/WebMvc en cada controller (428 tests OK) | Módulos respectivos | Todos (en su módulo) | [guia-de-modulos.md](backend/guia-de-modulos.md#3-plantilla-de-un-módulo-pasos-de-desarrollo) |
+| [x] | Documentación técnica del backend (README, seguridad y matriz de roles, configuración, RN01-RN27, pruebas) | Módulos backend | Alfredo | [README.md](backend/README.md) |
+| [ ] | Implementar endpoint de cambio de carrera en backend (`/api/alumnos/{id}/cambio-carrera`, RN26) | `alumnos` | Santiago | [reglas-de-negocio.md](backend/reglas-de-negocio.md) |
+| [ ] | Proyectar `idAlumno` e `idDocente` en payload de sesión (`/api/auth/me` y `UsuarioSesionDTO`) | `auth` | Alfredo | [seguridad.md](backend/seguridad.md) |
 
 ## 3. Integración con el Frontend
 | [ ] | Tarea | Depende de | Dueño | Referencia |
@@ -58,7 +61,7 @@
 | [ ] | Incorporar RF y RN de Solicitudes y Documentación en el análisis | Ninguna | Matias | [entregable-1-analisis.md](entregables/entregable-1-analisis.md) |
 | [ ] | Actualizar DER con `solicitud`, `documentacion`, `rol_docente` y `pago.comprobante` | Base de datos | Santiago | [der.md](entregables/entregable-2/der.md) |
 | [ ] | Actualizar y renderizar diagramas UML (Clases, Secuencia de pagos, inscripciones y notas) | DER y servicios | Santiago | [entregables/README.md](entregables/README.md) |
-| [ ] | Documentar modelo relacional y diccionario de datos completo | Base de datos | Mateo | [01-schema.sql](../database/01-schema.sql) |
+| [x] | Documentar modelo relacional y diccionario de datos completo | Base de datos | Mateo | [diccionario-de-datos.md](base-de-datos/diccionario-de-datos.md) |
 | [ ] | Generar matriz de trazabilidad requisito, código y prueba a partir de git log y tests | Tests y commits | Matias | [flujo-de-trabajo.md](flujo-de-trabajo.md) |
 | [ ] | Elaborar manual breve de instalación y uso del sistema | Integración completa | Alfredo | [README.md](../README.md) |
 | [ ] | Revisar el enunciado y completar esta lista con requisitos no cubiertos | Ninguna | Todos | Enunciado de cátedra |
