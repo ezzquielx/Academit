@@ -8,27 +8,63 @@ import { getMesasExamen } from '../../api/mesasExamen'
 import { getCalificaciones } from '../../api/calificaciones'
 import { getSolicitudes } from '../../api/solicitudes'
 import { getAlumnos, getAlumnoById } from '../../api/alumnos'
+import { getAsignaciones } from '../../api/asignaciones'
 import { ETIQUETAS_VACIO } from '../../config/etiquetas'
 
 export const InicioPage = () => {
-  const { rol, nombre, usuario, idAlumno } = useAuth()
+  const { rol, nombre, usuario, idAlumno, idDocente } = useAuth()
   const alumnoId = rol === 'ALUMNO' ? idAlumno : null
   const [alumno, setAlumno] = useState(null)
   const [alumnoCuotas, setAlumnoCuotas] = useState([])
   const [alumnoMesas, setAlumnoMesas] = useState([])
   const [alumnoCalificaciones, setAlumnoCalificaciones] = useState([])
+  const [docenteAsignaciones, setDocenteAsignaciones] = useState([])
   const [solicitudesCount, setSolicitudesCount] = useState(0)
   const [alumnosCount, setAlumnosCount] = useState(0)
 
   useEffect(() => {
     getAlumnos().then((data) => setAlumnosCount((data || []).length)).catch(() => {})
+
     getMesasExamen()
-      .then((data) =>
-        setAlumnoMesas(
-          alumnoId ? (data || []).filter((m) => m.alumnosInscriptosIds?.includes(alumnoId)) : []
-        )
-      )
+      .then((data) => {
+        const todas = data || []
+        if (rol === 'ALUMNO') {
+          setAlumnoMesas(alumnoId ? todas.filter((m) => m.alumnosInscriptosIds?.includes(alumnoId)) : [])
+        } else if (rol === 'DOCENTE') {
+          const misMesas = todas.filter((m) => {
+            if (idDocente && (m.idDocente === idDocente || m.docenteId === idDocente)) return true
+            if (m.tribunal && (nombre || usuario)) {
+              const textoDocente = (nombre || usuario).toLowerCase().replace(/profesor(a)?\s+/i, '').trim()
+              const palabras = textoDocente.split(/\s+/).filter((p) => p.length > 2)
+              return palabras.some((p) => m.tribunal.toLowerCase().includes(p))
+            }
+            return false
+          })
+          setAlumnoMesas(misMesas)
+        } else {
+          setAlumnoMesas([])
+        }
+      })
       .catch(() => {})
+
+    if (rol === 'DOCENTE') {
+      getAsignaciones()
+        .then((data) => {
+          const todas = data || []
+          const misAsigs = todas.filter((a) => {
+            if (idDocente && a.idDocente === idDocente) return true
+            if ((nombre || usuario) && a.docenteNombre) {
+              const textoDocente = (nombre || usuario).toLowerCase().replace(/profesor(a)?\s+/i, '').trim()
+              const palabras = textoDocente.split(/\s+/).filter((p) => p.length > 2)
+              return palabras.some((p) => a.docenteNombre.toLowerCase().includes(p))
+            }
+            return false
+          })
+          setDocenteAsignaciones(misAsigs)
+        })
+        .catch(() => {})
+    }
+
     getSolicitudes(alumnoId ? { idAlumno: alumnoId } : {})
       .then((data) => setSolicitudesCount((data || []).filter((s) => s.estado === 'PENDIENTE').length))
       .catch(() => {})
@@ -37,7 +73,7 @@ export const InicioPage = () => {
     getAlumnoById(alumnoId).then(setAlumno).catch(() => {})
     getCuotas(alumnoId).then((data) => setAlumnoCuotas(data || [])).catch(() => {})
     getCalificaciones({ idAlumno: alumnoId }).then((data) => setAlumnoCalificaciones(data || [])).catch(() => {})
-  }, [rol, alumnoId])
+  }, [rol, alumnoId, idDocente, nombre, usuario])
 
   const getGreeting = () => {
     const h = new Date().getHours()
@@ -208,41 +244,40 @@ export const InicioPage = () => {
           {rol === 'DOCENTE' && (
             <section className="bloque">
               <h2>Mis comisiones activas</h2>
-              <div className="tabla-caja">
-                <table>
-                  <caption>Ciclo lectivo 2026 · Cursado del segundo cuatrimestre</caption>
-                  <thead>
-                    <tr>
-                      <th scope="col">Materia</th>
-                      <th scope="col">Comisión</th>
-                      <th scope="col" className="d">Alumnos</th>
-                      <th scope="col">Acción</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td className="titulo-ficha" data-l="Materia">Programación I</td>
-                      <td data-l="Comisión">1° Año - Turno Mañana (Aula 101)</td>
-                      <td className="d num" data-l="Alumnos">29</td>
-                      <td data-l="Acción">
-                        <Link to="/docencia/calificaciones" className="btn lig chico">
-                          Calificar
-                        </Link>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="titulo-ficha" data-l="Materia">Programación II</td>
-                      <td data-l="Comisión">2° Año - Turno Tarde (Lab 2)</td>
-                      <td className="d num" data-l="Alumnos">28</td>
-                      <td data-l="Acción">
-                        <Link to="/docencia/calificaciones" className="btn lig chico">
-                          Calificar
-                        </Link>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+              {docenteAsignaciones.length === 0 ? (
+                <EmptyState
+                  title={ETIQUETAS_VACIO.SIN_COMISIONES_DOCENTE}
+                  description={ETIQUETAS_VACIO.SIN_COMISIONES_DOCENTE_DETALLE}
+                />
+              ) : (
+                <div className="tabla-caja">
+                  <table>
+                    <caption>Ciclo lectivo 2026 · Cursado del segundo cuatrimestre</caption>
+                    <thead>
+                      <tr>
+                        <th scope="col">Materia</th>
+                        <th scope="col">Comisión</th>
+                        <th scope="col" className="d">Cargo</th>
+                        <th scope="col">Acción</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {docenteAsignaciones.map((asig) => (
+                        <tr key={asig.idAsignacion}>
+                          <td className="titulo-ficha" data-l="Materia">{asig.materiaNombre}</td>
+                          <td data-l="Comisión">{asig.cursoNombre}</td>
+                          <td className="d" data-l="Cargo">{asig.rolDocente || 'Titular'}</td>
+                          <td data-l="Acción">
+                            <Link to="/docencia/calificaciones" className="btn lig chico">
+                              Calificar
+                            </Link>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
             </section>
           )}
 
@@ -294,9 +329,9 @@ export const InicioPage = () => {
         <aside className="lat">
           <section>
             <h2>Agenda</h2>
-            <ul className="agenda">
-              {alumnoMesas.length > 0 ? (
-                alumnoMesas.slice(0, 4).map((m) => {
+            {alumnoMesas.length > 0 ? (
+              <ul className="agenda">
+                {alumnoMesas.slice(0, 4).map((m) => {
                   const d = new Date(m.fecha)
                   const diaNum = isNaN(d.getDate()) ? '28' : d.getDate()
                   const mesStr = isNaN(d.getMonth())
@@ -313,21 +348,25 @@ export const InicioPage = () => {
                         <div>{m.materiaNombre}</div>
                         <div className="cuando">{getCuando(m.fecha)}</div>
                         <div className="quien">
-                          Tribunal: {m.presidente || 'Roldán, Ibarra'} · {m.hora || '18:30'}
+                          Tribunal: {m.tribunal || m.presidente || 'Roldán, Ibarra'} · {m.hora || '18:30'}
                         </div>
                       </div>
                     </li>
                   )
-                })
-              ) : (
-                <li>
-                  <EmptyState
-                    title={ETIQUETAS_VACIO.SIN_MESAS}
-                    description={ETIQUETAS_VACIO.SIN_MESAS_DETALLE}
-                  />
-                </li>
-              )}
-            </ul>
+                })}
+              </ul>
+            ) : (
+              <div className="agenda-vacia">
+                <EmptyState
+                  title={ETIQUETAS_VACIO.SIN_MESAS}
+                  description={
+                    rol === 'DOCENTE'
+                      ? ETIQUETAS_VACIO.SIN_MESAS_DOCENTE_DETALLE
+                      : ETIQUETAS_VACIO.SIN_MESAS_DETALLE
+                  }
+                />
+              </div>
+            )}
           </section>
 
           <section>

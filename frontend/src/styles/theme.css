@@ -24,7 +24,7 @@
   --error: #9C4940;
   --hover: #E7E1D3;
   --serif: Georgia, "Times New Roman", serif;
-  --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 
   /* Aliases para compatibilidad */
   --superficie: var(--papel);

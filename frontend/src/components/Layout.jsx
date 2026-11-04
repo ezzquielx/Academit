@@ -155,7 +155,7 @@ export const Layout = ({ children }) => {
         </div>
 
         {/* Navegación por grupos */}
-        <nav className="nav" id="nav" aria-label="Principal">
+        <nav className="nav nav-lateral" id="nav" aria-label="Principal">
           {gruposVisibles.map((grupo) => (
             <div key={grupo.id} className="grupo">
               <div className="titulo">{grupo.titulo}</div>
