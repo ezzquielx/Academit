@@ -130,7 +130,7 @@ export const AdminCuotasPage = () => {
         icon="bi-receipt"
       />
 
-      <div className="mb-3 d-flex align-items-center gap-2">
+      <div className="mb-3 d-flex flex-wrap align-items-center gap-2">
         <span className="small text-muted fw-semibold me-2">Filtrar por tipo:</span>
         <ButtonGroup size="sm">
           <Button
