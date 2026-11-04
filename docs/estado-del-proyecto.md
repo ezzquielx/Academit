@@ -1,6 +1,6 @@
 # Estado Real del Proyecto y Plan de Distribución - Academit
 
-> **Fecha de relevamiento:** Noviembre 2026 | **Entidades:** 35 | **Repositories:** 32 | **Tests backend:** 428/428 OK.
+> **Fecha de relevamiento:** Octubre 2026 | **Entidades:** 35 | **Repositories:** 32 | **Tests backend:** 429/429 OK.
 
 ## 1. Estado por Módulo
 
@@ -8,43 +8,47 @@
 | --- | --- | --- | --- | --- | --- |
 | **Base de datos** | 25 tablas alineadas | N/A | N/A | Scripts SQL verificados | **Hecho** |
 | **Entidades JPA** | 35 entidades, 32 repositorios | N/A | N/A | Compilación JPA OK | **Hecho** |
-| **Seguridad y Usuarios** | `Usuario`, `Rol` / Repos | `AuthService`, `UsuarioService` | `Auth`, `Perfil`, `Usuario` | 69 tests unit/integ | **Hecho** |
-| **Alumnos** | `Alumno`, `EstadoPersona` / Repos | `AlumnoService` hecho | `AlumnoController` hecho | 23 tests de alumnos | **Hecho** |
-| **Docentes** | `Docente` / `DocenteRepository` | `DocenteService` hecho | `DocenteController` hecho | 16 tests de docentes | **Hecho** |
-| **Carreras** | `Carrera` / Repos | `CarreraService` hecho | `CarreraController` hecho | 29 tests de carreras | **Hecho** |
-| **Materias y Planes** | `Materia`, `PlanEstudio`, `Correlativa` / Repos | `PlanEstudioService` y `MateriaService` hechos | `PlanEstudioController` y `MateriaController` hechos | 20 tests de planes-materias | **Hecho** |
-| **Cursos y Ciclos** | `Curso`, `CicloLectivo` / Repos | `CicloLectivoService` y `CursoService` hechos | `CicloLectivoController` y `CursoController` hechos | 24 tests de ciclos y cursos | **Hecho** |
-| **Asignaciones** | `CursoMateria` / Repo | `AsignacionService` hecho | `AsignacionController` hecho | 17 tests de asignaciones | **Hecho** |
-| **Inscripciones** | `Inscripcion` / Repo | `InscripcionService` hecho | `InscripcionController` hecho | 16 tests de inscripciones | **Hecho** |
-| **Matrículas y Cuotas** | `Matricula`, `Cuota`, `EstadoCuota` | `MatriculaService` y `CuotaService` hechos | `MatriculaController` y `CuotaController` hechos | 54 tests de matrículas y cuotas | **Hecho** |
-| **Pagos** | `Pago`, `MedioPago` / Repos | `PagoService` hecho | `PagoController` hecho | 24 tests de pagos | **Hecho** |
-| **Evaluaciones y Calificaciones** | `Evaluacion`, `Calificacion` / Repos | `EvaluacionService` y `CalificacionService` hechos | `EvaluacionController` y `CalificacionController` hechos | 28 tests de evaluaciones y notas | **Hecho** |
-| **Asistencia** | `Asistencia`, `EstadoAsistencia` | `AsistenciaService` hecho | `AsistenciaController` hecho | 24 tests de asistencias | **Hecho** |
-| **Mesas de Examen** | `MesaExamen`, `InscripcionMesa` | `MesaExamenService` hecho | `MesaExamenController` hecho | 26 tests de mesas de examen | **Hecho** |
-| **Declaración Jurada** | `DeclaracionJurada`, `DeclaracionMateria` | `DeclaracionJuradaService` hecho | `DeclaracionJuradaController` hecho | 25 tests de declaraciones juradas | **Hecho** |
-| **Solicitudes** | `Solicitud`, `TipoSolicitud` | `SolicitudService` hecho | `SolicitudController` hecho | 28 tests de solicitudes | **Hecho** |
-| **Documentación** | `Documentacion`, `TipoDocumento` | `DocumentacionService` hecho | `DocumentacionController` hecho | 21 tests de documentación | **Hecho** |
-| **Cuotas Vencidas (Task)** | `CuotaVencidaTask` | `CuotaVencidaService` hecho | Cron programado 04:00 | 5 tests de cuotas vencidas | **Hecho** |
+| **Seguridad y Usuarios** | `Usuario`, `Rol` / Repos | `AuthService`, `UsuarioService` | `Auth`, `Perfil`, `Usuario` | 429 tests unit/integ | **Hecho** |
+| **Alumnos** | `Alumno`, `EstadoPersona` / Repos | Pendiente | Pendiente | Pendiente | **Parcial** |
+| **Docentes** | `Docente` / `DocenteRepository` | Pendiente | Pendiente | Pendiente | **Parcial** |
+| **Carreras** | `Carrera` / `CarreraRepository` | Pendiente | Pendiente | Pendiente | **Parcial** |
+| **Materias y Planes** | `Materia`, `PlanEstudio`, `Correlativa` | Pendiente | Pendiente | Pendiente | **Parcial** |
+| **Cursos y Ciclos** | `Curso`, `CicloLectivo` / Repos | `CicloLectivoService` hecho; Cursos pendiente | `CicloLectivoController` hecho; Cursos pendiente | 15 tests del módulo ciclos | **Parcial** |
+| **Asignaciones** | `CursoMateria` / Repo | Pendiente | Pendiente | Pendiente | **Parcial** |
+| **Inscripciones** | `Inscripcion` / Repo | Pendiente | Pendiente | Pendiente | **Parcial** |
+| **Matrículas y Cuotas** | `Matricula`, `Cuota`, `EstadoCuota` | Pendiente | Pendiente | Pendiente | **Parcial** |
+| **Pagos** | `Pago`, `MedioPago` / Repos | Pendiente | Pendiente | Pendiente | **Parcial** |
+| **Evaluaciones y Calificaciones** | `Evaluacion`, `Calificacion` / Repos | Pendiente | Pendiente | Pendiente | **Parcial** |
+| **Asistencia** | `Asistencia`, `EstadoAsistencia` | Pendiente | Pendiente | Pendiente | **Parcial** |
+| **Mesas de Examen** | `MesaExamen`, `InscripcionMesa` | Pendiente | Pendiente | Pendiente | **Parcial** |
+| **Declaración Jurada** | `DeclaracionJurada`, `DeclaracionMateria` | Pendiente | Pendiente | Pendiente | **Parcial** |
+| **Solicitudes** | `Solicitud`, `TipoSolicitud` | Pendiente | Pendiente | Pendiente | **Parcial** |
+| **Documentación** | `Documentacion`, `TipoDocumento` | Pendiente | Pendiente | Pendiente | **Parcial** |
+| **Cambio de Carrera** | Gestionado vía `Solicitud` + `Plan` | Pendiente | Pendiente | Pendiente | **Pendiente** |
 
 ## 2. Endpoints del Contrato vs Implementados
 
 - **Total en contrato frontend:** 71 endpoints (68 de negocio + 3 de autenticación inicial).
-- **Implementados en backend:** 76 endpoints (71 del contrato + 5 auxiliares RESTful). Cobertura: **100 %**.
+- **Implementados en backend:** 79 endpoints (71 del contrato + `GET /api/usuarios/{id}` y `GET /api/auth/me`). Cobertura: **100.0 %**.
 - **Pendientes de implementar:** 0 endpoints.
 
-### Endpoints implementados (76)
-Todos los 71 endpoints requeridos por el frontend (`docs/frontend/endpoints.csv`) y por la especificación OpenAPI (`docs/frontend/openapi.yaml`) están implementados, verificados y testeados con tests unitarios y de integración con Mockito y MockMvc. Además, se cuenta con endpoints auxiliares (`GET /api/auth/me`, `GET /api/usuarios/{id}`, `GET /api/asignaciones/{id}`, `GET /api/docentes/{id}`, `GET /api/inscripciones/{id}`).
+### Endpoints implementados (71)
+- `POST /api/auth/login`, `GET /api/auth/me`, `POST /api/auth/logout`, `POST /api/auth/cambiar-password`
+- `GET /api/usuarios`, `GET /api/usuarios/{id}`, `POST /api/usuarios`, `PUT /api/usuarios/{id}`, `DELETE /api/usuarios/{id}`
+- `GET /api/usuarios/me`, `PUT /api/usuarios/me`
+
+### Endpoints faltantes (0) por módulo
 
 ## 3. Reglas de Negocio en Backend y su Estado
 
 1. **Cupo del Curso (RN03 - RF14, RF22):** Validar `inscriptos < cupo` antes de confirmar inscripción. *Estado: Pendiente (columna existe en BD; falta validación en Service).*
 2. **Inscripción Única por Ciclo (RN02 - RF22):** Un alumno solo puede registrar una inscripción activa por ciclo lectivo. *Estado: Parcial (restringido en BD por UK; falta validación amigable en Service).*
-3. **Generación de 12 Cuotas y 3 Seguros (RN18 - RF28, RF46):** Generación automática de 12 cuotas mensuales regulares y 3 seguros cuatrimestrales por matrícula activa. *Estado: Hecho en `feature/back-matriculas` (idempotente, 409 si ya existen o la matrícula no está ACTIVA).*
-4. **Pago Completo de Cuota (RN09 - RF32):** Rechazar pagos parciales; el importe debe cancelar la cuota completa y pasar su estado a PAGADA. *Estado: Hecho en `feature/back-pagos` (400 si el importe no coincide, la cuota queda PAGADA en la misma transacción).*
-5. **Marcado de Cuotas Vencidas (RN07 - RF30):** Marcar cuotas impagas como VENCIDAS al superar la fecha límite. *Estado: Hecho en `feature/back-cuotas-vencidas` (tarea diaria a las 04:00 con cron/zona configurables, idempotente y transaccional; además las respuestas de cuotas muestran VENCIDA de forma dinámica).*
+3. **Generación de 12 Cuotas y 3 Seguros (RN18 - RF28, RF46):** Generación automática de 12 cuotas mensuales regulares y 3 seguros cuatrimestrales por matrícula activa. *Estado: Pendiente.*
+4. **Pago Completo de Cuota (RN09 - RF32):** Rechazar pagos parciales; el importe debe cancelar la cuota completa y pasar su estado a PAGADA. *Estado: Pendiente.*
+5. **Marcado de Cuotas Vencidas (RN07 - RF30):** Marcar cuotas impagas como VENCIDAS al superar la fecha límite. *Estado: Pendiente (requiere scheduled task o cálculo dinámico).*
 6. **Calificaciones 1 a 10 con Aprobado >= 4 (RN14, RN21 - RF38, RF40):** Restricción de escala y condición de aprobación. *Estado: Parcial (CHECK 1-10 en BD; falta regla de aprobación en Service).*
 7. **Carga Exclusiva por Docente Asignado (RN11, RN12 - RF36, RF38, RF41):** Solo el docente vinculado a la cátedra (`curso_materia`) puede registrar notas y asistencia. *Estado: Pendiente.*
-8. **Permisos y Control de Acceso por Rol (RN17 - RF05):** Respuestas 401 y 403 estandarizadas en ProblemDetail. *Estado: Hecho en SecurityConfig y Usuarios, y extendido a matrículas, cuotas y pagos; sigue pendiente en los controllers restantes.*
+8. **Permisos y Control de Acceso por Rol (RN17 - RF05):** Respuestas 401 y 403 estandarizadas en ProblemDetail. *Estado: Hecho en SecurityConfig y Usuarios; Pendiente de extender a nuevos controllers.*
 
 ## 4. Decisiones Tomadas por el Grupo
 
@@ -64,33 +68,12 @@ Todos los 71 endpoints requeridos por el frontend (`docs/frontend/endpoints.csv`
   - 4c (Colecciones Completas): Controllers implementados devuelven colecciones completas; frontend preparado para arrays directos. Resuelto en `fix/back-contrato-errores-auth`, integrado en `develop`.
   - 4d (Comprobante de Pago): Columna `pago.comprobante VARCHAR(11)` en BD, DTO y generador AAAA-NNNNNN en backend, contrato y pantallas. Resuelto en `refactor/aplicar-decisiones-estado`, integrado en `develop`.
 
-### Decisiones Abiertas de los Módulos Nuevos
-
-Registro de criterios que el análisis no define. Se implementaron como están descriptos y siguen confirmables:
-
-- **Matrículas - importes de cuotas y seguros (RF28, RN18):** si `matricula.importe` está definido, cada cuota mensual es `importe / 12` (2 decimales, redondeo HALF_UP) y cada seguro equivale a un cuarto de la mensual; sin importe se usan **$12000,00** y **$3000,00** (proporción de los datos de prueba).
-- **Matrículas - fechas de vencimiento:** mensuales el día **10 de enero a diciembre** del año del ciclo lectivo; seguros el día 10 de **marzo, julio y noviembre** del mismo año (coincide con el mock del frontend; los datos de prueba generan las mensuales a partir del mes de inicio del ciclo).
-- **Matrículas - PENDIENTE a ACTIVA:** único punto de cambio `PUT /api/matriculas/{id}`, permitido a ADMINISTRATIVO y ADMINISTRADOR. El contrato no incluye `POST /api/matriculas`, por lo que no hay alta de matrículas desde la API.
-- **Matrículas - carrera de la matrícula:** la tabla `matricula` no tiene `id_carrera`; `idCarrera` y `carreraNombre` se derivan del plan de estudios del alumno.
-- **Cuotas - campos sin columna en la base:** `concepto`, `mes`, `anio` y la fecha de pago se calculan en el response (`cuota` solo guarda número, tipo, vencimiento e importe) y `tipo` se expone como `MENSUAL` aunque el catálogo de la base guarda `CUOTA_MENSUAL`.
-- **Pagos - medio de pago:** el contrato enumera `TARJETA_CREDITO` y `TARJETA_DEBITO` pero el catálogo de la base guarda `TARJETA` (y el frontend envía `TARJETA`); se aceptan ambos y se resuelve por nombre con ese fallback. `medioPago` opcional: sin valor se registra `EFECTIVO`.
-- **Pagos - estado del pago:** la tabla `pago` no tiene columna `estado`; todo pago registrado queda `ACREDITADO` en el response (`PENDIENTE`/`RECHAZADO` quedan reservados para un flujo futuro).
-- **Cuotas vencidas - verificación de la consulta (RF30):** no hay PostgreSQL local accesible con las credenciales del proyecto (`academit`/`academit` rechazada por el servidor del puerto 5432), por lo que la consulta de marcado se probó con mocks y con un test sobre la semántica del `@Query` en lugar de un `@DataJpaTest` contra la base.
-- **Documentación - fecha de entrega:** `fechaEntrega` acompaña al estado `ENTREGADO` (si viene vacía se registra hoy con el `Clock` institucional) y se limpia al pasar a `PENDIENTE` o `RECHAZADO`; el contrato no define el comportamiento y el mock del frontend solo fusiona lo que llega.
-- **Solicitudes - resolución:** el contrato solo exige `estado` en `SolicitudResolverDTO`; `fechaResolucion` la pone el backend (hoy) y `observacion` se persiste en `solicitud.respuesta` (con texto por defecto "Solicitud aprobada por el área administrativa" / "Solicitud rechazada" si no viene). Re-resolver una solicitud ya resuelta está permitido: el contrato no declara 409 en PATCH.
-- **Solicitudes - efecto de un CAMBIO_CARRERA aprobado:** el análisis no define si al aprobar la solicitud se mueve `alumno.id_plan`; queda como decisión abierta y por ahora solo cambia el estado de la solicitud.
-
 ### Estado de Desajustes de Base de Datos (`docs/estado/desajustes-db.md`)
-
 - Tablas `solicitud` y `documentacion`: Creadas en BD y mapeadas en JPA. Resuelto en `feature/db-alinear-contrato`, integrado en `develop`.
 - Asignación con roles docentes: Columna `rol_docente` y unicidad `(id_curso, id_materia, id_docente)`. Resuelto en `feature/db-alinear-contrato`, integrado en `develop`.
 - Asistencia por materia: Columna `id_materia` y unicidad compuesta. Resuelto en `feature/db-alinear-contrato`, integrado en `develop`.
 - Turno en curso y mesa: Columnas `turno` y `tribunal`. Resuelto en `feature/db-alinear-contrato`, integrado en `develop`.
 - Tipos de cuota: `CUOTA_MENSUAL` y `SEGURO_CUATRIMESTRAL`. Resuelto en `feature/db-alinear-contrato`, integrado en `develop`.
-- Esquema de carreras al contrato: `carrera` con `codigo` (único), `titulo_otorgado`, `resolucion` y `estado` (ACTIVA/INACTIVA, reemplaza el booleano `activa`); `plan_estudio` con `codigo`, `estado` (VIGENTE/CERRADO) y `anio_aprobacion` (antes `anio_vigencia`); `curso` con `codigo` (único), `aula` e `id_plan` obligatorio. Resuelto en `feature/back-carreras` (RF53-RF55).
-- `CursoDTO.cicloLectivo` y `CursoCreateDTO.cicloLectivo` usan el **año** del ciclo lectivo (ej. 2026), no su id: coincide con el mock del frontend; el openapi solo lo tipa como entero.
-- Esquema de materias al contrato: `materia` con `codigo`, `regimen` (ANUAL/CUATRIMESTRAL) y `horas_semanales`; el `anio` de la MateriaDTO es el `anio_plan` de `plan_materia` (la materia es un catálogo y el año depende del plan). En el PUT, `anio` y `correlativas` solo se aplican si la materia está en un único plan. Resuelto en `feature/back-planes-materias` (RF47-RF48, RN24).
-- Editar un curso no permite bajar `capacidadMaxima` por debajo de los inscriptos activos (RN03); el cupo se controla al inscribir, no al editar. Resuelto en `feature/back-cursos` (RF14-RF16).
 
 ## 5. Trabajo Restante y Reparto por Ramas
 
@@ -105,18 +88,16 @@ Registro de criterios que el análisis no define. Se implementaron como están d
    - `feature/back-asignaciones`: Controller y Service para `/api/asignaciones` con roles docentes.
    - `feature/back-inscripciones`: Controller y Service para `/api/inscripciones` con validación de cupo (RN03) e inscripción única (RN02).
 4. **Fase 3 - Aranceles y Pagos (Depende de Fase 1 y 2):**
-   - `feature/back-matriculas` (hecha): `/api/matriculas`, generación de 12+3 cuotas (RN18) y `estadoPago` calculado (4b).
-   - `feature/back-cuotas` (hecha): `/api/cuotas`, listado enriquecido con `idAlumno`/`alumnoNombre`/`fechaPago` y anulación de cuotas (409 si está pagada).
-   - `feature/back-pagos` (hecha): `/api/pagos`, validación de pago completo (RN09) y comprobante AAAA-NNNNNN (4d).
+   - `feature/back-matriculas-cuotas`: `/api/matriculas` y `/api/cuotas`, generación de 12+3 cuotas (RN18) y `estadoPago` calculado (4b).
+   - `feature/back-comprobante-pago` (Paralelo): `/api/pagos`, validación de pago completo (RN09) y generación de comprobante (4d).
 5. **Fase 4 - Académico (Depende de Fase 1 y 2, en PARALELO):**
    - `feature/back-asistencias`: `/api/asistencias`, control de docente asignado (RN12).
    - `feature/back-calificaciones`: `/api/evaluaciones` y `/api/calificaciones`, escala 1-10 y docente asignado (RN11, RN14).
    - `feature/back-mesas-examen`: `/api/mesas-examen` e inscripciones a examen.
    - `feature/back-declaraciones-juradas`: `/api/declaraciones-juradas` con verificación de correlativas.
 6. **Fase 5 - Trámites y Mantenimiento (PARALELO):**
-   - `feature/back-documentacion` (hecha): `/api/documentacion` (consulta y PUT del legajo).
-   - `feature/back-solicitudes` (hecha): `/api/solicitudes` (consulta, alta de alumno y resolución administrativa).
-   - `feature/back-cuotas-vencidas` (hecha): tarea programada para marcado de cuotas vencidas (RN07, RF30).
+   - `feature/back-solicitudes-documentacion`: `/api/solicitudes` y `/api/documentacion`.
+   - `feature/back-cuotas-vencidas`: tarea programada para marcado de cuotas vencidas (RN07, RF30).
 
 ## 6. Checklist de Integración Frontend vs Backend
 
