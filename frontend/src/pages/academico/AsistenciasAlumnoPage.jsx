@@ -5,13 +5,15 @@ import DataTable from '../../components/DataTable'
 import StatusBadge from '../../components/StatusBadge'
 import { useAuth } from '../../context/AuthContext'
 import { getAsistencias } from '../../api/asistencias'
+import { ETIQUETAS_VACIO } from '../../config/etiquetas'
 
 export const AsistenciasAlumnoPage = () => {
-  const { user } = useAuth()
+  const { idAlumno } = useAuth()
   const [asistencias, setAsistencias] = useState([])
-  const alumnoId = user?.idAlumno || 1 // Alumno de sesión o referencia
+  const alumnoId = idAlumno
 
   useEffect(() => {
+    if (!alumnoId) return
     getAsistencias({ idAlumno: alumnoId }).then(setAsistencias).catch(() => {})
   }, [alumnoId])
 
@@ -113,6 +115,8 @@ export const AsistenciasAlumnoPage = () => {
         keyField="idAsistencia"
         searchPlaceholder="Buscar por fecha o materia..."
         searchKeys={['fecha', 'materiaNombre', 'estado']}
+        emptyTitle={ETIQUETAS_VACIO.SIN_ASISTENCIAS}
+        emptyDescription={ETIQUETAS_VACIO.SIN_ASISTENCIAS_DETALLE}
       />
     </div>
   )

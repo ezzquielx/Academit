@@ -8,15 +8,16 @@ import { useToast } from '../../context/ToastContext'
 import { cancelarMatricula, getMatriculas } from '../../api/matriculas'
 
 export const CancelarMatriculaPage = () => {
-  const { user } = useAuth()
+  const { idAlumno } = useAuth()
   const { showToast } = useToast()
   const [matricula, setMatricula] = useState(null)
   const [motivo, setMotivo] = useState('')
   const [showConfirm, setShowConfirm] = useState(false)
   const [loading, setLoading] = useState(false)
-  const alumnoId = user?.idAlumno || 1
+  const alumnoId = idAlumno
 
   const cargar = async () => {
+    if (!alumnoId) return
     try {
       const mats = await getMatriculas()
       const m = mats.find((item) => item.idAlumno === alumnoId)

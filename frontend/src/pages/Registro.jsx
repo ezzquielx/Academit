@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { getOfertaCarrerasApi, getOfertaPlanesApi } from '../api/auth'
+import { ETIQUETAS_VACIO } from '../config/etiquetas'
 
 export const Registro = () => {
   const { registro } = useAuth()
@@ -116,7 +117,7 @@ export const Registro = () => {
         username: form.username.trim().toLowerCase(),
         password: form.password,
       })
-      setMensajeExito(resp?.message || 'Tendrá que esperar hasta que un administrador valide su cuenta.')
+      setMensajeExito(resp?.message || ETIQUETAS_VACIO.REGISTRO_AVISO)
       setRegistroExitoso(true)
     } catch (err) {
       setErrorMsg(err.message || 'Error al completar el registro')
@@ -162,11 +163,11 @@ export const Registro = () => {
                 height: '72px',
                 margin: '0 auto 20px',
                 borderRadius: '50%',
-                backgroundColor: 'rgba(217, 119, 6, 0.12)',
+                backgroundColor: 'var(--hover)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: '#d97706',
+                color: 'var(--acento)',
                 fontSize: '36px',
               }}
             >
@@ -179,9 +180,9 @@ export const Registro = () => {
 
             <div
               style={{
-                backgroundColor: '#fffbeb',
-                border: '1px solid #fde68a',
-                color: '#92400e',
+                backgroundColor: 'var(--papel)',
+                border: '1px solid var(--acento)',
+                color: 'var(--acento)',
                 padding: '16px 20px',
                 borderRadius: '8px',
                 fontSize: '15px',
@@ -191,7 +192,7 @@ export const Registro = () => {
               }}
             >
               <i className="bi bi-info-circle-fill me-2"></i>
-              {mensajeExito || 'Tendrá que esperar hasta que un administrador valide su cuenta.'}
+              {mensajeExito || ETIQUETAS_VACIO.REGISTRO_AVISO}
             </div>
 
             <p style={{ fontSize: '14px', color: 'var(--suave)', marginBottom: '24px', lineHeight: 1.6 }}>
@@ -205,8 +206,8 @@ export const Registro = () => {
             <div
               style={{
                 textAlign: 'left',
-                backgroundColor: 'var(--papel, #f8f9fa)',
-                border: '1px solid var(--borde, #e9ecef)',
+                backgroundColor: 'var(--papel)',
+                border: '1px solid var(--linea)',
                 padding: '16px',
                 borderRadius: '8px',
                 marginBottom: '28px',

@@ -78,6 +78,9 @@ export const AuthProvider = ({ children }) => {
     rol: sessionUser?.rol || session?.rol || null,
     nombre: sessionUser?.nombre || session?.nombre || null,
     email: sessionUser?.email || session?.email || null,
+    // Vínculo con el padrón. Sin esto no se puede consultar "el alumno logueado".
+    idAlumno: sessionUser?.idAlumno ?? session?.idAlumno ?? null,
+    idDocente: sessionUser?.idDocente ?? session?.idDocente ?? null,
     isAuthenticated: Boolean(session),
     login,
     registro,

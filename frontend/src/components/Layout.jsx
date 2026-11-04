@@ -3,9 +3,10 @@ import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { Alert } from 'react-bootstrap'
 import { useAuth } from '../context/AuthContext'
 import { MENU_GRUPOS } from '../config/menu'
+import { ETIQUETAS_VACIO } from '../config/etiquetas'
 
 export const Layout = ({ children }) => {
-  const { isAuthenticated, rol, nombre, usuario, logout } = useAuth()
+  const { isAuthenticated, rol, nombre, usuario, idAlumno, logout } = useAuth()
   const [showMockAlert, setShowMockAlert] = useState(true)
   const [menuAbierto, setMenuAbierto] = useState(false)
   const abrirBtnRef = useRef(null)
@@ -238,6 +239,15 @@ export const Layout = ({ children }) => {
                 </div>
               </Alert>
             </div>
+          </div>
+        )}
+
+        {/* Sin vínculo al padrón de alumnos no se consultan datos de nadie */}
+        {rol === 'ALUMNO' && !idAlumno && (
+          <div className="gutter pt-3">
+            <Alert variant="danger" className="py-2 px-3 small mb-0">
+              <strong>{ETIQUETAS_VACIO.SIN_LEGAJO}.</strong> {ETIQUETAS_VACIO.SIN_LEGAJO_DETALLE}
+            </Alert>
           </div>
         )}
 

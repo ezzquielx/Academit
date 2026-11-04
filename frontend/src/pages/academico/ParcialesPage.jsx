@@ -5,13 +5,15 @@ import DataTable from '../../components/DataTable'
 import StatusBadge from '../../components/StatusBadge'
 import { useAuth } from '../../context/AuthContext'
 import { getCalificaciones } from '../../api/calificaciones'
+import { ETIQUETAS_VACIO } from '../../config/etiquetas'
 
 export const ParcialesPage = () => {
-  const { user } = useAuth()
+  const { idAlumno } = useAuth()
   const [calificaciones, setCalificaciones] = useState([])
-  const alumnoId = user?.idAlumno || 1 // Alumno de sesión o referencia
+  const alumnoId = idAlumno
 
   useEffect(() => {
+    if (!alumnoId) return
     getCalificaciones({ idAlumno: alumnoId, tipo: 'PARCIAL' }).then(setCalificaciones).catch(() => {})
   }, [alumnoId])
 
@@ -89,6 +91,8 @@ export const ParcialesPage = () => {
         keyField="idCalificacion"
         searchPlaceholder="Buscar por materia o instancia..."
         searchKeys={['materiaNombre', 'evaluacionNombre', 'observacion']}
+        emptyTitle={ETIQUETAS_VACIO.SIN_MATERIAS}
+        emptyDescription={ETIQUETAS_VACIO.SIN_MATERIAS_DETALLE}
       />
     </div>
   )

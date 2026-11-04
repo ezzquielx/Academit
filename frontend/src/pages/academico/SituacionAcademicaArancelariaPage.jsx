@@ -10,15 +10,16 @@ import { getPagos } from '../../api/pagos'
 import { getMatriculas } from '../../api/matriculas'
 
 export const SituacionAcademicaArancelariaPage = () => {
-  const { user } = useAuth()
+  const { idAlumno } = useAuth()
   const [activeTab, setActiveTab] = useState('arancelaria')
   const [calificaciones, setCalificaciones] = useState([])
   const [cuotas, setCuotas] = useState([])
   const [pagos, setPagos] = useState([])
   const [matricula, setMatricula] = useState(null)
-  const alumnoId = user?.idAlumno || 1 // Alumno de sesión o referencia
+  const alumnoId = idAlumno
 
   useEffect(() => {
+    if (!alumnoId) return
     getCalificaciones({ idAlumno: alumnoId }).then(setCalificaciones).catch(() => {})
     getCuotas(alumnoId).then(setCuotas).catch(() => {})
     getPagos({ idAlumno: alumnoId }).then(setPagos).catch(() => {})

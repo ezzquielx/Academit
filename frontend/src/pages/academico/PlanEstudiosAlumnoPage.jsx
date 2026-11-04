@@ -2,24 +2,41 @@ import { useState, useEffect } from 'react'
 import { Card, Row, Col, ListGroup } from 'react-bootstrap'
 import PageHeader from '../../components/PageHeader'
 import StatusBadge from '../../components/StatusBadge'
+import { useAuth } from '../../context/AuthContext'
 import { getMateriasDePlan } from '../../api/planes'
+import { getAlumnoById } from '../../api/alumnos'
+import { getCalificaciones } from '../../api/calificaciones'
 
 export const PlanEstudiosAlumnoPage = () => {
+  const { idAlumno } = useAuth()
   const [materias, setMaterias] = useState([])
+  const [calificaciones, setCalificaciones] = useState([])
 
   useEffect(() => {
-    getMateriasDePlan(1).then(setMaterias).catch(() => {})
-  }, [])
+    if (!idAlumno) return
+    getAlumnoById(idAlumno)
+      .then((alumno) => {
+        if (alumno?.idPlan) return getMateriasDePlan(alumno.idPlan)
+        return []
+      })
+      .then((mats) => setMaterias(mats || []))
+      .catch(() => {})
+    getCalificaciones({ idAlumno }).then((data) => setCalificaciones(data || [])).catch(() => {})
+  }, [idAlumno])
 
   // Agrupar materias por año
   const anios = [1, 2, 3]
 
-  // Estado mockeado de las materias para Lucía Benítez (1° Año)
+  // Estado real de cada materia según las calificaciones del alumno logueado.
   const getEstadoMateria = (materia) => {
-    if (materia.idMateria === 1) return { estado: 'APROBADA', nota: 8 }
-    if (materia.idMateria === 2) return { estado: 'APROBADA', nota: 9 }
-    if (materia.idMateria === 3 || materia.idMateria === 4) return { estado: 'REGULAR', nota: null }
-    return { estado: 'PENDIENTE', nota: null }
+    const notas = calificaciones
+      .filter((c) => c.idMateria === materia.idMateria)
+      .map((c) => Number(c.nota))
+      .filter((n) => !Number.isNaN(n))
+    if (notas.length === 0) return { estado: 'PENDIENTE', nota: null }
+    const maxima = Math.max(...notas)
+    if (maxima >= 4) return { estado: 'APROBADA', nota: maxima }
+    return { estado: 'REGULAR', nota: null }
   }
 
   return (

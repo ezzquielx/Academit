@@ -9,13 +9,14 @@ import { getSolicitudes, createSolicitud } from '../../api/solicitudes'
 import { ETIQUETAS_TIPO_SOLICITUD } from '../../config/etiquetas'
 
 export const SolicitudTituloPage = () => {
-  const { user } = useAuth()
+  const { idAlumno } = useAuth()
   const { showToast } = useToast()
   const [solicitudes, setSolicitudes] = useState([])
   const [loading, setLoading] = useState(false)
-  const alumnoId = user?.idAlumno || 1
+  const alumnoId = idAlumno
 
   const cargar = async () => {
+    if (!alumnoId) return
     try {
       const data = await getSolicitudes({ idAlumno: alumnoId, tipo: 'TITULO_INTERMEDIO' })
       setSolicitudes(data)

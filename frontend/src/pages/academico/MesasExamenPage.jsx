@@ -10,12 +10,12 @@ import { getMesasExamen, inscribirseMesa, darseDeBajaMesa } from '../../api/mesa
 import { ETIQUETAS_TURNO } from '../../config/etiquetas'
 
 export const MesasExamenPage = () => {
-  const { rol, user } = useAuth()
+  const { rol, idAlumno } = useAuth()
   const { showToast } = useToast()
   const [mesas, setMesas] = useState([])
   const [loading, setLoading] = useState(false)
   const [mesaToBaja, setMesaToBaja] = useState(null)
-  const alumnoId = user?.idAlumno || 1 // Alumno de sesión o referencia
+  const alumnoId = idAlumno
 
   const cargarMesas = async () => {
     try {
@@ -106,7 +106,7 @@ export const MesasExamenPage = () => {
             <Button
               variant="outline-danger"
               size="sm"
-              disabled={loading}
+              disabled={loading || !alumnoId}
               onClick={() => setMesaToBaja(row)}
             >
               <i className="bi bi-x-circle me-1" /> Darse de baja
@@ -119,7 +119,7 @@ export const MesasExamenPage = () => {
           <Button
             variant="primary"
             size="sm"
-            disabled={loading || !cupoDisponible}
+            disabled={loading || !cupoDisponible || !alumnoId}
             onClick={() => handleInscribirse(row)}
           >
             <i className="bi bi-check2-circle me-1" />
