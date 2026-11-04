@@ -1,4 +1,4 @@
-# Documentación del Proyecto - Academit
+# Documentación del Proyecto — Academit
 
 Índice central de la documentación técnica, arquitectónica y metodológica de **Academit** (TP Integrador - Taller de Lenguajes de Programación III).
 
@@ -6,14 +6,14 @@
 
 ## Índice General de Documentos
 
-### Equipo
+### Equipo y Gestión
 | Documento | Para qué sirve |
 | :--- | :--- |
 | [flujo-de-trabajo.md](flujo-de-trabajo.md) | Convenciones de Git, flujo de ramas (`develop`, `feature/*`, `fix/*`), formato de commits (Conventional Commits), proceso de Pull Request y lista de control. |
 | [estado-del-proyecto.md](estado-del-proyecto.md) | Diagnóstico integral del sistema: estado por módulo, reglas implementadas, decisiones arquitectónicas del grupo y reparto de tareas. |
 | [pendientes.md](pendientes.md) | Lista de trabajo con casillas de todo lo que falta para terminar el proyecto, backend, integración, entregables y defensa oral. |
 
-### Entregables
+### Entregables de Cátedra
 | Documento | Para qué sirve |
 | :--- | :--- |
 | [entregables/README.md](entregables/README.md) | Índice central de los entregables de la materia. |
@@ -38,11 +38,18 @@
 ### Backend
 | Documento | Para qué sirve |
 | :--- | :--- |
-| [backend/guia-de-modulos.md](backend/guia-de-modulos.md) | Guía de módulos del backend: arquitectura en capas, entidades JPA, servicios, reglas de negocio, orden por olas y fichas técnicas por módulo. |
-| [backend/prompts/](backend/prompts/) | Prompts listos por módulo del backend (dedicados y generados con `tools/prompts-modulos.py`): contexto, rama, endpoints del contrato y reglas por módulo. |
+| [backend/README.md](backend/README.md) | Visión general del backend: stack tecnológico, versiones, instrucciones de arranque local (`nix-shell`), arquitectura en capas, convenciones, manejo de errores (RFC 7807) y limitaciones conocidas. |
+| [backend/seguridad.md](backend/seguridad.md) | Arquitectura de seguridad: flujo de login, tokens JWT, claims, datos de sesión (`UsuarioSesionDTO`, `id_alumno`, `id_docente`), endpoints públicos, anotaciones `@PreAuthorize` y matriz de permisos completa para 71 endpoints. |
+| [backend/configuracion.md](backend/configuracion.md) | Perfiles de ejecución `dev` y `prod`, tabla completa de variables de entorno, justificación de `spring.jpa.hibernate.ddl-auto=validate` y monitoreo de salud para Render/cloud. |
+| [backend/reglas-de-negocio.md](backend/reglas-de-negocio.md) | Catálogo trazable de Reglas de Negocio (RN01 a RN27), clase y método que aplica cada una, suite de prueba asociada y estado de implementación. |
+| [backend/pruebas.md](backend/pruebas.md) | Estrategia de testing en Spring Boot: qué se prueba (MockMvc, Mockito, tareas cron), comandos para ejecutar la suite y plantillas paso a paso para escribir nuevos tests de servicios y controladores. |
+| [backend/guia-de-modulos.md](backend/guia-de-modulos.md) | Fichas técnicas detalladas de los 21 módulos del backend: endpoints, entidades JPA, servicios, dependencias y reglas de negocio por módulo. |
+| [backend/prompts/](backend/prompts/) | Prompts preparados por módulo para desarrollo asistido y generación de código contextualizada. |
 
-### Referencias
+### Base de Datos
 | Documento | Para qué sirve |
 | :--- | :--- |
-| [estado/desajustes-db.md](estado/desajustes-db.md) | Informe comparativo y matriz de desajustes entre el esquema de base de datos (`01-schema.sql`) y el contrato del frontend. |
-| *Documento Colaborativo de Análisis* | Documento de trabajo compartido en Drive/Docs con el relevamiento inicial de requisitos institucionales (mencionado en el análisis del sistema). |
+| [base-de-datos/diccionario-de-datos.md](base-de-datos/diccionario-de-datos.md) | Diccionario de datos de las 32 tablas del esquema relacional: columnas, tipos de datos, nulos, claves primarias, claves foráneas, restricciones de unicidad y checks. |
+| [base-de-datos/modelo-relacional.md](base-de-datos/modelo-relacional.md) | Diagrama Entidad-Relación gráfico en Mermaid de las 32 tablas con cardinalidades y claves, validado formalmente con `@mermaid-js/mermaid-cli` (`mmdc`). |
+| [database/README.md](../database/README.md) | Documentación de administración de PostgreSQL, inicialización y comandos de entorno (`db-init`, `db-start`, `db-reset`, `db-psql`). |
+| [estado/desajustes-db.md](estado/desajustes-db.md) | Matriz histórica de correspondencia y desajustes resueltos entre el esquema de base de datos (`01-schema.sql`) y el contrato API frontend. |
