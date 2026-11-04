@@ -84,14 +84,32 @@ public class CalificacionServiceImpl implements CalificacionService {
         }
 
         return calificaciones.stream()
-                .filter(calcal -> tipo == null || tipo.isBlank()
-                        || calcal.getEvaluacion().getTipo().getNombre().equalsIgnoreCase(tipo.trim()))
+                .filter(calcal -> matchesTipo(
+                        calcal.getEvaluacion() != null && calcal.getEvaluacion().getTipo() != null
+                                ? calcal.getEvaluacion().getTipo().getNombre()
+                                : null,
+                        tipo))
                 .filter(calcal -> idMateria == null
                         || calcal.getEvaluacion().getCursoMateria().getMateria().getId().equals(idMateria))
                 .filter(calcal -> idEvaluacion == null
                         || calcal.getEvaluacion().getId().equals(idEvaluacion))
                 .map(this::toDto)
                 .toList();
+    }
+
+    private boolean matchesTipo(String evalTipo, String tipoFiltro) {
+        if (tipoFiltro == null || tipoFiltro.isBlank()) {
+            return true;
+        }
+        if (evalTipo == null) {
+            return false;
+        }
+        String t = tipoFiltro.trim().toUpperCase();
+        String e = evalTipo.trim().toUpperCase();
+        if (e.equals(t)) {
+            return true;
+        }
+        return "PARCIAL".equals(t) && e.contains("PARCIAL");
     }
 
     @Override

@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react'
 import EmptyState from './EmptyState'
+import { ETIQUETAS_VACIO } from '../config/etiquetas'
 
 export const DataTable = ({
   columns = [],
@@ -12,8 +13,8 @@ export const DataTable = ({
   actions = null,
   caption = null,
   renderExpanded = null,
-  emptyTitle = 'Sin registros',
-  emptyDescription = 'No hay registros disponibles para mostrar.',
+  emptyTitle = ETIQUETAS_VACIO.SIN_REGISTROS,
+  emptyDescription = ETIQUETAS_VACIO.SIN_REGISTROS_DETALLE,
 }) => {
   const [searchTerm, setSearchTerm] = useState('')
   const [currentPage, setCurrentPage] = useState(1)

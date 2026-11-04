@@ -294,6 +294,12 @@ button {
   color: var(--sobre-primario) !important;
 }
 
+/* Los grupos de botones (filtros, acciones) se parten en varias líneas
+   antes de salirse del contenedor. */
+.btn-group {
+  flex-wrap: wrap;
+}
+
 /* --- Formularios --- */
 .campo {
   display: flex;
@@ -597,6 +603,15 @@ tr.det td {
   .btn.chico {
     min-height: 38px;
     width: auto;
+  }
+  /* Grupos de botones apilados a ancho completo en móvil */
+  .btn-group {
+    flex-direction: column;
+    width: 100%;
+  }
+  .btn-group > .btn {
+    width: 100%;
+    border-radius: 3px !important;
   }
 }
 

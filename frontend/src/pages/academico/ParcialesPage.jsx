@@ -3,15 +3,19 @@ import { Card, Row, Col, Badge } from 'react-bootstrap'
 import PageHeader from '../../components/PageHeader'
 import DataTable from '../../components/DataTable'
 import StatusBadge from '../../components/StatusBadge'
+import { useAuth } from '../../context/AuthContext'
 import { getCalificaciones } from '../../api/calificaciones'
+import { ETIQUETAS_VACIO } from '../../config/etiquetas'
 
 export const ParcialesPage = () => {
+  const { idAlumno } = useAuth()
   const [calificaciones, setCalificaciones] = useState([])
-  const alumnoId = 1 // Alumno de referencia: Lucía Benítez
+  const alumnoId = idAlumno
 
   useEffect(() => {
+    if (!alumnoId) return
     getCalificaciones({ idAlumno: alumnoId, tipo: 'PARCIAL' }).then(setCalificaciones).catch(() => {})
-  }, [])
+  }, [alumnoId])
 
   const promedioParciales = calificaciones.length > 0
     ? (calificaciones.reduce((acc, c) => acc + c.nota, 0) / calificaciones.length).toFixed(1)
@@ -87,6 +91,8 @@ export const ParcialesPage = () => {
         keyField="idCalificacion"
         searchPlaceholder="Buscar por materia o instancia..."
         searchKeys={['materiaNombre', 'evaluacionNombre', 'observacion']}
+        emptyTitle={ETIQUETAS_VACIO.SIN_MATERIAS}
+        emptyDescription={ETIQUETAS_VACIO.SIN_MATERIAS_DETALLE}
       />
     </div>
   )

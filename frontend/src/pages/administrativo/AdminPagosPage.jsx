@@ -135,7 +135,7 @@ export const AdminPagosPage = () => {
     {
       key: 'importe',
       label: 'Importe Pagado',
-      render: (row) => <span className="fw-bold text-success">${row.importe.toLocaleString('es-AR')}</span>,
+      render: (row) => <span className="fw-bold text-success">${row.importe != null ? Number(row.importe).toLocaleString('es-AR') : '0'}</span>,
     },
     { key: 'fechaPago', label: 'Fecha de Pago' },
     {
@@ -208,7 +208,7 @@ export const AdminPagosPage = () => {
                 >
                   {cuotasPendientesAlumno.map((c) => (
                     <option key={c.idCuota} value={c.idCuota}>
-                      {c.concepto} - ${Number(c.importe).toLocaleString('es-AR')} (Vto: {c.fechaVencimiento} - {c.estado})
+                      {c.concepto} - ${c.importe != null ? Number(c.importe).toLocaleString('es-AR') : '0'} (Vto: {c.fechaVencimiento} - {c.estado})
                     </option>
                   ))}
                 </Form.Select>

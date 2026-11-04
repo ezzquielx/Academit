@@ -471,7 +471,7 @@ export const MENU_GRUPOS = [
         path: '/sistema/usuarios',
         label: 'Usuarios y roles',
         icon: 'bi-shield-lock',
-        roles: ['ADMINISTRADOR'],
+        roles: ['ADMINISTRADOR', 'ADMINISTRATIVO'],
         modo: 'edicion',
         component: GestionUsuariosPage,
         rf: 'Gestión usuarios y permisos',

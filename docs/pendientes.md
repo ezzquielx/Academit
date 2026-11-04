@@ -13,31 +13,27 @@
 ## 2. Backend
 | [ ] | Tarea | Depende de | Dueño | Referencia |
 | :---: | :--- | :--- | :--- | :--- |
-| [x] | Módulo Ciclos Lectivos (3 de 3 endpoints pendientes) | `auth`, `usuarios` | Alfredo | [Ficha](backend/guia-de-modulos.md#54-módulo-ciclos-lectivos-ciclos-lectivos) |
-| [x] | Módulo Carreras (7 de 7 endpoints implementados; en PR) | `auth`, `usuarios` | Alfredo | [Ficha](backend/guia-de-modulos.md#53-módulo-carreras-carreras) |
-| [x] | Módulo Planes de Estudio (2 de 2 endpoints implementados; en PR) | `carreras` | Alfredo | [Ficha](backend/guia-de-modulos.md#56-módulo-planes-de-estudio-planes-estudio) |
-| [ ] | Módulo Materias (3 de 3 endpoints pendientes) | `planes-estudio` | Alfredo | [Ficha](backend/guia-de-modulos.md#55-módulo-materias-materias) |
-| [ ] | Módulo Alumnos (7 de 7 endpoints pendientes) | `ciclos-lectivos`, `planes-estudio` | Santiago | [Ficha](backend/guia-de-modulos.md#57-módulo-alumnos-alumnos) |
-| [x] | Módulo Docentes (4 de 4 endpoints listos) | `auth`, `usuarios` | Santiago | [Ficha](backend/guia-de-modulos.md#58-módulo-docentes-docentes) |
+| [x] | Módulo Ciclos Lectivos (3 de 3 endpoints listos) | `auth`, `usuarios` | Alfredo | [Ficha](backend/guia-de-modulos.md#54-módulo-ciclos-lectivos-ciclos-lectivos) |
+| [x] | Módulo Carreras (7 de 7 endpoints listos) | `auth`, `usuarios` | Alfredo | [Ficha](backend/guia-de-modulos.md#53-módulo-carreras-carreras) |
+| [x] | Módulo Planes de Estudio (2 de 2 endpoints listos) | `carreras` | Alfredo | [Ficha](backend/guia-de-modulos.md#56-módulo-planes-de-estudio-planes-estudio) |
+| [x] | Módulo Materias (3 de 3 endpoints listos) | `planes-estudio` | Alfredo | [Ficha](backend/guia-de-modulos.md#55-módulo-materias-materias) |
 | [x] | Módulo Alumnos (7 de 7 endpoints listos) | `ciclos-lectivos`, `planes-estudio` | Santiago | [Ficha](backend/guia-de-modulos.md#57-módulo-alumnos-alumnos) |
-| [ ] | Módulo Docentes (4 de 4 endpoints pendientes) | `auth`, `usuarios` | Santiago | [Ficha](backend/guia-de-modulos.md#58-módulo-docentes-docentes) |
-| [x] | Módulo Cursos (3 de 3 endpoints implementados; en PR) | `ciclos-lectivos`, `carreras` | Alfredo | [Ficha](backend/guia-de-modulos.md#510-módulo-cursos-comisiones-cursos) |
-| [ ] | Módulo Asignaciones Docentes (3 de 3 endpoints pendientes) | `cursos`, `materias`, `docentes` | Santiago | [Ficha](backend/guia-de-modulos.md#59-módulo-asignaciones-docentes-asignaciones) |
-| [x] | Módulo Inscripciones a Cursos (3 de 3 endpoints listos) | `alumnos`, `cursos`, `ciclos-lectivos` | Santiago | [Ficha](backend/guia-de-modulos.md#511-módulo-inscripciones-a-cursos-inscripciones) |
+| [x] | Módulo Docentes (4 de 4 endpoints listos) | `auth`, `usuarios` | Santiago | [Ficha](backend/guia-de-modulos.md#58-módulo-docentes-docentes) |
+| [x] | Módulo Cursos (3 de 3 endpoints listos) | `ciclos-lectivos`, `carreras` | Alfredo | [Ficha](backend/guia-de-modulos.md#510-módulo-cursos-comisiones-cursos) |
 | [x] | Módulo Asignaciones Docentes (3 de 3 endpoints listos) | `cursos`, `materias`, `docentes` | Santiago | [Ficha](backend/guia-de-modulos.md#59-módulo-asignaciones-docentes-asignaciones) |
-| [ ] | Módulo Inscripciones a Cursos (3 de 3 endpoints pendientes) | `alumnos`, `cursos`, `ciclos-lectivos` | Santiago | [Ficha](backend/guia-de-modulos.md#511-módulo-inscripciones-a-cursos-inscripciones) |
-| [x] | Módulo Matrículas Anuales (4 de 4 endpoints) | `alumnos`, `ciclos-lectivos` | Matias | [Ficha](backend/guia-de-modulos.md#513-módulo-matrículas-anuales-matriculas) |
-| [x] | Módulo Cuotas y Aranceles (2 de 2 endpoints) | `matriculas` | Matias | [Ficha](backend/guia-de-modulos.md#512-módulo-cuotas-y-aranceles-cuotas) |
-| [x] | Módulo Pagos y Comprobantes (2 de 2 endpoints) | `matriculas`, `cuotas`, `alumnos` | Matias | [Ficha](backend/guia-de-modulos.md#514-módulo-pagos-y-comprobantes-pagos) |
-| [ ] | Módulo Evaluaciones (3 de 3 endpoints pendientes) | `cursos`, `materias`, `docentes` | Mateo | [Ficha](backend/guia-de-modulos.md#517-módulo-evaluaciones-evaluaciones) |
-| [ ] | Módulo Calificaciones (2 de 2 endpoints pendientes) | `evaluaciones`, `alumnos`, `docentes` | Mateo | [Ficha](backend/guia-de-modulos.md#516-módulo-calificaciones-calificaciones) |
-| [ ] | Módulo Asistencias (2 de 2 endpoints pendientes) | `cursos`, `materias`, `alumnos` | Mateo | [Ficha](backend/guia-de-modulos.md#515-módulo-asistencias-asistencias) |
-| [ ] | Módulo Mesas de Examen (5 de 5 endpoints pendientes) | `materias`, `ciclos-lectivos`, `docentes` | Mateo | [Ficha](backend/guia-de-modulos.md#518-módulo-mesas-de-examen-mesas-examen) |
-| [ ] | Módulo Declaraciones Juradas (2 de 2 endpoints pendientes) | `alumnos`, `ciclos-lectivos`, `materias` | Mateo | [Ficha](backend/guia-de-modulos.md#519-módulo-declaraciones-juradas-declaraciones-juradas) |
-| [x] | Módulo Documentación y Legajos (2 de 2 endpoints) | `alumnos` | Matias | [Ficha](backend/guia-de-modulos.md#520-módulo-documentación-y-legajos-documentacion) |
-| [x] | Módulo Solicitudes y Trámites (3 de 3 endpoints) | `alumnos`, `usuarios` | Matias | [Ficha](backend/guia-de-modulos.md#521-módulo-solicitudes-y-trámites-solicitudes) |
+| [x] | Módulo Inscripciones a Cursos (3 de 3 endpoints listos) | `alumnos`, `cursos`, `ciclos-lectivos` | Santiago | [Ficha](backend/guia-de-modulos.md#511-módulo-inscripciones-a-cursos-inscripciones) |
+| [x] | Módulo Matrículas Anuales (4 de 4 endpoints listos) | `alumnos`, `ciclos-lectivos` | Matias | [Ficha](backend/guia-de-modulos.md#513-módulo-matrículas-anuales-matriculas) |
+| [x] | Módulo Cuotas y Aranceles (2 de 2 endpoints listos) | `matriculas` | Matias | [Ficha](backend/guia-de-modulos.md#512-módulo-cuotas-y-aranceles-cuotas) |
+| [x] | Módulo Pagos y Comprobantes (2 de 2 endpoints listos) | `matriculas`, `cuotas`, `alumnos` | Matias | [Ficha](backend/guia-de-modulos.md#514-módulo-pagos-y-comprobantes-pagos) |
+| [x] | Módulo Evaluaciones (3 de 3 endpoints listos) | `cursos`, `materias`, `docentes` | Mateo | [Ficha](backend/guia-de-modulos.md#517-módulo-evaluaciones-evaluaciones) |
+| [x] | Módulo Calificaciones (2 de 2 endpoints listos) | `evaluaciones`, `alumnos`, `docentes` | Mateo | [Ficha](backend/guia-de-modulos.md#516-módulo-calificaciones-calificaciones) |
+| [x] | Módulo Asistencias (2 de 2 endpoints listos) | `cursos`, `materias`, `alumnos` | Mateo | [Ficha](backend/guia-de-modulos.md#515-módulo-asistencias-asistencias) |
+| [x] | Módulo Mesas de Examen (5 de 5 endpoints listos) | `materias`, `ciclos-lectivos`, `docentes` | Mateo | [Ficha](backend/guia-de-modulos.md#518-módulo-mesas-de-examen-mesas-examen) |
+| [x] | Módulo Declaraciones Juradas (2 de 2 endpoints listos) | `alumnos`, `ciclos-lectivos`, `materias` | Mateo | [Ficha](backend/guia-de-modulos.md#519-módulo-declaraciones-juradas-declaraciones-juradas) |
+| [x] | Módulo Documentación y Legajos (2 de 2 endpoints listos) | `alumnos` | Matias | [Ficha](backend/guia-de-modulos.md#520-módulo-documentación-y-legajos-documentacion) |
+| [x] | Módulo Solicitudes y Trámites (3 de 3 endpoints listos) | `alumnos`, `usuarios` | Matias | [Ficha](backend/guia-de-modulos.md#521-módulo-solicitudes-y-trámites-solicitudes) |
 | [x] | Tarea programada para marcar cuotas impagas como vencidas | `matriculas`, `cuotas` | Matias | RN07, RF30 |
-| [ ] | Verificar permisos por rol (`x-roles`) y tests Mockito/WebMvc en cada controller | Módulos respectivos | Todos (en su módulo) | [guia-de-modulos.md](backend/guia-de-modulos.md#3-plantilla-de-un-módulo-pasos-de-desarrollo) |
+| [x] | Verificar permisos por rol (`x-roles`) y tests Mockito/WebMvc en cada controller (428 tests OK) | Módulos respectivos | Todos (en su módulo) | [guia-de-modulos.md](backend/guia-de-modulos.md#3-plantilla-de-un-módulo-pasos-de-desarrollo) |
 
 ## 3. Integración con el Frontend
 | [ ] | Tarea | Depende de | Dueño | Referencia |
@@ -51,6 +47,9 @@
 | [ ] | Probar pantallas de grupo Otros y Perfil con API real | `auth`, `usuarios`, `documentacion` | Alfredo | [menu.js](../frontend/src/config/menu.js) |
 | [ ] | Comparar schemas de `openapi.yaml` con payloads implementados | Endpoints backend | Todos (por módulo) | [openapi.yaml](frontend/openapi.yaml) |
 | [x] | Incorporar endpoints extra del backend al contrato (`/api/auth/me`, `/api/usuarios/me`) | Controllers implementados | | [contrato-api.md](frontend/contrato-api.md) |
+| [ ] | Exponer `idAlumno`/`idDocente` en `UsuarioSesionDTO` (login y `/api/auth/me`) o agregar `GET /api/alumnos/me`; sin eso el frontend no puede identificar al alumno logueado con `VITE_USE_MOCK=false` | `auth`, `alumnos` | | [UsuarioSesionDTO.java](../backend/src/main/java/com/academit/education/dto/auth/UsuarioSesionDTO.java) |
+| [ ] | Endpoint para aprobar/rechazar declaraciones juradas y descargar el PDF (hoy el botón de descarga queda deshabilitado) | `declaraciones-juradas` | | [DeclaracionJuradaPage.jsx](../frontend/src/pages/solicitudes/DeclaracionJuradaPage.jsx) |
+| [ ] | Revisar si `POST /api/auth/registro` crea datos precargados (matrícula, cuotas, curso) además del alumno; el frontend mock nace sin relaciones | `auth`, `alumnos`, `matriculas` | | [auth.js](../frontend/src/api/auth.js) |
 
 ## 4. Documentación de la Entrega
 | [ ] | Tarea | Depende de | Dueño | Referencia |

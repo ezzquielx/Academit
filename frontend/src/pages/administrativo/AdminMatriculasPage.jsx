@@ -76,7 +76,7 @@ export const AdminMatriculasPage = () => {
     {
       key: 'importe',
       label: 'Arancel Anual',
-      render: (row) => `$${row.importe.toLocaleString('es-AR')}`,
+      render: (row) => (row.importe != null ? `$${Number(row.importe).toLocaleString('es-AR')}` : '-'),
     },
     { key: 'fechaAlta', label: 'Fecha Alta' },
     {

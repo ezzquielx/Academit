@@ -10,12 +10,12 @@ import { getMesasExamen, inscribirseMesa, darseDeBajaMesa } from '../../api/mesa
 import { ETIQUETAS_TURNO } from '../../config/etiquetas'
 
 export const MesasExamenPage = () => {
-  const { rol } = useAuth()
+  const { rol, idAlumno } = useAuth()
   const { showToast } = useToast()
   const [mesas, setMesas] = useState([])
   const [loading, setLoading] = useState(false)
   const [mesaToBaja, setMesaToBaja] = useState(null)
-  const alumnoId = 1 // Alumno de prueba: Lucía Benítez
+  const alumnoId = idAlumno
 
   const cargarMesas = async () => {
     try {
@@ -77,13 +77,13 @@ export const MesasExamenPage = () => {
     {
       key: 'estado',
       label: 'Estado Mesa',
-      render: (row) => <StatusBadge status={row.estadoMesa} />,
+      render: (row) => <StatusBadge status={row.estadoMesa || row.estado} />,
     },
     {
       key: 'miEstado',
       label: 'Mi Inscripción',
       render: (row) => {
-        const inscripto = row.alumnosInscriptosIds.includes(alumnoId)
+        const inscripto = Array.isArray(row.alumnosInscriptosIds) && row.alumnosInscriptosIds.includes(alumnoId)
         return inscripto ? (
           <StatusBadge status="CONFIRMADA" />
         ) : (
@@ -100,13 +100,13 @@ export const MesasExamenPage = () => {
           return <small className="text-muted fst-italic">Solo consulta</small>
         }
 
-        const inscripto = row.alumnosInscriptosIds.includes(alumnoId)
+        const inscripto = Array.isArray(row.alumnosInscriptosIds) && row.alumnosInscriptosIds.includes(alumnoId)
         if (inscripto) {
           return (
             <Button
               variant="outline-danger"
               size="sm"
-              disabled={loading}
+              disabled={loading || !alumnoId}
               onClick={() => setMesaToBaja(row)}
             >
               <i className="bi bi-x-circle me-1" /> Darse de baja
@@ -119,7 +119,7 @@ export const MesasExamenPage = () => {
           <Button
             variant="primary"
             size="sm"
-            disabled={loading || !cupoDisponible}
+            disabled={loading || !cupoDisponible || !alumnoId}
             onClick={() => handleInscribirse(row)}
           >
             <i className="bi bi-check2-circle me-1" />

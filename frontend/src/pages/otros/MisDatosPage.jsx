@@ -11,13 +11,13 @@ export const MisDatosPage = () => {
   const { showToast } = useToast()
 
   const [formData, setFormData] = useState({
-    nombre: nombre || 'Lucía Benítez',
-    email: `${usuario || 'alumno'}@instituto.edu.ar`,
-    dni: '42.111.222',
-    telefono: '11-4567-8901',
-    domicilio: 'Av. Corrientes 1234, CABA',
-    fechaNacimiento: '2001-04-18',
-    carrera: 'Tecnicatura Superior en Desarrollo de Software',
+    nombre: nombre || '',
+    email: '',
+    dni: '',
+    telefono: '',
+    domicilio: '',
+    fechaNacimiento: '',
+    carrera: '',
   })
 
   const [isEditing, setIsEditing] = useState(false)

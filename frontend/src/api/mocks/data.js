@@ -535,9 +535,46 @@ export const mockDb = {
 
   // 17. Usuarios del Sistema y Roles
   usuarios: [
-    { idUsuario: 1, username: 'admin', nombre: 'Administrador General', email: 'admin@instituto.edu.ar', rol: 'ADMINISTRADOR', estado: 'ACTIVO', ultimoAcceso: '2026-10-12 21:00' },
-    { idUsuario: 2, username: 'administrativo', nombre: 'Personal Administrativo', email: 'administracion@instituto.edu.ar', rol: 'ADMINISTRATIVO', estado: 'ACTIVO', ultimoAcceso: '2026-10-12 20:30' },
-    { idUsuario: 3, username: 'docente', nombre: 'Profesor Carlos Gómez', email: 'carlos.gomez@instituto.edu.ar', rol: 'DOCENTE', estado: 'ACTIVO', ultimoAcceso: '2026-10-12 19:45' },
-    { idUsuario: 4, username: 'alumno', nombre: 'Lucía Benítez', email: 'lucia.benitez@instituto.edu.ar', rol: 'ALUMNO', estado: 'ACTIVO', ultimoAcceso: '2026-10-12 21:15' },
+    { idUsuario: 1, username: 'admin', nombre: 'Administrador General', email: 'admin@instituto.edu.ar', rol: 'ADMINISTRADOR', estado: 'ACTIVO', ultimoAcceso: '2026-10-12 21:00', password: '1234' },
+    { idUsuario: 2, username: 'administrativo', nombre: 'Personal Administrativo', email: 'administracion@instituto.edu.ar', rol: 'ADMINISTRATIVO', estado: 'ACTIVO', ultimoAcceso: '2026-10-12 20:30', password: '1234' },
+    { idUsuario: 3, username: 'docente', nombre: 'Profesor Carlos Gómez', email: 'carlos.gomez@instituto.edu.ar', rol: 'DOCENTE', estado: 'ACTIVO', ultimoAcceso: '2026-10-12 19:45', password: '1234', idDocente: 1 },
+    { idUsuario: 4, username: 'alumno', nombre: 'Lucía Benítez', email: 'lucia.benitez@instituto.edu.ar', rol: 'ALUMNO', estado: 'ACTIVO', ultimoAcceso: '2026-10-12 21:15', password: '1234', idAlumno: 1 },
   ],
 }
+
+/**
+ * Persistencia liviana de altas en modo mock.
+ * sessionStorage sobrevive a una recarga de la pestaña, así un alumno recién
+ * registrado puede iniciar sesión sin que el banco en memoria se reinicie.
+ */
+const ALTAS_KEY = 'academit_mock_altas'
+
+const cargarAltasMock = () => {
+  try {
+    const raw = typeof sessionStorage !== 'undefined' ? sessionStorage.getItem(ALTAS_KEY) : null
+    if (!raw) return
+    const { usuarios = [], alumnos = [] } = JSON.parse(raw)
+    for (const u of usuarios) {
+      if (!mockDb.usuarios.some((x) => x.username === u.username)) mockDb.usuarios.push(u)
+    }
+    for (const a of alumnos) {
+      if (!mockDb.alumnos.some((x) => x.idAlumno === a.idAlumno)) mockDb.alumnos.push(a)
+    }
+  } catch {
+    /* almacenamiento no disponible: se sigue con el banco en memoria */
+  }
+}
+
+/** Guarda los registros creados por altas (no los datos de ejemplo). */
+export const guardarAltasMock = () => {
+  try {
+    if (typeof sessionStorage === 'undefined') return
+    const usuarios = mockDb.usuarios.filter((u) => u.origen === 'registro')
+    const alumnos = mockDb.alumnos.filter((a) => a.origen === 'registro')
+    sessionStorage.setItem(ALTAS_KEY, JSON.stringify({ usuarios, alumnos }))
+  } catch {
+    /* almacenamiento no disponible */
+  }
+}
+
+cargarAltasMock()

@@ -56,6 +56,9 @@ class AlumnoServiceTest {
     @Mock
     private CuotaRepository cuotaRepository;
 
+    @Mock
+    private UsuarioRepository usuarioRepository;
+
     @InjectMocks
     private AlumnoServiceImpl alumnoService;
 

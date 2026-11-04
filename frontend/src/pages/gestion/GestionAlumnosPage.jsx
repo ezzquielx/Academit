@@ -120,9 +120,34 @@ export const GestionAlumnosPage = () => {
       carrera: alumno.carrera || 'Tecnicatura Superior en Desarrollo de Software',
       idPlan: alumno.idPlan || 1,
       planNombre: alumno.planNombre || 'Plan de Estudios 2024',
+      estado: alumno.estado || 'ACTIVO',
     })
     setErrors({})
     setShowModal(true)
+  }
+
+  const handleValidarAlumno = async (alumno) => {
+    setLoading(true)
+    try {
+      await updateAlumno(alumno.idAlumno, {
+        nombre: alumno.nombre,
+        apellido: alumno.apellido,
+        dni: alumno.dni,
+        email: alumno.email,
+        telefono: alumno.telefono,
+        domicilio: alumno.domicilio,
+        fechaNacimiento: alumno.fechaNacimiento,
+        idCarrera: alumno.idCarrera,
+        idPlan: alumno.idPlan,
+        estado: 'ACTIVO',
+      })
+      showToast(`¡Alumno/a ${alumno.apellido}, ${alumno.nombre} validado/a con éxito! Su cuenta ya está activa para ingresar.`, 'success')
+      cargarAlumnos()
+    } catch (err) {
+      showToast(err.message || 'Error al validar alumno', 'danger')
+    } finally {
+      setLoading(false)
+    }
   }
 
   const handleSubmit = async (e) => {
@@ -196,7 +221,16 @@ export const GestionAlumnosPage = () => {
     {
       key: 'estado',
       label: 'Condición',
-      render: (row) => <StatusBadge status={row.estado} />,
+      render: (row) => (
+        <div>
+          <StatusBadge status={row.estado} />
+          {row.estado === 'INACTIVO' && (
+            <div className="small text-warning fw-semibold mt-1">
+              <i className="bi bi-clock-history me-1" />Pendiente
+            </div>
+          )}
+        </div>
+      ),
     },
     {
       key: 'acciones',
@@ -204,6 +238,16 @@ export const GestionAlumnosPage = () => {
       align: 'right',
       render: (row) => (
         <div className="d-flex justify-content-end gap-1">
+          {row.estado === 'INACTIVO' && (
+            <Button
+              variant="outline-success"
+              size="sm"
+              onClick={() => handleValidarAlumno(row)}
+              title="Validar y activar cuenta del alumno"
+            >
+              <i className="bi bi-person-check me-1" /> Validar
+            </Button>
+          )}
           <Button
             variant="outline-primary"
             size="sm"
@@ -412,6 +456,22 @@ export const GestionAlumnosPage = () => {
               </Form.Select>
             </Form.Group>
           </Col>
+
+          {editingAlumno && (
+            <Col md={12}>
+              <Form.Group controlId="aluEstadoSelect">
+                <Form.Label className="small fw-semibold">Condición del Alumno / Estado de Cuenta <span className="text-danger">*</span></Form.Label>
+                <Form.Select
+                  value={formData.estado || 'ACTIVO'}
+                  onChange={(e) => setFormData({ ...formData, estado: e.target.value })}
+                  style={{ backgroundColor: 'var(--m-surfaceVariant)', color: 'var(--m-onSurface)', borderColor: 'var(--m-outline)' }}
+                >
+                  <option value="ACTIVO">ACTIVO (Cuenta habilitada para cursar e ingresar)</option>
+                  <option value="INACTIVO">INACTIVO (Pendiente de validación o Baja)</option>
+                </Form.Select>
+              </Form.Group>
+            </Col>
+          )}
         </Row>
       </FormModal>
 
