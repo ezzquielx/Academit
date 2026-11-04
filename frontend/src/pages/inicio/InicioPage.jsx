@@ -25,13 +25,47 @@ export const InicioPage = () => {
 
   useEffect(() => {
     getAlumnos().then((data) => setAlumnosCount((data || []).length)).catch(() => {})
+
     getMesasExamen()
-      .then((data) =>
-        setAlumnoMesas(
-          alumnoId ? (data || []).filter((m) => m.alumnosInscriptosIds?.includes(alumnoId)) : []
-        )
-      )
+      .then((data) => {
+        const todas = data || []
+        if (rol === 'ALUMNO') {
+          setAlumnoMesas(alumnoId ? todas.filter((m) => m.alumnosInscriptosIds?.includes(alumnoId)) : [])
+        } else if (rol === 'DOCENTE') {
+          const misMesas = todas.filter((m) => {
+            if (idDocente && (m.idDocente === idDocente || m.docenteId === idDocente)) return true
+            if (m.tribunal && (nombre || usuario)) {
+              const textoDocente = (nombre || usuario).toLowerCase().replace(/profesor(a)?\s+/i, '').trim()
+              const palabras = textoDocente.split(/\s+/).filter((p) => p.length > 2)
+              return palabras.some((p) => m.tribunal.toLowerCase().includes(p))
+            }
+            return false
+          })
+          setAlumnoMesas(misMesas)
+        } else {
+          setAlumnoMesas([])
+        }
+      })
       .catch(() => {})
+
+    if (rol === 'DOCENTE') {
+      getAsignaciones()
+        .then((data) => {
+          const todas = data || []
+          const misAsigs = todas.filter((a) => {
+            if (idDocente && a.idDocente === idDocente) return true
+            if ((nombre || usuario) && a.docenteNombre) {
+              const textoDocente = (nombre || usuario).toLowerCase().replace(/profesor(a)?\s+/i, '').trim()
+              const palabras = textoDocente.split(/\s+/).filter((p) => p.length > 2)
+              return palabras.some((p) => a.docenteNombre.toLowerCase().includes(p))
+            }
+            return false
+          })
+          setDocenteAsignaciones(misAsigs)
+        })
+        .catch(() => {})
+    }
+
     getSolicitudes(alumnoId ? { idAlumno: alumnoId } : {})
       .then((data) => setSolicitudesCount((data || []).filter((s) => s.estado === 'PENDIENTE').length))
       .catch(() => {})
@@ -48,7 +82,7 @@ export const InicioPage = () => {
     getAlumnoById(alumnoId).then(setAlumno).catch(() => {})
     getCuotas(alumnoId).then((data) => setAlumnoCuotas(data || [])).catch(() => {})
     getCalificaciones({ idAlumno: alumnoId }).then((data) => setAlumnoCalificaciones(data || [])).catch(() => {})
-  }, [rol, alumnoId, docenteId])
+  }, [rol, alumnoId, docenteId, idDocente, nombre, usuario])
 
   const getGreeting = () => {
     const h = new Date().getHours()
@@ -221,8 +255,8 @@ export const InicioPage = () => {
               <h2>Mis comisiones activas</h2>
               {docenteAsignaciones.length === 0 ? (
                 <EmptyState
-                  title="Sin comisiones asignadas"
-                  description="Aún no tenés comisiones o materias asignadas para este ciclo lectivo."
+                  title={ETIQUETAS_VACIO.SIN_COMISIONES_DOCENTE}
+                  description={ETIQUETAS_VACIO.SIN_COMISIONES_DOCENTE_DETALLE}
                 />
               ) : (
                 <div className="tabla-caja">
@@ -232,7 +266,7 @@ export const InicioPage = () => {
                       <tr>
                         <th scope="col">Materia</th>
                         <th scope="col">Comisión</th>
-                        <th scope="col">Rol</th>
+                        <th scope="col" className="d">Cargo</th>
                         <th scope="col">Acción</th>
                       </tr>
                     </thead>
@@ -241,7 +275,7 @@ export const InicioPage = () => {
                         <tr key={asig.idAsignacion}>
                           <td className="titulo-ficha" data-l="Materia">{asig.materiaNombre}</td>
                           <td data-l="Comisión">{asig.cursoNombre}</td>
-                          <td data-l="Rol">{asig.rolDocente || 'Titular'}</td>
+                          <td className="d" data-l="Cargo">{asig.rolDocente || 'Titular'}</td>
                           <td data-l="Acción">
                             <Link
                               to="/docencia/calificaciones"
@@ -328,7 +362,7 @@ export const InicioPage = () => {
                         <div>{m.materiaNombre}</div>
                         <div className="cuando">{getCuando(m.fecha)}</div>
                         <div className="quien">
-                          Tribunal: {m.presidente || 'Roldán, Ibarra'} · {m.hora || '18:30'}
+                          Tribunal: {m.tribunal || m.presidente || 'Roldán, Ibarra'} · {m.hora || '18:30'}
                         </div>
                       </div>
                     </li>
@@ -336,11 +370,16 @@ export const InicioPage = () => {
                 })}
               </ul>
             ) : (
-              <EmptyState
-                compact
-                title={ETIQUETAS_VACIO.SIN_MESAS}
-                description={ETIQUETAS_VACIO.SIN_MESAS_DETALLE}
-              />
+              <div className="agenda-vacia">
+                <EmptyState
+                  title={ETIQUETAS_VACIO.SIN_MESAS}
+                  description={
+                    rol === 'DOCENTE'
+                      ? ETIQUETAS_VACIO.SIN_MESAS_DOCENTE_DETALLE
+                      : ETIQUETAS_VACIO.SIN_MESAS_DETALLE
+                  }
+                />
+              </div>
             )}
           </section>
 

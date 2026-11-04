@@ -211,6 +211,176 @@ async function revisarPagina(page, { rol, ruta, ancho, problemas }) {
   page.off('response', onResponse)
 }
 
+async function revisarSidebar(page, { rol, ancho, menu, problemas }) {
+  const registrar = (problema) => problemas.push({ rol, ruta: '(sidebar)', ancho, problema })
+  const rolMenu = rol === 'ALUMNO_NUEVO' ? 'ALUMNO' : rol
+  const rutasEsperadas = rutasDeRol(menu, rolMenu)
+
+  try {
+    const esMovil = ancho <= 900
+
+    if (esMovil) {
+      const visibleAntes = await page.evaluate(() => {
+        const lat = document.querySelector('aside.lateral')
+        return lat && getComputedStyle(lat).display !== 'none'
+      })
+      if (visibleAntes) {
+        registrar('drawer móvil visible antes de abrir')
+      }
+
+      const abrirBtn = page.locator('#abrir')
+      await abrirBtn.waitFor({ state: 'visible', timeout: 5000 })
+      await abrirBtn.click()
+      await page.waitForSelector('aside.lateral.abierto', { state: 'visible', timeout: 5000 })
+      await page.waitForTimeout(100)
+    }
+
+    const info = await page.evaluate((rutas) => {
+      const lateral = document.querySelector('aside.lateral')
+      if (!lateral) return { error: 'No se encontró aside.lateral' }
+
+      const nav = lateral.querySelector('nav')
+      if (!nav) return { error: 'No se encontró nav en aside.lateral' }
+
+      const grupos = Array.from(lateral.querySelectorAll('.grupo'))
+      if (grupos.length === 0) return { error: 'No se encontraron grupos en la barra lateral' }
+
+      // 1. Grupos apilados: no puede haber dos grupos en la misma fila (mismo carril vertical)
+      const gruposMismaFila = []
+      for (let i = 0; i < grupos.length; i++) {
+        for (let j = i + 1; j < grupos.length; j++) {
+          const r1 = grupos[i].getBoundingClientRect()
+          const r2 = grupos[j].getBoundingClientRect()
+          if (r1.top < r2.bottom - 4 && r2.top < r1.bottom - 4) {
+            gruposMismaFila.push(`grupos ${i + 1} y ${j + 1} en la misma fila`)
+          }
+        }
+      }
+
+      // 2. Comparten la misma posición horizontal por grupo
+      const itemsDesalineados = []
+      grupos.forEach((g, gIdx) => {
+        const itemsGrupo = Array.from(g.querySelectorAll('.item'))
+        if (itemsGrupo.length > 0) {
+          const primerLeft = itemsGrupo[0].getBoundingClientRect().left
+          itemsGrupo.forEach((it) => {
+            const left = it.getBoundingClientRect().left
+            if (Math.abs(left - primerLeft) > 3) {
+              itemsDesalineados.push(`item "${it.innerText.trim()}" en grupo ${gIdx + 1} (left ${left} != ${primerLeft})`)
+            }
+          })
+        }
+      })
+
+      // 3. Todos los ítems de menu.js del rol son visibles o alcanzables con scroll interno
+      const items = Array.from(lateral.querySelectorAll('.item'))
+      const itemsHrefs = items.map((it) => {
+        try {
+          const u = new URL(it.href, window.location.origin)
+          return u.pathname
+        } catch {
+          return it.getAttribute('href') || ''
+        }
+      })
+
+      const faltantes = []
+      const noAlcanzables = []
+      rutas.forEach((ruta) => {
+        const idx = itemsHrefs.indexOf(ruta)
+        if (idx === -1) {
+          faltantes.push(ruta)
+        } else {
+          const it = items[idx]
+          it.scrollIntoView({ block: 'nearest' })
+          const navBox = nav.getBoundingClientRect()
+          const itBox = it.getBoundingClientRect()
+          if (itBox.bottom < navBox.top - 5 || itBox.top > navBox.bottom + 5 || itBox.height < 20) {
+            noAlcanzables.push(ruta)
+          }
+        }
+      })
+      nav.scrollTop = 0
+
+      // 4. Tipografía: no monoespaciada en ítems, serif/Georgia en títulos
+      const fuentesMono = []
+      const titulosSinSerif = []
+      items.forEach((it) => {
+        const font = getComputedStyle(it).fontFamily.toLowerCase()
+        if (font.includes('mono') || font.includes('courier')) {
+          fuentesMono.push(it.innerText.trim())
+        }
+      })
+      grupos.forEach((g) => {
+        const tit = g.querySelector('.titulo')
+        if (tit) {
+          const font = getComputedStyle(tit).fontFamily.toLowerCase()
+          if (!font.includes('georgia') && !font.includes('serif')) {
+            titulosSinSerif.push(tit.innerText.trim())
+          }
+        }
+      })
+
+      // 5. Bloque de usuario y botón Salir fijo abajo
+      const pie = lateral.querySelector('.pie')
+      const salirBtn = pie ? pie.querySelector('.salir') : null
+      const pieRect = pie?.getBoundingClientRect()
+      const latRect = lateral.getBoundingClientRect()
+      const pieAbajo = pieRect && Math.abs(pieRect.bottom - latRect.bottom) < 15
+      const salirOk = salirBtn && salirBtn.getBoundingClientRect().height >= 40
+
+      return {
+        gruposMismaFila,
+        itemsDesalineados,
+        faltantes,
+        noAlcanzables,
+        fuentesMono,
+        titulosSinSerif,
+        pieAbajo,
+        salirOk,
+      }
+    }, rutasEsperadas)
+
+    if (info.error) {
+      registrar(info.error)
+    } else {
+      if (info.gruposMismaFila.length) {
+        registrar(`sidebar grupos en misma fila: ${info.gruposMismaFila.join(', ')}`)
+      }
+      if (info.itemsDesalineados.length) {
+        registrar(`sidebar items desalineados: ${info.itemsDesalineados.join(', ')}`)
+      }
+      if (info.faltantes.length) {
+        registrar(`sidebar faltan ítems de rol: ${info.faltantes.join(', ')}`)
+      }
+      if (info.noAlcanzables.length) {
+        registrar(`sidebar ítems no alcanzables: ${info.noAlcanzables.join(', ')}`)
+      }
+      if (info.fuentesMono.length) {
+        registrar(`sidebar tipografía monoespaciada: ${info.fuentesMono.join(', ')}`)
+      }
+      if (info.titulosSinSerif.length) {
+        registrar(`sidebar títulos sin fuente serif: ${info.titulosSinSerif.join(', ')}`)
+      }
+      if (!info.pieAbajo) {
+        registrar('sidebar bloque usuario/salir no anclado abajo')
+      }
+      if (!info.salirOk) {
+        registrar('sidebar botón Salir < 40px o no visible')
+      }
+    }
+
+    if (esMovil) {
+      const cerrarBtn = page.locator('#cerrar')
+      await cerrarBtn.waitFor({ state: 'visible', timeout: 5000 })
+      await cerrarBtn.click()
+      await page.waitForSelector('aside.lateral.abierto', { state: 'hidden', timeout: 5000 })
+      await page.waitForTimeout(100)
+    }
+  } catch (err) {
+    registrar(`revisarSidebar error: ${err.message.split('\n')[0]}`)
+  }
+}
+
 async function main() {
   const { chromium } = await loadPlaywright()
   const executablePath =
@@ -245,6 +415,7 @@ async function main() {
     const rutas = rutasDeRol(menu, cred.rol)
     for (const ancho of WIDTHS) {
       await page.setViewportSize({ width: ancho, height: 900 })
+      await revisarSidebar(page, { rol: cred.rol, ancho, menu, problemas })
       for (const ruta of rutas) {
         await revisarPagina(page, { rol: cred.rol, ruta, ancho, problemas })
       }
@@ -262,6 +433,7 @@ async function main() {
       const rutas = rutasDeRol(menu, 'ALUMNO')
       for (const ancho of [360, 1440]) {
         await page.setViewportSize({ width: ancho, height: 900 })
+        await revisarSidebar(page, { rol: 'ALUMNO_NUEVO', ancho, menu, problemas })
         for (const ruta of rutas) {
           await revisarPagina(page, { rol: 'ALUMNO_NUEVO', ruta, ancho, problemas })
         }
@@ -334,6 +506,9 @@ async function main() {
   writeFileSync(OUT, md)
   console.log(md.split('\n').slice(0, 40).join('\n'))
   console.log(`\nGuardado en ${OUT} (${problemas.length} hallazgos)`)
+  if (problemas.length > 0) {
+    process.exitCode = 1
+  }
 }
 
 main().catch((err) => {
