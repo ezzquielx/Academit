@@ -336,6 +336,11 @@ dl.ficha dd {
   font-size: 16px;
 }
 
+.lat .empty-state {
+  text-align: left;
+  border-radius: 4px;
+}
+
 .agenda {
   list-style: none;
   margin: 0;
@@ -358,6 +363,10 @@ dl.ficha dd {
   gap: 12px;
   padding: 9px 0;
   border-top: 1px solid var(--linea);
+}
+
+.agenda li.vacia {
+  display: block;
 }
 
 .agenda li:first-child {

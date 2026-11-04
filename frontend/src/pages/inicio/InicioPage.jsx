@@ -14,6 +14,7 @@ import { ETIQUETAS_VACIO } from '../../config/etiquetas'
 export const InicioPage = () => {
   const { rol, nombre, usuario, idAlumno, idDocente } = useAuth()
   const alumnoId = rol === 'ALUMNO' ? idAlumno : null
+  const docenteId = rol === 'DOCENTE' ? idDocente : null
   const [alumno, setAlumno] = useState(null)
   const [alumnoCuotas, setAlumnoCuotas] = useState([])
   const [alumnoMesas, setAlumnoMesas] = useState([])
@@ -68,12 +69,20 @@ export const InicioPage = () => {
     getSolicitudes(alumnoId ? { idAlumno: alumnoId } : {})
       .then((data) => setSolicitudesCount((data || []).filter((s) => s.estado === 'PENDIENTE').length))
       .catch(() => {})
+    if (rol === 'DOCENTE') {
+      getAsignaciones()
+        .then((data) => {
+          const list = Array.isArray(data) ? data : []
+          setDocenteAsignaciones(docenteId ? list.filter((a) => Number(a.idDocente) === Number(docenteId)) : list)
+        })
+        .catch(() => {})
+    }
     // Sin idAlumno no se consulta nada del padrón: nunca mostrar datos de otro alumno.
     if (!alumnoId) return
     getAlumnoById(alumnoId).then(setAlumno).catch(() => {})
     getCuotas(alumnoId).then((data) => setAlumnoCuotas(data || [])).catch(() => {})
     getCalificaciones({ idAlumno: alumnoId }).then((data) => setAlumnoCalificaciones(data || [])).catch(() => {})
-  }, [rol, alumnoId, idDocente, nombre, usuario])
+  }, [rol, alumnoId, docenteId, idDocente, nombre, usuario])
 
   const getGreeting = () => {
     const h = new Date().getHours()
@@ -268,8 +277,13 @@ export const InicioPage = () => {
                           <td data-l="Comisión">{asig.cursoNombre}</td>
                           <td className="d" data-l="Cargo">{asig.rolDocente || 'Titular'}</td>
                           <td data-l="Acción">
-                            <Link to="/docencia/calificaciones" className="btn lig chico">
-                              Calificar
+                            <Link
+                              to="/docencia/calificaciones"
+                              className="btn lig chico"
+                              title="Calificar comisión"
+                              aria-label="Calificar comisión"
+                            >
+                              <i className="bi bi-award" />
                             </Link>
                           </td>
                         </tr>

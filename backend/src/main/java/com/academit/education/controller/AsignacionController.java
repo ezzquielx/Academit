@@ -26,26 +26,26 @@ public class AsignacionController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'ADMINISTRATIVO')")
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'ADMINISTRATIVO', 'DOCENTE')")
     public ResponseEntity<List<AsignacionDTO>> listarAsignaciones() {
         return ResponseEntity.ok(asignacionService.listarAsignaciones());
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'ADMINISTRATIVO')")
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'ADMINISTRATIVO', 'DOCENTE')")
     public ResponseEntity<AsignacionDTO> obtenerPorId(@PathVariable Integer id) {
         return ResponseEntity.ok(asignacionService.obtenerPorId(id));
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMINISTRADOR')")
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'ADMINISTRATIVO')")
     public ResponseEntity<AsignacionDTO> crearAsignacion(@Valid @RequestBody AsignacionCreateDTO request) {
         AsignacionDTO creada = asignacionService.crearAsignacion(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(creada);
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMINISTRADOR')")
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'ADMINISTRATIVO')")
     public ResponseEntity<Void> eliminarAsignacion(@PathVariable Integer id) {
         asignacionService.eliminarAsignacion(id);
         return ResponseEntity.noContent().build();

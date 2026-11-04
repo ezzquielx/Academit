@@ -244,8 +244,9 @@ export const GestionAlumnosPage = () => {
               size="sm"
               onClick={() => handleValidarAlumno(row)}
               title="Validar y activar cuenta del alumno"
+              aria-label="Validar y activar cuenta del alumno"
             >
-              <i className="bi bi-person-check me-1" /> Validar
+              <i className="bi bi-person-check" />
             </Button>
           )}
           <Button
@@ -253,6 +254,7 @@ export const GestionAlumnosPage = () => {
             size="sm"
             onClick={() => handleOpenEditar(row)}
             title="Editar alumno"
+            aria-label="Editar alumno"
           >
             <i className="bi bi-pencil" />
           </Button>
@@ -262,6 +264,7 @@ export const GestionAlumnosPage = () => {
               size="sm"
               onClick={() => setAlumnoToDelete(row)}
               title="Baja lógica"
+              aria-label="Baja lógica de alumno"
             >
               <i className="bi bi-person-x" />
             </Button>

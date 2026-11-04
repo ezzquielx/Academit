@@ -94,17 +94,19 @@ export const BandejaSolicitudesPage = () => {
                 variant="success"
                 size="sm"
                 onClick={() => handleOpenResolver(row, 'APROBADA')}
-                className="d-flex align-items-center gap-1"
+                title="Aprobar solicitud"
+                aria-label="Aprobar solicitud"
               >
-                <i className="bi bi-check-lg" /> Aprobar
+                <i className="bi bi-check-lg" />
               </Button>
               <Button
                 variant="outline-danger"
                 size="sm"
                 onClick={() => handleOpenResolver(row, 'RECHAZADA')}
-                className="d-flex align-items-center gap-1"
+                title="Rechazar solicitud"
+                aria-label="Rechazar solicitud"
               >
-                <i className="bi bi-x-lg" /> Rechazar
+                <i className="bi bi-x-lg" />
               </Button>
             </>
           ) : (

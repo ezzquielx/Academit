@@ -106,8 +106,14 @@ export const DeclaracionJuradaPage = () => {
       label: 'Detalle',
       align: 'right',
       render: (row) => (
-        <Button variant="outline-secondary" size="sm" onClick={() => setDetalle(row)}>
-          <i className="bi bi-eye me-1" /> Ver
+        <Button
+          variant="outline-secondary"
+          size="sm"
+          onClick={() => setDetalle(row)}
+          title="Ver detalle de declaración jurada"
+          aria-label="Ver detalle de declaración jurada"
+        >
+          <i className="bi bi-eye" />
         </Button>
       ),
     },
