@@ -107,10 +107,11 @@ export const AdminCuotasPage = () => {
                   <Button
                     variant="outline-danger"
                     size="sm"
-                    className="py-0 px-2 small fw-semibold"
                     onClick={() => setCuotaAAnular(row)}
+                    title="Anular cuota"
+                    aria-label="Anular cuota"
                   >
-                    Anular
+                    <i className="bi bi-x-circle" />
                   </Button>
                 ) : (
                   <span className="text-muted small">—</span>

@@ -98,8 +98,14 @@ export const GestionCiclosLectivosPage = () => {
       label: 'Acciones',
       align: 'right',
       render: (row) => (
-        <Button variant="outline-primary" size="sm" onClick={() => handleOpenEditar(row)}>
-          <i className="bi bi-pencil" /> Editar
+        <Button
+          variant="outline-primary"
+          size="sm"
+          onClick={() => handleOpenEditar(row)}
+          title="Editar ciclo lectivo"
+          aria-label="Editar ciclo lectivo"
+        >
+          <i className="bi bi-pencil" />
         </Button>
       ),
     },

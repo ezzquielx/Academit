@@ -140,11 +140,23 @@ export const GestionDocentesPage = () => {
             align: 'right',
             render: (row) => (
               <div className="d-flex justify-content-end gap-1">
-                <Button variant="outline-primary" size="sm" onClick={() => handleOpenEditar(row)}>
+                <Button
+                  variant="outline-primary"
+                  size="sm"
+                  onClick={() => handleOpenEditar(row)}
+                  title="Editar docente"
+                  aria-label="Editar docente"
+                >
                   <i className="bi bi-pencil" />
                 </Button>
                 {row.estado !== 'INACTIVO' && (
-                  <Button variant="outline-danger" size="sm" onClick={() => setDocenteToDelete(row)}>
+                  <Button
+                    variant="outline-danger"
+                    size="sm"
+                    onClick={() => setDocenteToDelete(row)}
+                    title="Desactivar docente"
+                    aria-label="Desactivar docente"
+                  >
                     <i className="bi bi-person-x" />
                   </Button>
                 )}

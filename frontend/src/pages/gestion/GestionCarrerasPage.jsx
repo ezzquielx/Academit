@@ -192,12 +192,11 @@ export const GestionCarrerasPage = () => {
         <Button
           variant="outline-info"
           size="sm"
-          className="d-flex align-items-center gap-1"
           onClick={() => handleOpenDetalle(row)}
-          title="Ver planes de estudio y comisiones habilitadas"
+          title="Ver planes y cursos"
+          aria-label="Ver planes y cursos"
         >
           <i className="bi bi-diagram-3-fill" />
-          <span>Ver Planes y Cursos</span>
         </Button>
       ),
     },
@@ -214,6 +213,7 @@ export const GestionCarrerasPage = () => {
                   size="sm"
                   onClick={() => handleOpenEditar(row)}
                   title="Editar carrera"
+                  aria-label="Editar carrera"
                 >
                   <i className="bi bi-pencil" />
                 </Button>
@@ -223,6 +223,7 @@ export const GestionCarrerasPage = () => {
                     size="sm"
                     onClick={() => setCarreraToDelete(row)}
                     title="Baja lógica de carrera"
+                    aria-label="Baja lógica de carrera"
                   >
                     <i className="bi bi-trash" />
                   </Button>

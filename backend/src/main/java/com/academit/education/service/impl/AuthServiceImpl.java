@@ -146,6 +146,8 @@ public class AuthServiceImpl implements AuthService {
                 .username(usuario.getUsername())
                 .nombre(resolveNombre(usuario))
                 .rol(rolNombre)
+                .idAlumno(usuario.getAlumno() != null ? usuario.getAlumno().getId() : null)
+                .idDocente(usuario.getDocente() != null ? usuario.getDocente().getId() : null)
                 .build();
 
         return LoginResponseDTO.builder()
@@ -167,6 +169,8 @@ public class AuthServiceImpl implements AuthService {
                 .username(usuario.getUsername())
                 .nombre(resolveNombre(usuario))
                 .rol(rolNombre)
+                .idAlumno(usuario.getAlumno() != null ? usuario.getAlumno().getId() : null)
+                .idDocente(usuario.getDocente() != null ? usuario.getDocente().getId() : null)
                 .build();
 
         return new AuthMeResponseDTO(usuarioDto);

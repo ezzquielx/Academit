@@ -8,6 +8,7 @@ import com.academit.education.dto.common.ApiResponseDTO;
 import com.academit.education.exception.BusinessRuleException;
 import com.academit.education.exception.UnauthorizedException;
 import com.academit.education.model.Alumno;
+import com.academit.education.model.Docente;
 import com.academit.education.model.EstadoPersona;
 import com.academit.education.model.PlanEstudio;
 import com.academit.education.model.Rol;
@@ -99,7 +100,96 @@ class AuthServiceTest {
         assertEquals(1, response.getUsuario().getIdUsuario());
         assertEquals("admin", response.getUsuario().getUsername());
         assertEquals("ADMINISTRADOR", response.getUsuario().getRol());
+        assertNull(response.getUsuario().getIdAlumno());
+        assertNull(response.getUsuario().getIdDocente());
         assertEquals("fake-jwt-token", response.getToken());
+    }
+
+    @Test
+    void testLoginAlumnoReturnsIdAlumnoAndNullDocente() {
+        Rol rol = new Rol();
+        rol.setId(3);
+        rol.setNombre("ALUMNO");
+
+        Alumno alumno = new Alumno();
+        alumno.setId(5);
+        alumno.setNombre("Lucía");
+        alumno.setApellido("Benítez");
+
+        Usuario usuario = new Usuario();
+        usuario.setId(10);
+        usuario.setUsername("alumno1");
+        usuario.setPasswordHash("$2b$10$hashed");
+        usuario.setActivo(true);
+        usuario.setRol(rol);
+        usuario.setAlumno(alumno);
+
+        when(usuarioRepository.findByUsername("alumno1")).thenReturn(Optional.of(usuario));
+        when(passwordEncoder.matches("Academit123", "$2b$10$hashed")).thenReturn(true);
+        when(jwtUtil.generateToken("alumno1", "ALUMNO", 10)).thenReturn("fake-jwt-token");
+
+        LoginResponseDTO response = authService.login(new LoginRequestDTO("alumno1", "Academit123"));
+
+        assertNotNull(response);
+        assertEquals(5, response.getUsuario().getIdAlumno());
+        assertNull(response.getUsuario().getIdDocente());
+        assertEquals("ALUMNO", response.getUsuario().getRol());
+    }
+
+    @Test
+    void testLoginDocenteReturnsIdDocenteAndNullAlumno() {
+        Rol rol = new Rol();
+        rol.setId(2);
+        rol.setNombre("DOCENTE");
+
+        Docente docente = new Docente();
+        docente.setId(8);
+        docente.setNombre("Martín");
+        docente.setApellido("González");
+
+        Usuario usuario = new Usuario();
+        usuario.setId(20);
+        usuario.setUsername("docente1");
+        usuario.setPasswordHash("$2b$10$hashed");
+        usuario.setActivo(true);
+        usuario.setRol(rol);
+        usuario.setDocente(docente);
+
+        when(usuarioRepository.findByUsername("docente1")).thenReturn(Optional.of(usuario));
+        when(passwordEncoder.matches("Academit123", "$2b$10$hashed")).thenReturn(true);
+        when(jwtUtil.generateToken("docente1", "DOCENTE", 20)).thenReturn("fake-jwt-token");
+
+        LoginResponseDTO response = authService.login(new LoginRequestDTO("docente1", "Academit123"));
+
+        assertNotNull(response);
+        assertEquals(8, response.getUsuario().getIdDocente());
+        assertNull(response.getUsuario().getIdAlumno());
+        assertEquals("DOCENTE", response.getUsuario().getRol());
+    }
+
+    @Test
+    void testLoginAdministrativoReturnsNullForBoth() {
+        Rol rol = new Rol();
+        rol.setId(4);
+        rol.setNombre("ADMINISTRATIVO");
+
+        Usuario usuario = new Usuario();
+        usuario.setId(30);
+        usuario.setUsername("administrativo");
+        usuario.setPasswordHash("$2b$10$hashed");
+        usuario.setActivo(true);
+        usuario.setRol(rol);
+
+        when(usuarioRepository.findByUsername("administrativo")).thenReturn(Optional.of(usuario));
+        when(passwordEncoder.matches("Academit123", "$2b$10$hashed")).thenReturn(true);
+        when(jwtUtil.generateToken("administrativo", "ADMINISTRATIVO", 30)).thenReturn("fake-jwt-token");
+
+        LoginResponseDTO response = authService.login(new LoginRequestDTO("administrativo", "Academit123"));
+
+        assertNotNull(response);
+        assertNull(response.getUsuario().getIdAlumno());
+        assertNull(response.getUsuario().getIdDocente());
+        assertEquals("ADMINISTRATIVO", response.getUsuario().getRol());
     }
 
     @Test
@@ -153,6 +243,8 @@ class AuthServiceTest {
         assertEquals(1, me.getUsuario().getIdUsuario());
         assertEquals("admin", me.getUsuario().getUsername());
         assertEquals("ADMINISTRADOR", me.getUsuario().getRol());
+        assertNull(me.getUsuario().getIdAlumno());
+        assertNull(me.getUsuario().getIdDocente());
     }
 
     @Test

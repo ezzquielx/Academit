@@ -10,8 +10,8 @@
 ## Resumen Ejecutivo
 
 - **Total de Entidades Identificadas:** 22
-- **Total de Endpoints en el Contrato:** 71
-- **Endpoints Implementados en API (`real`):** 71 (100.0%)
+- **Total de Endpoints en el Contrato:** 74
+- **Endpoints Implementados en API (`real`):** 74 (100.0%)
 - **Endpoints Inferidos / Convención REST (`inferido`):** 0 (0.0%)
 - **Endpoints Faltantes / Brechas (`falta`):** 0 (0.0%)
 
@@ -581,9 +581,9 @@ Tabla exhaustiva con la totalidad de los contratos de comunicación consumidos o
 | `GET` | `/api/ciclos-lectivos` | Obtiene el catálogo de ciclos lectivos. | ADMINISTRADOR, ADMINISTRATIVO | GestionCiclosLectivosPage.jsx, GestionInscripcionesPage.jsx | `getCiclosLectivos` | 200, 401, 403 | **real** |
 | `POST` | `/api/ciclos-lectivos` | Registra un nuevo ciclo lectivo anual. | ADMINISTRADOR | GestionCiclosLectivosPage.jsx | `createCicloLectivo` | 201, 400, 401, 403, 409 | **real** |
 | `PUT` | `/api/ciclos-lectivos/{id}` | Actualiza los datos o estado de un ciclo lectivo existente. | ADMINISTRADOR | GestionCiclosLectivosPage.jsx | `updateCicloLectivo` | 200, 400, 401, 403, 404 | **real** |
-| `GET` | `/api/asignaciones` | Obtiene el listado de asignaciones docentes a cursos y materias. | ADMINISTRADOR | GestionAsignacionesPage.jsx | `getAsignaciones` | 200, 401, 403 | **real** |
-| `POST` | `/api/asignaciones` | Registra una nueva asignación docente a una cátedra y curso. | ADMINISTRADOR | GestionAsignacionesPage.jsx | `createAsignacion` | 201, 400, 401, 403, 409 | **real** |
-| `DELETE` | `/api/asignaciones/{id}` | Elimina una asignación docente existente. | ADMINISTRADOR | GestionAsignacionesPage.jsx | `deleteAsignacion` | 200, 204, 401, 403, 404 | **real** |
+| `GET` | `/api/asignaciones` | Obtiene el listado de asignaciones docentes a cursos y materias. | ADMINISTRADOR, ADMINISTRATIVO, DOCENTE | GestionAsignacionesPage.jsx, MisCursosPage.jsx | `getAsignaciones` | 200, 401, 403 | **real** |
+| `POST` | `/api/asignaciones` | Registra una nueva asignación docente a una cátedra y curso. | ADMINISTRADOR, ADMINISTRATIVO | GestionAsignacionesPage.jsx | `createAsignacion` | 201, 400, 401, 403, 409 | **real** |
+| `DELETE` | `/api/asignaciones/{id}` | Elimina una asignación docente existente. | ADMINISTRADOR, ADMINISTRATIVO | GestionAsignacionesPage.jsx | `deleteAsignacion` | 200, 204, 401, 403, 404 | **real** |
 | `GET` | `/api/inscripciones` | Obtiene el registro de inscripciones de alumnos a comisiones y cursos. | ADMINISTRADOR, ADMINISTRATIVO | GestionInscripcionesPage.jsx | `getInscripciones` | 200, 401, 403 | **real** |
 | `POST` | `/api/inscripciones` | Realiza la inscripción de un alumno a una comisión/curso con control de cupos disponibles. | ADMINISTRADOR, ADMINISTRATIVO | GestionInscripcionesPage.jsx | `createInscripcion` | 201, 400, 401, 403, 409 | **real** |
 | `DELETE` | `/api/inscripciones/{id}` | Cancela una inscripción de un alumno y libera el cupo correspondiente en la comisión. | ADMINISTRADOR, ADMINISTRATIVO | GestionInscripcionesPage.jsx | `cancelarInscripcion` | 200, 204, 401, 403, 404 | **real** |
@@ -617,6 +617,9 @@ Tabla exhaustiva con la totalidad de los contratos de comunicación consumidos o
 | `POST` | `/api/auth/login` | Inicia sesión con usuario y contraseña. | ALUMNO, DOCENTE, ADMINISTRATIVO, ADMINISTRADOR | Login.jsx | `loginApi` | 200, 400, 401, 404 | **real** |
 | `POST` | `/api/auth/logout` | Cierra la sesión activa en el sistema. | ALUMNO, DOCENTE, ADMINISTRATIVO, ADMINISTRADOR | Topbar.jsx | `logoutApi` | 200, 401 | **real** |
 | `POST` | `/api/auth/cambiar-password` | Modifica la contraseña del usuario en sesión. | ALUMNO, DOCENTE, ADMINISTRATIVO, ADMINISTRADOR | CambiarPasswordPage.jsx | `cambiarPasswordApi` | 200, 400, 401 | **real** |
+| `POST` | `/api/auth/registro` | Registra a un nuevo alumno en el sistema. | ALUMNO, DOCENTE, ADMINISTRATIVO, ADMINISTRADOR | Registro.jsx | `registroApi` | 201, 400, 409 | **real** |
+| `GET` | `/api/auth/carreras` | Obtiene las carreras disponibles para aspirantes y nuevos estudiantes (público). | ALUMNO, DOCENTE, ADMINISTRATIVO, ADMINISTRADOR | Registro.jsx | `getOfertaCarrerasApi` | 200 | **real** |
+| `GET` | `/api/auth/planes-estudio` | Obtiene los planes de estudio disponibles para aspirantes y nuevos estudiantes (público). | ALUMNO, DOCENTE, ADMINISTRATIVO, ADMINISTRADOR | Registro.jsx | `getOfertaPlanesApi` | 200 | **real** |
 | `GET` | `/api/usuarios` | Obtiene el listado de cuentas de usuario y roles del sistema. | ADMINISTRADOR | GestionUsuariosPage.jsx | `getUsuarios` | 200, 401, 403 | **real** |
 | `POST` | `/api/usuarios` | Registra un nuevo usuario con credenciales y asignación de rol. | ADMINISTRADOR | GestionUsuariosPage.jsx | `createUsuario` | 201, 400, 401, 403, 409 | **real** |
 | `PUT` | `/api/usuarios/{id}` | Actualiza los datos de perfil o rol de un usuario existente. | ADMINISTRADOR | GestionUsuariosPage.jsx | `updateUsuario` | 200, 400, 401, 403, 404 | **real** |

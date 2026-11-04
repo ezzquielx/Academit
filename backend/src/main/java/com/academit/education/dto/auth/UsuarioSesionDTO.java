@@ -17,4 +17,6 @@ public class UsuarioSesionDTO {
     private String username;
     private String nombre;
     private String rol;
+    private Integer idAlumno;
+    private Integer idDocente;
 }

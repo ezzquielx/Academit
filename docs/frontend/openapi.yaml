@@ -1276,6 +1276,8 @@ paths:
       operationId: getAsignaciones
       x-roles:
         - ADMINISTRADOR
+        - ADMINISTRATIVO
+        - DOCENTE
       responses:
         '200':
           description: Consulta o actualización exitosa
@@ -1304,6 +1306,7 @@ paths:
       operationId: createAsignacion
       x-roles:
         - ADMINISTRADOR
+        - ADMINISTRATIVO
       requestBody:
         required: true
         content:
@@ -1349,6 +1352,7 @@ paths:
       operationId: deleteAsignacion
       x-roles:
         - ADMINISTRADOR
+        - ADMINISTRATIVO
       parameters:
         - name: id
           in: path
@@ -2795,6 +2799,85 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiError'
+  /api/auth/registro:
+    post:
+      tags:
+        - Auth
+      summary: "Registra a un nuevo alumno en el sistema."
+      operationId: registroApi
+      x-roles:
+        - ALUMNO
+        - DOCENTE
+        - ADMINISTRATIVO
+        - ADMINISTRADOR
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegistroAlumnoDTO'
+      responses:
+        '201':
+          description: Recurso creado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponseDTO'
+        '400':
+          description: "Solicitud inválida o error en parámetros"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '409':
+          description: "Conflicto con el estado actual o regla de negocio violada"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+  /api/auth/carreras:
+    get:
+      tags:
+        - Auth
+      summary: "Obtiene las carreras disponibles para aspirantes y nuevos estudiantes (público)."
+      operationId: getOfertaCarrerasApi
+      x-roles:
+        - ALUMNO
+        - DOCENTE
+        - ADMINISTRATIVO
+        - ADMINISTRADOR
+      security: []
+      responses:
+        '200':
+          description: Consulta o actualización exitosa
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CarreraDTO'
+  /api/auth/planes-estudio:
+    get:
+      tags:
+        - Auth
+      summary: "Obtiene los planes de estudio disponibles para aspirantes y nuevos estudiantes (público)."
+      operationId: getOfertaPlanesApi
+      x-roles:
+        - ALUMNO
+        - DOCENTE
+        - ADMINISTRATIVO
+        - ADMINISTRADOR
+      security: []
+      responses:
+        '200':
+          description: Consulta o actualización exitosa
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PlanEstudioDTO'
   /api/usuarios:
     get:
       tags:
@@ -4469,18 +4552,17 @@ components:
           type: string
         password:
           type: string
-    LoginResponseDTO:
+    UsuarioSesionDTO:
       type: object
       required:
         - idUsuario
-        - usuario
+        - username
         - nombre
         - rol
-        - email
       properties:
         idUsuario:
           type: integer
-        usuario:
+        username:
           type: string
         nombre:
           type: string
@@ -4491,9 +4573,55 @@ components:
             - ADMINISTRATIVO
             - DOCENTE
             - ALUMNO
+        idAlumno:
+          type: integer
+        idDocente:
+          type: integer
+    LoginResponseDTO:
+      type: object
+      required:
+        - usuario
+        - token
+      properties:
+        usuario:
+          $ref: '#/components/schemas/UsuarioSesionDTO'
+        token:
+          type: string
+    RegistroAlumnoDTO:
+      type: object
+      required:
+        - nombre
+        - apellido
+        - dni
+        - email
+        - fechaNacimiento
+        - idCarrera
+        - idPlan
+        - username
+        - password
+      properties:
+        nombre:
+          type: string
+        apellido:
+          type: string
+        dni:
+          type: string
         email:
           type: string
-        token:
+        telefono:
+          type: string
+        domicilio:
+          type: string
+        fechaNacimiento:
+          type: string
+          format: date
+        idCarrera:
+          type: integer
+        idPlan:
+          type: integer
+        username:
+          type: string
+        password:
           type: string
     CambiarPasswordRequestDTO:
       type: object

@@ -123,8 +123,14 @@ export const GestionInscripcionesPage = () => {
       align: 'right',
       render: (row) => (
         row.estado !== 'CANCELADA' && (
-          <Button variant="outline-danger" size="sm" onClick={() => setInscToDelete(row)}>
-            <i className="bi bi-x-circle" /> Cancelar
+          <Button
+            variant="outline-danger"
+            size="sm"
+            onClick={() => setInscToDelete(row)}
+            title="Cancelar inscripción"
+            aria-label="Cancelar inscripción"
+          >
+            <i className="bi bi-x-circle" />
           </Button>
         )
       ),

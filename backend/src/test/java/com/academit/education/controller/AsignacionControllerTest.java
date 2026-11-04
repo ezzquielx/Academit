@@ -93,6 +93,17 @@ class AsignacionControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "docente1", roles = {"DOCENTE"})
+    @DisplayName("GET /api/asignaciones con rol DOCENTE retorna 200 OK y listado")
+    void testListarAsignaciones_Docente_Retorna200() throws Exception {
+        when(asignacionService.listarAsignaciones()).thenReturn(List.of(dtoEjemplo()));
+
+        mockMvc.perform(get(BASE))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].idAsignacion").value(1));
+    }
+
+    @Test
     @WithMockUser(username = "admin", roles = {"ADMINISTRADOR"})
     @DisplayName("GET /api/asignaciones/{id} inexistente retorna 404 Not Found")
     void testObtenerPorId_NoExiste_Retorna404() throws Exception {
@@ -105,14 +116,29 @@ class AsignacionControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "administrativo", roles = {"ADMINISTRATIVO"})
-    @DisplayName("POST /api/asignaciones con rol ADMINISTRATIVO retorna 403 Forbidden")
-    void testCrearAsignacion_Administrativo_Retorna403() throws Exception {
+    @WithMockUser(username = "alumno1", roles = {"ALUMNO"})
+    @DisplayName("POST /api/asignaciones con rol ALUMNO retorna 403 Forbidden")
+    void testCrearAsignacion_Alumno_Retorna403() throws Exception {
         mockMvc.perform(post(BASE)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(BODY_ASIGNACION_VALIDO))
                 .andExpect(status().isForbidden())
                 .andExpect(jsonPath("$.status").value(403));
+    }
+
+    @Test
+    @WithMockUser(username = "administrativo", roles = {"ADMINISTRATIVO"})
+    @DisplayName("POST /api/asignaciones con rol ADMINISTRATIVO y datos válidos retorna 201 Created")
+    void testCrearAsignacion_Administrativo_Retorna201() throws Exception {
+        when(asignacionService.crearAsignacion(any())).thenReturn(dtoEjemplo());
+
+        mockMvc.perform(post(BASE)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(BODY_ASIGNACION_VALIDO))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.idAsignacion").value(1))
+                .andExpect(jsonPath("$.docenteNombre").value("Carlos Sánchez"))
+                .andExpect(jsonPath("$.materiaNombre").value("Programación I"));
     }
 
     @Test
@@ -143,12 +169,20 @@ class AsignacionControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "administrativo", roles = {"ADMINISTRATIVO"})
-    @DisplayName("DELETE /api/asignaciones/{id} con rol ADMINISTRATIVO retorna 403 Forbidden")
-    void testEliminarAsignacion_Administrativo_Retorna403() throws Exception {
+    @WithMockUser(username = "alumno1", roles = {"ALUMNO"})
+    @DisplayName("DELETE /api/asignaciones/{id} con rol ALUMNO retorna 403 Forbidden")
+    void testEliminarAsignacion_Alumno_Retorna403() throws Exception {
         mockMvc.perform(delete(BASE + "/1"))
                 .andExpect(status().isForbidden())
                 .andExpect(jsonPath("$.status").value(403));
+    }
+
+    @Test
+    @WithMockUser(username = "administrativo", roles = {"ADMINISTRATIVO"})
+    @DisplayName("DELETE /api/asignaciones/{id} con rol ADMINISTRATIVO retorna 204 No Content")
+    void testEliminarAsignacion_Administrativo_Retorna204() throws Exception {
+        mockMvc.perform(delete(BASE + "/1"))
+                .andExpect(status().isNoContent());
     }
 
     @Test

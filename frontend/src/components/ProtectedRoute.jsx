@@ -1,6 +1,7 @@
 import { Navigate, useLocation, Link } from 'react-router-dom'
 import { Container, Alert } from 'react-bootstrap'
 import { useAuth } from '../context/AuthContext'
+import { ModoProvider } from '../context/ModoContext'
 
 /**
  * Componente para proteger rutas según estado de autenticación y rol.
@@ -8,7 +9,7 @@ import { useAuth } from '../context/AuthContext'
  * - Si el rol no está permitido: muestra mensaje de "Acceso denegado".
  * - Si tiene permiso: renderiza el contenido (children).
  */
-export const ProtectedRoute = ({ children, allowedRoles }) => {
+export const ProtectedRoute = ({ children, allowedRoles, item }) => {
   const { isAuthenticated, rol } = useAuth()
   const location = useLocation()
 
@@ -40,8 +41,9 @@ export const ProtectedRoute = ({ children, allowedRoles }) => {
     )
   }
 
-  // 3. Permiso concedido
-  return children
+  // 3. Permiso concedido - proveer modo contextual si está configurado
+  const modo = (item?.modoPorRol && rol && item.modoPorRol[rol]) || item?.modo || 'edicion'
+  return <ModoProvider value={modo}>{children}</ModoProvider>
 }
 
 export default ProtectedRoute
