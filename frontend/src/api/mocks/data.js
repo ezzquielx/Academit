@@ -170,23 +170,23 @@ export const mockDb = {
     {
       idDocente: 1,
       legajo: 'DOC-201',
-      nombre: 'Carlos',
-      apellido: 'Gómez',
-      dni: '30111222',
-      email: 'carlos.gomez@instituto.edu.ar',
-      titulo: 'Programación y Algoritmos',
-      telefono: '11-5555-1234',
+      nombre: 'Laura',
+      apellido: 'Pérez',
+      dni: '25111222',
+      email: 'laura.perez@instituto.edu.ar',
+      titulo: 'Ingeniera en Sistemas',
+      telefono: '3815000001',
       estado: 'ACTIVO',
     },
     {
       idDocente: 2,
       legajo: 'DOC-202',
-      nombre: 'Mariana',
-      apellido: 'Peralta',
-      dni: '32444555',
-      email: 'mariana.peralta@instituto.edu.ar',
-      titulo: 'Bases de Datos y Modelado',
-      telefono: '11-5555-5678',
+      nombre: 'Carlos',
+      apellido: 'Gómez',
+      dni: '27333444',
+      email: 'carlos.gomez@instituto.edu.ar',
+      titulo: 'Licenciado en Matemática',
+      telefono: '3815000002',
       estado: 'ACTIVO',
     },
     {
@@ -300,10 +300,10 @@ export const mockDb = {
 
   // 6. Asignaciones Docente - Curso - Materia
   asignaciones: [
-    { idAsignacion: 1, idDocente: 1, docenteNombre: 'Carlos Gómez', idMateria: 1, materiaNombre: 'Programación I', idCurso: 1, cursoNombre: '1° Año - Turno Mañana', rolDocente: 'Titular' },
-    { idAsignacion: 2, idDocente: 2, docenteNombre: 'Mariana Peralta', idMateria: 2, materiaNombre: 'Bases de Datos I', idCurso: 1, cursoNombre: '1° Año - Turno Mañana', rolDocente: 'Titular' },
+    { idAsignacion: 1, idDocente: 1, docenteNombre: 'Laura Pérez', idMateria: 1, materiaNombre: 'Programación I', idCurso: 1, cursoNombre: '1° Año - Turno Mañana', rolDocente: 'Titular' },
+    { idAsignacion: 2, idDocente: 2, docenteNombre: 'Carlos Gómez', idMateria: 2, materiaNombre: 'Bases de Datos I', idCurso: 1, cursoNombre: '1° Año - Turno Mañana', rolDocente: 'Titular' },
     { idAsignacion: 3, idDocente: 4, docenteNombre: 'Elena Fabbri', idMateria: 3, materiaNombre: 'Sistemas de Computación', idCurso: 1, cursoNombre: '1° Año - Turno Mañana', rolDocente: 'Titular' },
-    { idAsignacion: 4, idDocente: 1, docenteNombre: 'Carlos Gómez', idMateria: 5, materiaNombre: 'Programación II', idCurso: 2, cursoNombre: '2° Año - Turno Tarde', rolDocente: 'Titular' },
+    { idAsignacion: 4, idDocente: 1, docenteNombre: 'Laura Pérez', idMateria: 5, materiaNombre: 'Programación II', idCurso: 2, cursoNombre: '2° Año - Turno Tarde', rolDocente: 'Titular' },
   ],
 
   // 7. Inscripciones de Alumnos a Cursos
@@ -537,8 +537,10 @@ export const mockDb = {
   usuarios: [
     { idUsuario: 1, username: 'admin', nombre: 'Administrador General', email: 'admin@instituto.edu.ar', rol: 'ADMINISTRADOR', estado: 'ACTIVO', ultimoAcceso: '2026-10-12 21:00', password: '1234' },
     { idUsuario: 2, username: 'administrativo', nombre: 'Personal Administrativo', email: 'administracion@instituto.edu.ar', rol: 'ADMINISTRATIVO', estado: 'ACTIVO', ultimoAcceso: '2026-10-12 20:30', password: '1234' },
-    { idUsuario: 3, username: 'docente', nombre: 'Profesor Carlos Gómez', email: 'carlos.gomez@instituto.edu.ar', rol: 'DOCENTE', estado: 'ACTIVO', ultimoAcceso: '2026-10-12 19:45', password: '1234', idDocente: 1 },
+    { idUsuario: 3, username: 'docente', nombre: 'Prof. Laura Pérez', email: 'laura.perez@instituto.edu.ar', rol: 'DOCENTE', estado: 'ACTIVO', ultimoAcceso: '2026-10-12 19:45', password: '1234', idDocente: 1 },
     { idUsuario: 4, username: 'alumno', nombre: 'Lucía Benítez', email: 'lucia.benitez@instituto.edu.ar', rol: 'ALUMNO', estado: 'ACTIVO', ultimoAcceso: '2026-10-12 21:15', password: '1234', idAlumno: 1 },
+    { idUsuario: 5, username: 'docente1', nombre: 'Prof. Laura Pérez', email: 'laura.perez@instituto.edu.ar', rol: 'DOCENTE', estado: 'ACTIVO', ultimoAcceso: '2026-10-12 19:45', password: '1234', idDocente: 1 },
+    { idUsuario: 6, username: 'alumno1', nombre: 'Lucía Benítez', email: 'lucia.benitez@instituto.edu.ar', rol: 'ALUMNO', estado: 'ACTIVO', ultimoAcceso: '2026-10-12 21:15', password: '1234', idAlumno: 1 },
   ],
 }
 

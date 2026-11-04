@@ -94,8 +94,14 @@ export const GestionAsignacionesPage = () => {
             label: 'Acciones',
             align: 'right',
             render: (row) => (
-              <Button variant="outline-danger" size="sm" onClick={() => setAsigToDelete(row)}>
-                <i className="bi bi-trash" /> Quitar
+              <Button
+                variant="outline-danger"
+                size="sm"
+                onClick={() => setAsigToDelete(row)}
+                title="Quitar asignación"
+                aria-label="Quitar asignación"
+              >
+                <i className="bi bi-trash" />
               </Button>
             ),
           },

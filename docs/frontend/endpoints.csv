@@ -28,9 +28,9 @@ PUT,/api/cursos/{id},Actualiza los datos de un curso o comisión.,ADMINISTRADOR,
 GET,/api/ciclos-lectivos,Obtiene el catálogo de ciclos lectivos.,"ADMINISTRADOR, ADMINISTRATIVO","GestionCiclosLectivosPage.jsx, GestionInscripcionesPage.jsx",getCiclosLectivos,real
 POST,/api/ciclos-lectivos,Registra un nuevo ciclo lectivo anual.,ADMINISTRADOR,GestionCiclosLectivosPage.jsx,createCicloLectivo,real
 PUT,/api/ciclos-lectivos/{id},Actualiza los datos o estado de un ciclo lectivo existente.,ADMINISTRADOR,GestionCiclosLectivosPage.jsx,updateCicloLectivo,real
-GET,/api/asignaciones,Obtiene el listado de asignaciones docentes a cursos y materias.,ADMINISTRADOR,GestionAsignacionesPage.jsx,getAsignaciones,real
-POST,/api/asignaciones,Registra una nueva asignación docente a una cátedra y curso.,ADMINISTRADOR,GestionAsignacionesPage.jsx,createAsignacion,real
-DELETE,/api/asignaciones/{id},Elimina una asignación docente existente.,ADMINISTRADOR,GestionAsignacionesPage.jsx,deleteAsignacion,real
+GET,/api/asignaciones,Obtiene el listado de asignaciones docentes a cursos y materias.,"ADMINISTRADOR, ADMINISTRATIVO, DOCENTE","GestionAsignacionesPage.jsx, MisCursosPage.jsx",getAsignaciones,real
+POST,/api/asignaciones,Registra una nueva asignación docente a una cátedra y curso.,"ADMINISTRADOR, ADMINISTRATIVO",GestionAsignacionesPage.jsx,createAsignacion,real
+DELETE,/api/asignaciones/{id},Elimina una asignación docente existente.,"ADMINISTRADOR, ADMINISTRATIVO",GestionAsignacionesPage.jsx,deleteAsignacion,real
 GET,/api/inscripciones,Obtiene el registro de inscripciones de alumnos a comisiones y cursos.,"ADMINISTRADOR, ADMINISTRATIVO",GestionInscripcionesPage.jsx,getInscripciones,real
 POST,/api/inscripciones,Realiza la inscripción de un alumno a una comisión/curso con control de cupos disponibles.,"ADMINISTRADOR, ADMINISTRATIVO",GestionInscripcionesPage.jsx,createInscripcion,real
 DELETE,/api/inscripciones/{id},Cancela una inscripción de un alumno y libera el cupo correspondiente en la comisión.,"ADMINISTRADOR, ADMINISTRATIVO",GestionInscripcionesPage.jsx,cancelarInscripcion,real

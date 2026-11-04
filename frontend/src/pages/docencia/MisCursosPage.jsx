@@ -16,7 +16,8 @@ export const MisCursosPage = () => {
   useEffect(() => {
     getAsignaciones()
       .then((asigs) => {
-        setAsignaciones(docenteId ? asigs.filter((a) => a.idDocente === docenteId) : [])
+        const list = Array.isArray(asigs) ? asigs : []
+        setAsignaciones(docenteId ? list.filter((a) => Number(a.idDocente) === Number(docenteId)) : list)
       })
       .catch(() => {})
     getCursos().then(setCursos).catch(() => {})
@@ -37,15 +38,29 @@ export const MisCursosPage = () => {
     },
     {
       key: 'acciones',
-      label: 'Acciones Rápidas',
+      label: 'Acciones',
       align: 'right',
       render: () => (
-        <div className="d-flex justify-content-end flex-wrap gap-2">
-          <Button as={Link} to="/docencia/calificaciones" variant="outline-primary" size="sm">
-            <i className="bi bi-award me-1" /> Calificar
+        <div className="d-flex justify-content-end gap-1">
+          <Button
+            as={Link}
+            to="/docencia/calificaciones"
+            variant="outline-primary"
+            size="sm"
+            title="Calificaciones"
+            aria-label="Calificaciones"
+          >
+            <i className="bi bi-award" />
           </Button>
-          <Button as={Link} to="/docencia/asistencias" variant="outline-success" size="sm">
-            <i className="bi bi-check2-square me-1" /> Asistencia
+          <Button
+            as={Link}
+            to="/docencia/asistencias"
+            variant="outline-success"
+            size="sm"
+            title="Tomar asistencia"
+            aria-label="Tomar asistencia"
+          >
+            <i className="bi bi-check2-square" />
           </Button>
         </div>
       ),

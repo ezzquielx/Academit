@@ -1276,6 +1276,8 @@ paths:
       operationId: getAsignaciones
       x-roles:
         - ADMINISTRADOR
+        - ADMINISTRATIVO
+        - DOCENTE
       responses:
         '200':
           description: Consulta o actualización exitosa
@@ -1304,6 +1306,7 @@ paths:
       operationId: createAsignacion
       x-roles:
         - ADMINISTRADOR
+        - ADMINISTRATIVO
       requestBody:
         required: true
         content:
@@ -1349,6 +1352,7 @@ paths:
       operationId: deleteAsignacion
       x-roles:
         - ADMINISTRADOR
+        - ADMINISTRATIVO
       parameters:
         - name: id
           in: path

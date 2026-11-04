@@ -8,15 +8,18 @@ import { getMesasExamen } from '../../api/mesasExamen'
 import { getCalificaciones } from '../../api/calificaciones'
 import { getSolicitudes } from '../../api/solicitudes'
 import { getAlumnos, getAlumnoById } from '../../api/alumnos'
+import { getAsignaciones } from '../../api/asignaciones'
 import { ETIQUETAS_VACIO } from '../../config/etiquetas'
 
 export const InicioPage = () => {
-  const { rol, nombre, usuario, idAlumno } = useAuth()
+  const { rol, nombre, usuario, idAlumno, idDocente } = useAuth()
   const alumnoId = rol === 'ALUMNO' ? idAlumno : null
+  const docenteId = rol === 'DOCENTE' ? idDocente : null
   const [alumno, setAlumno] = useState(null)
   const [alumnoCuotas, setAlumnoCuotas] = useState([])
   const [alumnoMesas, setAlumnoMesas] = useState([])
   const [alumnoCalificaciones, setAlumnoCalificaciones] = useState([])
+  const [docenteAsignaciones, setDocenteAsignaciones] = useState([])
   const [solicitudesCount, setSolicitudesCount] = useState(0)
   const [alumnosCount, setAlumnosCount] = useState(0)
 
@@ -32,12 +35,20 @@ export const InicioPage = () => {
     getSolicitudes(alumnoId ? { idAlumno: alumnoId } : {})
       .then((data) => setSolicitudesCount((data || []).filter((s) => s.estado === 'PENDIENTE').length))
       .catch(() => {})
+    if (rol === 'DOCENTE') {
+      getAsignaciones()
+        .then((data) => {
+          const list = Array.isArray(data) ? data : []
+          setDocenteAsignaciones(docenteId ? list.filter((a) => Number(a.idDocente) === Number(docenteId)) : list)
+        })
+        .catch(() => {})
+    }
     // Sin idAlumno no se consulta nada del padrón: nunca mostrar datos de otro alumno.
     if (!alumnoId) return
     getAlumnoById(alumnoId).then(setAlumno).catch(() => {})
     getCuotas(alumnoId).then((data) => setAlumnoCuotas(data || [])).catch(() => {})
     getCalificaciones({ idAlumno: alumnoId }).then((data) => setAlumnoCalificaciones(data || [])).catch(() => {})
-  }, [rol, alumnoId])
+  }, [rol, alumnoId, docenteId])
 
   const getGreeting = () => {
     const h = new Date().getHours()
@@ -208,41 +219,45 @@ export const InicioPage = () => {
           {rol === 'DOCENTE' && (
             <section className="bloque">
               <h2>Mis comisiones activas</h2>
-              <div className="tabla-caja">
-                <table>
-                  <caption>Ciclo lectivo 2026 · Cursado del segundo cuatrimestre</caption>
-                  <thead>
-                    <tr>
-                      <th scope="col">Materia</th>
-                      <th scope="col">Comisión</th>
-                      <th scope="col" className="d">Alumnos</th>
-                      <th scope="col">Acción</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td className="titulo-ficha" data-l="Materia">Programación I</td>
-                      <td data-l="Comisión">1° Año - Turno Mañana (Aula 101)</td>
-                      <td className="d num" data-l="Alumnos">29</td>
-                      <td data-l="Acción">
-                        <Link to="/docencia/calificaciones" className="btn lig chico">
-                          Calificar
-                        </Link>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="titulo-ficha" data-l="Materia">Programación II</td>
-                      <td data-l="Comisión">2° Año - Turno Tarde (Lab 2)</td>
-                      <td className="d num" data-l="Alumnos">28</td>
-                      <td data-l="Acción">
-                        <Link to="/docencia/calificaciones" className="btn lig chico">
-                          Calificar
-                        </Link>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+              {docenteAsignaciones.length === 0 ? (
+                <EmptyState
+                  title="Sin comisiones asignadas"
+                  description="Aún no tenés comisiones o materias asignadas para este ciclo lectivo."
+                />
+              ) : (
+                <div className="tabla-caja">
+                  <table>
+                    <caption>Ciclo lectivo 2026 · Cursado del segundo cuatrimestre</caption>
+                    <thead>
+                      <tr>
+                        <th scope="col">Materia</th>
+                        <th scope="col">Comisión</th>
+                        <th scope="col">Rol</th>
+                        <th scope="col">Acción</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {docenteAsignaciones.map((asig) => (
+                        <tr key={asig.idAsignacion}>
+                          <td className="titulo-ficha" data-l="Materia">{asig.materiaNombre}</td>
+                          <td data-l="Comisión">{asig.cursoNombre}</td>
+                          <td data-l="Rol">{asig.rolDocente || 'Titular'}</td>
+                          <td data-l="Acción">
+                            <Link
+                              to="/docencia/calificaciones"
+                              className="btn lig chico"
+                              title="Calificar comisión"
+                              aria-label="Calificar comisión"
+                            >
+                              <i className="bi bi-award" />
+                            </Link>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
             </section>
           )}
 
@@ -294,9 +309,9 @@ export const InicioPage = () => {
         <aside className="lat">
           <section>
             <h2>Agenda</h2>
-            <ul className="agenda">
-              {alumnoMesas.length > 0 ? (
-                alumnoMesas.slice(0, 4).map((m) => {
+            {alumnoMesas.length > 0 ? (
+              <ul className="agenda">
+                {alumnoMesas.slice(0, 4).map((m) => {
                   const d = new Date(m.fecha)
                   const diaNum = isNaN(d.getDate()) ? '28' : d.getDate()
                   const mesStr = isNaN(d.getMonth())
@@ -318,16 +333,15 @@ export const InicioPage = () => {
                       </div>
                     </li>
                   )
-                })
-              ) : (
-                <li>
-                  <EmptyState
-                    title={ETIQUETAS_VACIO.SIN_MESAS}
-                    description={ETIQUETAS_VACIO.SIN_MESAS_DETALLE}
-                  />
-                </li>
-              )}
-            </ul>
+                })}
+              </ul>
+            ) : (
+              <EmptyState
+                compact
+                title={ETIQUETAS_VACIO.SIN_MESAS}
+                description={ETIQUETAS_VACIO.SIN_MESAS_DETALLE}
+              />
+            )}
           </section>
 
           <section>

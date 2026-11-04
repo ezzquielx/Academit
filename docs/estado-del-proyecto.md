@@ -1,6 +1,6 @@
 # Estado Real del Proyecto y Plan de Distribución - Academit
 
-> **Fecha de relevamiento:** Octubre 2026 | **Entidades:** 35 | **Repositories:** 32 | **Tests backend:** 432/432 OK.
+> **Fecha de relevamiento:** Octubre 2026 | **Entidades:** 35 | **Repositories:** 32 | **Tests backend:** 435/435 OK.
 
 ## 1. Estado por Módulo
 
@@ -8,7 +8,7 @@
 | --- | --- | --- | --- | --- | --- |
 | **Base de datos** | 25 tablas alineadas | N/A | N/A | Scripts SQL verificados | **Hecho** |
 | **Entidades JPA** | 35 entidades, 32 repositorios | N/A | N/A | Compilación JPA OK | **Hecho** |
-| **Seguridad y Usuarios** | `Usuario`, `Rol` / Repos | `AuthService`, `UsuarioService` | `Auth`, `Perfil`, `Usuario` | 432 tests unit/integ | **Hecho** |
+| **Seguridad y Usuarios** | `Usuario`, `Rol` / Repos | `AuthService`, `UsuarioService` | `Auth`, `Perfil`, `Usuario` | 435 tests unit/integ | **Hecho** |
 | **Alumnos** | `Alumno`, `EstadoPersona` / Repos | Pendiente | Pendiente | Pendiente | **Parcial** |
 | **Docentes** | `Docente` / `DocenteRepository` | Pendiente | Pendiente | Pendiente | **Parcial** |
 | **Carreras** | `Carrera` / `CarreraRepository` | Pendiente | Pendiente | Pendiente | **Parcial** |
