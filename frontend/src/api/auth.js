@@ -5,9 +5,10 @@ import { createApiError } from './errors'
 /**
  * Inicia sesión con usuario y contraseña.
  * REST: POST /api/auth/login
+ * Roles: ALUMNO, DOCENTE, ADMINISTRATIVO, ADMINISTRADOR
  * @param {string} username - Nombre de usuario
  * @param {string} password - Contraseña
- * @returns {Promise<Object>} { usuario: { idUsuario, username, nombre, rol, email, idAlumno, idDocente }, token }
+ * @returns {Promise<Object>} { usuario: {idUsuario, username, nombre, rol, idAlumno, idDocente}, token }
  */
 export const loginApi = async (username, password) => {
   if (isMock) {
@@ -71,8 +72,9 @@ export const logoutApi = async () => {
  * Registra a un nuevo alumno en el sistema.
  * El alumno nace sin relaciones: sin curso, matrícula, cuotas, notas ni asistencias.
  * REST: POST /api/auth/registro
+ * Roles: ALUMNO, DOCENTE, ADMINISTRATIVO, ADMINISTRADOR
  * @param {Object} data - Datos personales, carrera, plan, username y password
- * @returns {Promise<Object>} Datos del alumno autenticado y token
+ * @returns {Promise<Object>} Resultado del registro
  */
 export const registroApi = async (data) => {
   if (isMock) {
@@ -159,7 +161,8 @@ export const registroApi = async (data) => {
 /**
  * Obtiene las carreras disponibles para aspirantes y nuevos estudiantes (público).
  * REST: GET /api/auth/carreras
- * @returns {Promise<Array<Object>>}
+ * Roles: ALUMNO, DOCENTE, ADMINISTRATIVO, ADMINISTRADOR
+ * @returns {Promise<Array<Object>>} Lista de carreras disponibles
  */
 export const getOfertaCarrerasApi = async () => {
   if (isMock) {
@@ -172,7 +175,8 @@ export const getOfertaCarrerasApi = async () => {
 /**
  * Obtiene los planes de estudio disponibles para aspirantes y nuevos estudiantes (público).
  * REST: GET /api/auth/planes-estudio
- * @returns {Promise<Array<Object>>}
+ * Roles: ALUMNO, DOCENTE, ADMINISTRATIVO, ADMINISTRADOR
+ * @returns {Promise<Array<Object>>} Lista de planes de estudio disponibles
  */
 export const getOfertaPlanesApi = async () => {
   if (isMock) {
