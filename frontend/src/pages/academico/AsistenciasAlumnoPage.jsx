@@ -3,15 +3,19 @@ import { Card, Row, Col, ProgressBar } from 'react-bootstrap'
 import PageHeader from '../../components/PageHeader'
 import DataTable from '../../components/DataTable'
 import StatusBadge from '../../components/StatusBadge'
+import { useAuth } from '../../context/AuthContext'
 import { getAsistencias } from '../../api/asistencias'
+import { ETIQUETAS_VACIO } from '../../config/etiquetas'
 
 export const AsistenciasAlumnoPage = () => {
+  const { idAlumno } = useAuth()
   const [asistencias, setAsistencias] = useState([])
-  const alumnoId = 1 // Alumno de referencia: Lucía Benítez
+  const alumnoId = idAlumno
 
   useEffect(() => {
+    if (!alumnoId) return
     getAsistencias({ idAlumno: alumnoId }).then(setAsistencias).catch(() => {})
-  }, [])
+  }, [alumnoId])
 
   const totalClases = asistencias.length
   const presentes = asistencias.filter((a) => a.estado === 'PRESENTE').length
@@ -111,6 +115,8 @@ export const AsistenciasAlumnoPage = () => {
         keyField="idAsistencia"
         searchPlaceholder="Buscar por fecha o materia..."
         searchKeys={['fecha', 'materiaNombre', 'estado']}
+        emptyTitle={ETIQUETAS_VACIO.SIN_ASISTENCIAS}
+        emptyDescription={ETIQUETAS_VACIO.SIN_ASISTENCIAS_DETALLE}
       />
     </div>
   )

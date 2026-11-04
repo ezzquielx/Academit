@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation, Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 
 export const Login = () => {
@@ -37,9 +37,12 @@ export const Login = () => {
     }
   }
 
+  const isMock = import.meta.env.VITE_USE_MOCK === 'true'
+  const defaultPass = isMock ? '1234' : 'Academit123'
+
   const handleQuickFill = (user) => {
     setUsername(user)
-    setPassword('1234')
+    setPassword(defaultPass)
     setErrorMsg('')
     setErrorErrors([])
   }
@@ -124,7 +127,7 @@ export const Login = () => {
 
           <div style={{ marginTop: '16px', borderTop: '1px solid var(--linea)', paddingTop: '12px' }}>
             <p style={{ fontSize: '13px', color: 'var(--suave)', marginBottom: '8px' }}>
-              Usuarios de prueba (clave: <code>1234</code>):
+              Usuarios de prueba (clave: <code>{defaultPass}</code>):
             </p>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
               <button
@@ -156,6 +159,15 @@ export const Login = () => {
                 alumno
               </button>
             </div>
+          </div>
+
+          <div style={{ marginTop: '16px', textAlign: 'center' }}>
+            <span style={{ fontSize: '13.5px', color: 'var(--suave)' }}>
+              ¿Sos un nuevo estudiante?{' '}
+              <Link to="/registro" style={{ color: 'var(--primario)', fontWeight: 600 }}>
+                Registrate acá
+              </Link>
+            </span>
           </div>
         </form>
       </div>

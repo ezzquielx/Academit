@@ -149,7 +149,13 @@ export const GestionCursosPage = () => {
       label: 'Acciones',
       align: 'right',
       render: (row) => (
-        <Button variant="outline-primary" size="sm" onClick={() => handleOpenEditar(row)}>
+        <Button
+          variant="outline-primary"
+          size="sm"
+          onClick={() => handleOpenEditar(row)}
+          title="Editar curso"
+          aria-label="Editar curso"
+        >
           <i className="bi bi-pencil" />
         </Button>
       ),

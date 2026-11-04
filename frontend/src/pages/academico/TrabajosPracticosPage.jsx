@@ -3,15 +3,19 @@ import { Card, Row, Col, Badge } from 'react-bootstrap'
 import PageHeader from '../../components/PageHeader'
 import DataTable from '../../components/DataTable'
 import StatusBadge from '../../components/StatusBadge'
+import { useAuth } from '../../context/AuthContext'
 import { getCalificaciones } from '../../api/calificaciones'
+import { ETIQUETAS_VACIO } from '../../config/etiquetas'
 
 export const TrabajosPracticosPage = () => {
+  const { idAlumno } = useAuth()
   const [tps, setTps] = useState([])
-  const alumnoId = 1 // Alumno de referencia: Lucía Benítez
+  const alumnoId = idAlumno
 
   useEffect(() => {
+    if (!alumnoId) return
     getCalificaciones({ idAlumno: alumnoId, tipo: 'TRABAJO_PRACTICO' }).then(setTps).catch(() => {})
-  }, [])
+  }, [alumnoId])
 
   const promedioTps = tps.length > 0
     ? (tps.reduce((acc, c) => acc + c.nota, 0) / tps.length).toFixed(1)
@@ -87,6 +91,8 @@ export const TrabajosPracticosPage = () => {
         keyField="idCalificacion"
         searchPlaceholder="Buscar por materia o trabajo práctico..."
         searchKeys={['materiaNombre', 'evaluacionNombre', 'observacion']}
+        emptyTitle={ETIQUETAS_VACIO.SIN_MATERIAS}
+        emptyDescription={ETIQUETAS_VACIO.SIN_MATERIAS_DETALLE}
       />
     </div>
   )

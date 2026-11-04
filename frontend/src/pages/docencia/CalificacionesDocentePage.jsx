@@ -7,9 +7,14 @@ import { getMaterias } from '../../api/materias'
 import { getCursos } from '../../api/cursos'
 import { getEvaluaciones } from '../../api/evaluaciones'
 import { getCalificaciones, guardarCalificaciones } from '../../api/calificaciones'
+import { getAsignaciones } from '../../api/asignaciones'
+import { useAuth } from '../../context/AuthContext'
+import { ETIQUETAS_VACIO } from '../../config/etiquetas'
 
 export const CalificacionesDocentePage = () => {
   const { showToast } = useToast()
+  const { idDocente } = useAuth()
+  const [asignaciones, setAsignaciones] = useState([])
   const [alumnos, setAlumnos] = useState([])
   const [materias, setMaterias] = useState([])
   const [cursos, setCursos] = useState([])
@@ -30,7 +35,18 @@ export const CalificacionesDocentePage = () => {
     getCursos().then(setCursos).catch(() => {})
     getAlumnos().then(setAlumnos).catch(() => {})
     getEvaluaciones().then(setEvaluaciones).catch(() => {})
-  }, [])
+    // Solo las cátedras asignadas al docente logueado.
+    getAsignaciones()
+      .then((data) => {
+        const propias = idDocente ? data.filter((a) => a.idDocente === idDocente) : []
+        setAsignaciones(propias)
+        if (propias[0]) {
+          setSelectedMateria(propias[0].idMateria)
+          setSelectedCurso(propias[0].idCurso)
+        }
+      })
+      .catch(() => {})
+  }, [idDocente])
 
   // Al cambiar materia o curso, sincronizar evaluación activa
   useEffect(() => {
@@ -122,6 +138,15 @@ export const CalificacionesDocentePage = () => {
   }
 
   const alumnosDelCurso = alumnos.filter((a) => a.idCurso === Number(selectedCurso))
+  const materiasDisponibles = materias.filter((m) =>
+    asignaciones.some((a) => a.idMateria === m.idMateria)
+  )
+  const cursosDisponibles = cursos.filter((c) =>
+    asignaciones.some((a) => a.idCurso === c.idCurso)
+  )
+  const puedeEditar = asignaciones.some(
+    (a) => a.idMateria === Number(selectedMateria) && a.idCurso === Number(selectedCurso)
+  )
 
   return (
     <div>
@@ -132,13 +157,30 @@ export const CalificacionesDocentePage = () => {
           <button
             type="button"
             className="btn"
-            disabled={saving || loading || alumnosDelCurso.length === 0}
+            disabled={saving || loading || alumnosDelCurso.length === 0 || !puedeEditar}
             onClick={handleGuardarTodas}
           >
             {saving ? 'Guardando…' : 'Guardar Calificaciones'}
           </button>
         }
       />
+
+      {!puedeEditar && (
+        <div
+          role="alert"
+          className="small mb-3"
+          style={{
+            padding: '10px 14px',
+            border: '1px solid var(--linea)',
+            backgroundColor: 'var(--papel)',
+            color: 'var(--suave)',
+            borderRadius: '3px',
+          }}
+        >
+          <i className="bi bi-info-circle me-2" />
+          {ETIQUETAS_VACIO.SIN_PERMISO_EDICION}
+        </div>
+      )}
 
       {/* Selectores de contexto */}
       <div
@@ -159,7 +201,7 @@ export const CalificacionesDocentePage = () => {
               value={selectedMateria}
               onChange={(e) => setSelectedMateria(Number(e.target.value))}
             >
-              {materias.map((m) => (
+              {materiasDisponibles.map((m) => (
                 <option key={m.idMateria} value={m.idMateria}>
                   {m.nombre}
                 </option>
@@ -175,7 +217,7 @@ export const CalificacionesDocentePage = () => {
               value={selectedCurso}
               onChange={(e) => setSelectedCurso(Number(e.target.value))}
             >
-              {cursos.map((c) => (
+              {cursosDisponibles.map((c) => (
                 <option key={c.idCurso} value={c.idCurso}>
                   {c.nombre}
                 </option>

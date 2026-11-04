@@ -67,7 +67,8 @@ export const GestionMesasPage = () => {
       tribunal: m.tribunal,
       aula: m.aula,
       cupoMaximo: m.cupoMaximo,
-      estadoMesa: m.estadoMesa,
+      estado: m.estado || m.estadoMesa,
+      estadoMesa: m.estadoMesa || m.estado,
     })
     setShowModal(true)
   }
@@ -77,10 +78,18 @@ export const GestionMesasPage = () => {
     setLoading(true)
     try {
       if (editingMesa) {
-        await updateMesa(editingMesa.idMesa, form)
+        await updateMesa(editingMesa.idMesa, {
+          ...form,
+          estado: form.estado || form.estadoMesa,
+        })
         showToast('Mesa de examen actualizada', 'success')
       } else {
-        await createMesa(form)
+        const mat = materias.find((m) => m.idMateria === Number(form.idMateria))
+        await createMesa({
+          ...form,
+          idCarrera: mat?.idCarrera || form.idCarrera || 1,
+          estado: form.estado || form.estadoMesa,
+        })
         showToast('Mesa de examen creada y abierta', 'success')
       }
       setShowModal(false)
@@ -111,15 +120,21 @@ export const GestionMesasPage = () => {
     {
       key: 'estadoMesa',
       label: 'Estado',
-      render: (row) => <StatusBadge status={row.estadoMesa} />,
+      render: (row) => <StatusBadge status={row.estado || row.estadoMesa} />,
     },
     {
       key: 'acciones',
       label: 'Acciones',
       align: 'right',
       render: (row) => (
-        <Button variant="outline-primary" size="sm" onClick={() => handleOpenEditar(row)}>
-          <i className="bi bi-pencil" /> Editar
+        <Button
+          variant="outline-primary"
+          size="sm"
+          onClick={() => handleOpenEditar(row)}
+          title="Editar mesa"
+          aria-label="Editar mesa"
+        >
+          <i className="bi bi-pencil" />
         </Button>
       ),
     },

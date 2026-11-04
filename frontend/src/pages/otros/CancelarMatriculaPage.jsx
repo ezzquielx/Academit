@@ -3,18 +3,21 @@ import { Card, Button, Form, Alert } from 'react-bootstrap'
 import PageHeader from '../../components/PageHeader'
 import StatusBadge from '../../components/StatusBadge'
 import ConfirmModal from '../../components/ConfirmModal'
+import { useAuth } from '../../context/AuthContext'
 import { useToast } from '../../context/ToastContext'
 import { cancelarMatricula, getMatriculas } from '../../api/matriculas'
 
 export const CancelarMatriculaPage = () => {
+  const { idAlumno } = useAuth()
   const { showToast } = useToast()
   const [matricula, setMatricula] = useState(null)
   const [motivo, setMotivo] = useState('')
   const [showConfirm, setShowConfirm] = useState(false)
   const [loading, setLoading] = useState(false)
-  const alumnoId = 1
+  const alumnoId = idAlumno
 
   const cargar = async () => {
+    if (!alumnoId) return
     try {
       const mats = await getMatriculas()
       const m = mats.find((item) => item.idAlumno === alumnoId)

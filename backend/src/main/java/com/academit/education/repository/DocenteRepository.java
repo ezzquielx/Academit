@@ -11,7 +11,15 @@ public interface DocenteRepository extends JpaRepository<Docente, Integer> {
 
     boolean existsByDni(String dni);
 
+    boolean existsByEmail(String email);
+
+    boolean existsByDniAndIdNot(String dni, Integer id);
+
+    boolean existsByEmailAndIdNot(String email, Integer id);
+
     Optional<Docente> findByDni(String dni);
+
+    Optional<Docente> findByEmail(String email);
 
     Page<Docente> findByDniContainingOrApellidoContainingIgnoreCaseOrNombreContainingIgnoreCase(
             String dni, String apellido, String nombre, Pageable pageable);

@@ -42,3 +42,5 @@ export const getPlanesEstudio = async () => {
   const response = await apiClient.get('/planes-estudio')
   return response.data
 }
+
+export const getPlanes = getPlanesEstudio

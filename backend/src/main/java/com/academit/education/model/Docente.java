@@ -36,7 +36,7 @@ public class Docente {
     @Column(name = "titulo", nullable = true, length = 100)
     private String titulo;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "id_estado_persona", nullable = false)
     private EstadoPersona estado;
 }

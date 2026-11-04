@@ -77,7 +77,7 @@ export const AdminCuotasPage = () => {
     {
       key: 'importe',
       label: 'Importe',
-      render: (row) => <span className="fw-semibold">${row.importe.toLocaleString('es-AR')}</span>,
+      render: (row) => <span className="fw-semibold">${row.importe != null ? Number(row.importe).toLocaleString('es-AR') : '0'}</span>,
     },
     { key: 'fechaVencimiento', label: 'Vencimiento' },
     {
@@ -107,10 +107,11 @@ export const AdminCuotasPage = () => {
                   <Button
                     variant="outline-danger"
                     size="sm"
-                    className="py-0 px-2 small fw-semibold"
                     onClick={() => setCuotaAAnular(row)}
+                    title="Anular cuota"
+                    aria-label="Anular cuota"
                   >
-                    Anular
+                    <i className="bi bi-x-circle" />
                   </Button>
                 ) : (
                   <span className="text-muted small">—</span>
@@ -130,7 +131,7 @@ export const AdminCuotasPage = () => {
         icon="bi-receipt"
       />
 
-      <div className="mb-3 d-flex align-items-center gap-2">
+      <div className="mb-3 d-flex flex-wrap align-items-center gap-2">
         <span className="small text-muted fw-semibold me-2">Filtrar por tipo:</span>
         <ButtonGroup size="sm">
           <Button

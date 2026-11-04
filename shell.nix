@@ -127,6 +127,16 @@ pkgs.mkShell {
       psql -h 127.0.0.1 -p 5432 postgres -c "GRANT ALL PRIVILEGES ON DATABASE academit TO academit;" >/dev/null 2>&1
       psql -h 127.0.0.1 -p 5432 -d academit -c "GRANT ALL ON SCHEMA public TO academit;" >/dev/null 2>&1
 
+      if [ -f database/01-schema.sql ]; then
+        echo "Ejecutando database/01-schema.sql..."
+        PGPASSWORD=academit psql -h 127.0.0.1 -p 5432 -U academit -d academit -f database/01-schema.sql
+      fi
+
+      if [ -f database/02-datos-iniciales.sql ]; then
+        echo "Ejecutando database/02-datos-iniciales.sql..."
+        PGPASSWORD=academit psql -h 127.0.0.1 -p 5432 -U academit -d academit -f database/02-datos-iniciales.sql
+      fi
+
       echo "Inicializacion completada exitosamente."
     }
 

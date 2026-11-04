@@ -36,14 +36,24 @@ export const getSolicitudes = async (filtros = {}) => {
 export const createSolicitud = async (data) => {
   if (isMock) {
     await new Promise((resolve) => setTimeout(resolve, 200))
+    if (!data.idAlumno) {
+      throw createApiError(400, 'Validación fallida', [
+        { campo: 'idAlumno', mensaje: 'La solicitud debe indicar el alumno' },
+      ])
+    }
     const nuevoId = Math.max(...mockDb.solicitudes.map((s) => s.idSolicitud), 0) + 1
-    const idAlumno = data.idAlumno ? Number(data.idAlumno) : 1
+    const idAlumno = Number(data.idAlumno)
     const alumno = mockDb.alumnos.find((a) => a.idAlumno === idAlumno)
+    if (!alumno) {
+      throw createApiError(404, 'Alumno no encontrado', [
+        { campo: 'idAlumno', mensaje: 'Alumno no encontrado' },
+      ])
+    }
 
     const nuevo = {
       idSolicitud: nuevoId,
       idAlumno,
-      alumnoNombre: alumno ? `${alumno.nombre} ${alumno.apellido}` : data.alumnoNombre || 'Lucía Benítez',
+      alumnoNombre: `${alumno.nombre} ${alumno.apellido}`,
       tipo: data.tipo,
       fechaSolicitud: new Date().toISOString().split('T')[0],
       motivo: data.motivo,

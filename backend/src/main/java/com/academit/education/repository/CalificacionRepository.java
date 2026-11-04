@@ -9,5 +9,11 @@ public interface CalificacionRepository extends JpaRepository<Calificacion, Inte
 
     List<Calificacion> findByAlumnoId(Integer idAlumno);
 
+    List<Calificacion> findByEvaluacionId(Integer idEvaluacion);
+
+    List<Calificacion> findByEvaluacionIdIn(List<Integer> idEvaluacion);
+
+    Calificacion findByEvaluacionIdAndAlumnoId(Integer idEvaluacion, Integer idAlumno);
+
     boolean existsByEvaluacionIdAndAlumnoId(Integer idEvaluacion, Integer idAlumno);
 }

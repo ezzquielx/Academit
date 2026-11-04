@@ -41,11 +41,21 @@ export const createDeclaracionJurada = async (data) => {
         },
       ])
     }
+    if (!data.idAlumno) {
+      throw createApiError(400, 'Validación fallida', [
+        { campo: 'idAlumno', mensaje: 'La declaración jurada debe indicar el alumno' },
+      ])
+    }
     const list = mockDb.declaracionesJuradas || []
     const nuevoId = Math.max(...list.map((d) => d.idDeclaracion), 0) + 1
-    const idAlumno = data.idAlumno ? Number(data.idAlumno) : 1
+    const idAlumno = Number(data.idAlumno)
     const alumno = mockDb.alumnos?.find((a) => a.idAlumno === idAlumno)
-    const ciclo = mockDb.ciclosLectivos?.find((c) => c.idCiclo === Number(data.idCiclo || 1))
+    if (!alumno) {
+      throw createApiError(404, 'Alumno no encontrado', [
+        { campo: 'idAlumno', mensaje: 'Alumno no encontrado' },
+      ])
+    }
+    const ciclo = mockDb.ciclosLectivos?.find((c) => c.idCiclo === Number(data.idCiclo))
 
     const materiasIds = Array.isArray(data.materiasDeclaradasIds) ? data.materiasDeclaradasIds : []
     const materiasNombres = materiasIds
@@ -55,14 +65,14 @@ export const createDeclaracionJurada = async (data) => {
     const nueva = {
       idDeclaracion: nuevoId,
       idAlumno,
-      alumnoNombre: alumno ? `${alumno.nombre} ${alumno.apellido}` : 'Lucía Benítez',
-      idCiclo: data.idCiclo ? Number(data.idCiclo) : 1,
-      cicloNombre: ciclo ? ciclo.nombre : 'Ciclo Lectivo 2026',
+      alumnoNombre: `${alumno.nombre} ${alumno.apellido}`,
+      idCiclo: ciclo?.idCiclo ?? null,
+      cicloNombre: ciclo?.nombre || '',
       fecha: new Date().toISOString().split('T')[0],
       materiasDeclaradasIds: materiasIds,
-      materiasNombres: materiasNombres.length > 0 ? materiasNombres : ['Programación I', 'Bases de Datos I'],
-      estado: 'VALIDADA',
-      observaciones: data.observaciones || data.motivo || 'Cumple con el régimen de correlatividades.',
+      materiasNombres,
+      estado: 'PENDIENTE',
+      observaciones: data.observaciones || data.motivo || '',
     }
     list.unshift(nueva)
     mockDb.declaracionesJuradas = list

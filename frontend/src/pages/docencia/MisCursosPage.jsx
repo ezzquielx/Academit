@@ -3,20 +3,25 @@ import { Row, Col, Card, Button, Badge } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import PageHeader from '../../components/PageHeader'
 import DataTable from '../../components/DataTable'
+import { useAuth } from '../../context/AuthContext'
 import { getAsignaciones } from '../../api/asignaciones'
 import { getCursos } from '../../api/cursos'
 
 export const MisCursosPage = () => {
+  const { idDocente } = useAuth()
   const [asignaciones, setAsignaciones] = useState([])
   const [cursos, setCursos] = useState([])
-  const docenteId = 1 // Carlos Gómez
+  const docenteId = idDocente
 
   useEffect(() => {
-    getAsignaciones().then((asigs) => {
-      setAsignaciones(asigs.filter((a) => a.idDocente === docenteId))
-    }).catch(() => {})
+    getAsignaciones()
+      .then((asigs) => {
+        const list = Array.isArray(asigs) ? asigs : []
+        setAsignaciones(docenteId ? list.filter((a) => Number(a.idDocente) === Number(docenteId)) : list)
+      })
+      .catch(() => {})
     getCursos().then(setCursos).catch(() => {})
-  }, [])
+  }, [docenteId])
 
   const columns = [
     { key: 'materiaNombre', label: 'Materia' },
@@ -33,15 +38,29 @@ export const MisCursosPage = () => {
     },
     {
       key: 'acciones',
-      label: 'Acciones Rápidas',
+      label: 'Acciones',
       align: 'right',
       render: () => (
-        <div className="d-flex justify-content-end gap-2">
-          <Button as={Link} to="/docencia/calificaciones" variant="outline-primary" size="sm">
-            <i className="bi bi-award me-1" /> Calificar
+        <div className="d-flex justify-content-end gap-1">
+          <Button
+            as={Link}
+            to="/docencia/calificaciones"
+            variant="outline-primary"
+            size="sm"
+            title="Calificaciones"
+            aria-label="Calificaciones"
+          >
+            <i className="bi bi-award" />
           </Button>
-          <Button as={Link} to="/docencia/asistencias" variant="outline-success" size="sm">
-            <i className="bi bi-check2-square me-1" /> Asistencia
+          <Button
+            as={Link}
+            to="/docencia/asistencias"
+            variant="outline-success"
+            size="sm"
+            title="Tomar asistencia"
+            aria-label="Tomar asistencia"
+          >
+            <i className="bi bi-check2-square" />
           </Button>
         </div>
       ),
@@ -78,7 +97,7 @@ export const MisCursosPage = () => {
                   <p className="small text-muted mb-3">
                     Aula: {cursoInfo?.aula || 'Aula 101'} • Capacidad: {cursoInfo?.inscriptos || 29} alumnos
                   </p>
-                  <div className="d-flex gap-2">
+                  <div className="d-flex flex-wrap gap-2">
                     <Button as={Link} to="/docencia/evaluaciones" variant="outline-info" size="sm">
                       <i className="bi bi-clipboard2-check me-1" /> Evaluaciones
                     </Button>

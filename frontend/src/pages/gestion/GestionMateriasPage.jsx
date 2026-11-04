@@ -116,7 +116,7 @@ export const GestionMateriasPage = () => {
       key: 'correlativas',
       label: 'Correlativas Exigidas',
       render: (row) =>
-        row.correlativas.length > 0 ? (
+        row.correlativas && row.correlativas.length > 0 ? (
           row.correlativas.map((c, idx) => (
             <Badge key={idx} bg="dark" className="me-1 border border-secondary">
               {getNombreCorrelativa(c)}
@@ -131,8 +131,14 @@ export const GestionMateriasPage = () => {
       label: 'Acciones',
       align: 'right',
       render: (row) => (
-        <Button variant="outline-primary" size="sm" onClick={() => handleOpenEditar(row)}>
-          <i className="bi bi-pencil" /> Editar
+        <Button
+          variant="outline-primary"
+          size="sm"
+          onClick={() => handleOpenEditar(row)}
+          title="Editar materia"
+          aria-label="Editar materia"
+        >
+          <i className="bi bi-pencil" />
         </Button>
       ),
     },

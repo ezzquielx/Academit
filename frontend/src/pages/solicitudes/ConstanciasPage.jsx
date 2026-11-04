@@ -3,17 +3,20 @@ import PageHeader from '../../components/PageHeader'
 import SolicitudForm from '../../components/SolicitudForm'
 import DataTable from '../../components/DataTable'
 import StatusBadge from '../../components/StatusBadge'
+import { useAuth } from '../../context/AuthContext'
 import { useToast } from '../../context/ToastContext'
 import { getSolicitudes, createSolicitud } from '../../api/solicitudes'
-import { ETIQUETAS_TIPO_SOLICITUD } from '../../config/etiquetas'
 
+import { ETIQUETAS_TIPO_SOLICITUD, ETIQUETAS_VACIO } from '../../config/etiquetas'
 export const ConstanciasPage = () => {
+  const { idAlumno } = useAuth()
   const { showToast } = useToast()
   const [solicitudes, setSolicitudes] = useState([])
   const [loading, setLoading] = useState(false)
-  const alumnoId = 1
+  const alumnoId = idAlumno
 
   const cargar = async () => {
+    if (!alumnoId) return
     try {
       const data = await getSolicitudes({ idAlumno: alumnoId, tipo: 'CONSTANCIA' })
       setSolicitudes(data)
@@ -95,6 +98,8 @@ export const ConstanciasPage = () => {
         keyField="idSolicitud"
         searchPlaceholder="Buscar en mis constancias..."
         searchKeys={['tipo', 'motivo', 'estado']}
+        emptyTitle={ETIQUETAS_VACIO.SIN_SOLICITUDES}
+        emptyDescription={ETIQUETAS_VACIO.SIN_SOLICITUDES_DETALLE}
       />
     </div>
   )

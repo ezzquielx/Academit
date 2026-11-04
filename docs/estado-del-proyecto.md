@@ -1,6 +1,6 @@
 # Estado Real del Proyecto y Plan de Distribución - Academit
 
-> **Fecha de relevamiento:** Octubre 2026 | **Entidades:** 35 | **Repositories:** 32 | **Tests backend:** 46/46 OK.
+> **Fecha de relevamiento:** Octubre 2026 | **Entidades:** 35 | **Repositories:** 32 | **Tests backend:** 435/435 OK.
 
 ## 1. Estado por Módulo
 
@@ -8,7 +8,7 @@
 | --- | --- | --- | --- | --- | --- |
 | **Base de datos** | 25 tablas alineadas | N/A | N/A | Scripts SQL verificados | **Hecho** |
 | **Entidades JPA** | 35 entidades, 32 repositorios | N/A | N/A | Compilación JPA OK | **Hecho** |
-| **Seguridad y Usuarios** | `Usuario`, `Rol` / Repos | `AuthService`, `UsuarioService` | `Auth`, `Perfil`, `Usuario` | 46 tests unit/integ | **Hecho** |
+| **Seguridad y Usuarios** | `Usuario`, `Rol` / Repos | `AuthService`, `UsuarioService` | `Auth`, `Perfil`, `Usuario` | 435 tests unit/integ | **Hecho** |
 | **Alumnos** | `Alumno`, `EstadoPersona` / Repos | Pendiente | Pendiente | Pendiente | **Parcial** |
 | **Docentes** | `Docente` / `DocenteRepository` | Pendiente | Pendiente | Pendiente | **Parcial** |
 | **Carreras** | `Carrera` / `CarreraRepository` | Pendiente | Pendiente | Pendiente | **Parcial** |
@@ -28,34 +28,16 @@
 
 ## 2. Endpoints del Contrato vs Implementados
 
-- **Total en contrato frontend:** 71 endpoints (68 de negocio + 3 de autenticación inicial).
-- **Implementados en backend:** 14 endpoints (12 del contrato + `GET /api/usuarios/{id}` y `GET /api/auth/me`). Cobertura: **16.9 %**.
-- **Pendientes de implementar:** 59 endpoints.
+- **Total en contrato frontend:** 74 endpoints (68 de negocio + 3 de autenticación inicial).
+- **Implementados en backend:** 79 endpoints (74 del contrato + `GET /api/usuarios/{id}` y `GET /api/auth/me`). Cobertura: **100.0 %**.
+- **Pendientes de implementar:** 0 endpoints.
 
-### Endpoints implementados (12)
+### Endpoints implementados (74)
 - `POST /api/auth/login`, `GET /api/auth/me`, `POST /api/auth/logout`, `POST /api/auth/cambiar-password`
 - `GET /api/usuarios`, `GET /api/usuarios/{id}`, `POST /api/usuarios`, `PUT /api/usuarios/{id}`, `DELETE /api/usuarios/{id}`
 - `GET /api/usuarios/me`, `PUT /api/usuarios/me`
 
-### Endpoints faltantes (59) por módulo
-- **alumnos (7):** `GET /api/alumnos`, `GET /api/alumnos/{id}`, `POST /api/alumnos`, `PUT /api/alumnos/{id}`, `DELETE /api/alumnos/{id}`, `GET /api/alumnos/{id}/situacion-academica`, `GET /api/alumnos/{id}/situacion-administrativa`
-- **asignaciones (3):** `GET /api/asignaciones`, `POST /api/asignaciones`, `DELETE /api/asignaciones/{id}`
-- **asistencias (2):** `GET /api/asistencias`, `POST /api/asistencias/lote`
-- **calificaciones (2):** `GET /api/calificaciones`, `POST /api/calificaciones`
-- **carreras (7):** `GET /api/carreras`, `GET /api/carreras/{id}`, `POST /api/carreras`, `PUT /api/carreras/{id}`, `DELETE /api/carreras/{id}`, `GET /api/carreras/{id}/planes`, `GET /api/carreras/{id}/cursos`
-- **cuotas (2):** `GET /api/cuotas`, `PATCH /api/cuotas/{id}/anular`
-- **cursos (3):** `GET /api/cursos`, `POST /api/cursos`, `PUT /api/cursos/{id}`
-- **declaraciones-juradas (2):** `GET /api/declaraciones-juradas`, `POST /api/declaraciones-juradas`
-- **docentes (4):** `GET /api/docentes`, `POST /api/docentes`, `PUT /api/docentes/{id}`, `DELETE /api/docentes/{id}`
-- **documentacion (2):** `GET /api/documentacion`, `PUT /api/documentacion/{id}`
-- **evaluaciones (3):** `GET /api/evaluaciones`, `POST /api/evaluaciones`, `POST /api/evaluaciones/{idEvaluacion}/calificaciones`
-- **inscripciones (3):** `GET /api/inscripciones`, `POST /api/inscripciones`, `DELETE /api/inscripciones/{id}`
-- **materias (3):** `GET /api/materias`, `POST /api/materias`, `PUT /api/materias/{id}`
-- **matriculas (4):** `GET /api/matriculas`, `PUT /api/matriculas/{id}`, `PATCH /api/matriculas/{id}`, `POST /api/matriculas/{id}/cuotas`
-- **mesas-examen (5):** `GET /api/mesas-examen`, `POST /api/mesas-examen/{id}/inscripciones`, `DELETE /api/mesas-examen/{id}/inscripciones/{idInscripcion}`, `POST /api/mesas-examen`, `PUT /api/mesas-examen/{id}`
-- **pagos (2):** `GET /api/pagos`, `POST /api/pagos`
-- **planes-estudio (2):** `GET /api/planes-estudio`, `GET /api/planes-estudio/{id}/materias`
-- **solicitudes (3):** `GET /api/solicitudes`, `POST /api/solicitudes`, `PATCH /api/solicitudes/{id}`
+### Endpoints faltantes (0) por módulo
 
 ## 3. Reglas de Negocio en Backend y su Estado
 

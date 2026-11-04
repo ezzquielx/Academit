@@ -13,18 +13,22 @@ import java.util.List;
 public class CustomUserDetails implements UserDetails {
 
     private final Usuario usuario;
+    private final Collection<? extends GrantedAuthority> authorities;
 
     public CustomUserDetails(Usuario usuario) {
         this.usuario = usuario;
+        String rolName = (usuario.getRol() != null && usuario.getRol().getNombre() != null)
+                ? usuario.getRol().getNombre()
+                : "USER";
+        if (!rolName.startsWith("ROLE_")) {
+            rolName = "ROLE_" + rolName;
+        }
+        this.authorities = List.of(new SimpleGrantedAuthority(rolName));
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        String rolName = usuario.getRol() != null ? usuario.getRol().getNombre() : "USER";
-        if (!rolName.startsWith("ROLE_")) {
-            rolName = "ROLE_" + rolName;
-        }
-        return List.of(new SimpleGrantedAuthority(rolName));
+        return authorities;
     }
 
     @Override

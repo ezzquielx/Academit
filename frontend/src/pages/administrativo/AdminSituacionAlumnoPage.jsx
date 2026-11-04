@@ -33,8 +33,8 @@ export const AdminSituacionAlumnoPage = () => {
 
   const cuotasVencidas = cuotas.filter((c) => c.estado === 'VENCIDA')
   const cuotasPendientes = cuotas.filter((c) => c.estado === 'PENDIENTE')
-  const totalAdeudado = [...cuotasVencidas, ...cuotasPendientes].reduce((sum, c) => sum + c.importe, 0)
-  const totalAbonado = pagos.reduce((sum, p) => sum + p.importe, 0)
+  const totalAdeudado = [...cuotasVencidas, ...cuotasPendientes].reduce((sum, c) => sum + (Number(c.importe) || 0), 0)
+  const totalAbonado = pagos.reduce((sum, p) => sum + (Number(p.importe) || 0), 0)
 
   const columns = [
     { key: 'concepto', label: 'Concepto' },
@@ -51,7 +51,7 @@ export const AdminSituacionAlumnoPage = () => {
     {
       key: 'importe',
       label: 'Importe',
-      render: (row) => `$${row.importe.toLocaleString('es-AR')}`,
+      render: (row) => (row.importe != null ? `$${Number(row.importe).toLocaleString('es-AR')}` : '$0'),
     },
     { key: 'fechaVencimiento', label: 'Vencimiento' },
     {
@@ -113,7 +113,7 @@ export const AdminSituacionAlumnoPage = () => {
             <Card.Body className="p-3">
               <span className="text-muted small text-uppercase fw-semibold">Matrícula 2026</span>
               <h5 className="fw-bold mt-2 mb-1" style={{ color: 'var(--m-onSurface)' }}>
-                ${matricula?.importe ? matricula.importe.toLocaleString('es-AR') : '35.000'}
+                ${matricula?.importe != null ? Number(matricula.importe).toLocaleString('es-AR') : '35.000'}
               </h5>
               <div className="mt-2">
                 <StatusBadge status={matricula?.estado || 'ACTIVA'} />
@@ -127,7 +127,7 @@ export const AdminSituacionAlumnoPage = () => {
             <Card.Body className="p-3">
               <span className="text-muted small text-uppercase fw-semibold">Total Adeudado</span>
               <h4 className="fw-bold mt-2 mb-1 text-danger">
-                ${totalAdeudado.toLocaleString('es-AR')}
+                ${(totalAdeudado || 0).toLocaleString('es-AR')}
               </h4>
               <small className="text-muted">
                 {cuotasVencidas.length} cuotas vencidas
@@ -141,7 +141,7 @@ export const AdminSituacionAlumnoPage = () => {
             <Card.Body className="p-3">
               <span className="text-muted small text-uppercase fw-semibold">Total Abonado</span>
               <h4 className="fw-bold mt-2 mb-1 text-success">
-                ${totalAbonado.toLocaleString('es-AR')}
+                ${(totalAbonado || 0).toLocaleString('es-AR')}
               </h4>
               <small className="text-muted">
                 {pagos.length} operaciones registradas

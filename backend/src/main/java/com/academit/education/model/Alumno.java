@@ -43,7 +43,7 @@ public class Alumno {
     @Column(name = "fecha_ingreso", nullable = false)
     private LocalDate fechaIngreso = LocalDate.now();
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "id_estado_persona", nullable = false)
     private EstadoPersona estado;
 
